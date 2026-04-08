@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace Travelt
 {
     /// <summary>
@@ -22,6 +23,25 @@ namespace Travelt
         public LoginWindow()
         {
             InitializeComponent();
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            string email = EmailTextBox.Text;
+            string password = PasswordTextBox.Password;
+
+            Service.UserService userService = new Service.UserService();
+
+            bool success = userService.Login(email, password);
+
+            if (success)
+            {
+                MessageBox.Show("Login successful");
+            }
+            else
+            {
+                MessageBox.Show("Invalid credentials");
+            }
         }
 
     }
