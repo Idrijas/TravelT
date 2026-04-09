@@ -24,6 +24,19 @@ namespace Travelt.Service
             return false;
         }
 
+        public bool Register(string firstName, string lastName, string userName, DateTime dateOfBirth, string email, string password)
+        {
+            // TEMPORARY: Mock sign up logic for testing UI functionality.
+            // TODO: Replace this with a database query (SQL) once backend is connected.
+
+            if (email == "test@test.com" || userName == "admin")
+            {
+                return false;
+            }
+
+            return true;
+        }
+
 
 
     }

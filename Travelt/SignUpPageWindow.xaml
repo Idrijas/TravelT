@@ -1,0 +1,58 @@
+﻿<Window x:Class="Travelt.SignUpPageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Travelt"
+        mc:Ignorable="d"
+        Title="SignUpWindow " Height="650" Width="450"
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E1E">
+
+    <Grid Background="#1A001F">
+        <Border Width="333"
+                Padding="20"
+                Background="#1A001F"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+            <StackPanel>
+
+                <TextBlock Text="Sign Up"
+                           FontSize="30"
+                           FontFamily="Comic Sans MS"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20" RenderTransformOrigin="0.514,1.469"/>
+
+                <TextBlock Text="First Name" Foreground="White"/>
+                <TextBox x:Name="FirstNameTextBox" Margin="0,5,0,10" Height="30"/>
+
+                <TextBlock Text="Last Name" Foreground="White"/>
+                <TextBox x:Name="LastNameTextBox" Margin="0,5,0,10" Height="30"/>
+
+                <TextBlock Text="Username" Foreground="White"/>
+                <TextBox x:Name="UsernameTextBox" Margin="0,5,0,10" Height="30"/>
+
+                <TextBlock Text="Date of Birth" Foreground="White"/>
+                <DatePicker x:Name="DobDatePicker" Margin="0,5,0,10" Height="30"/>
+
+                <TextBlock Text="Email" Foreground="White"/>
+                <TextBox x:Name="EmailTextBox" Margin="0,5,0,10" Height="30"/>
+
+                <TextBlock Text="Password" Foreground="White"/>
+                <PasswordBox x:Name="PasswordBox" Margin="0,5,0,10" Height="30"/>
+
+                <TextBlock Text="Repeat Password" Foreground="White"/>
+                <PasswordBox x:Name="RepeatPasswordBox" Margin="0,5,0,20" Height="30"/>
+
+                <Button Content="SIGN UP!"
+                        Height="37"
+                        Background="#FF2D8C"
+                        Foreground="White"
+                        Click="SignUpButton_Click" Width="284"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
