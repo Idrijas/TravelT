@@ -88,7 +88,24 @@ namespace Travelt
             {
                 MessageBox.Show("Username or email already exists.");
             }
+
+
+
+
+             
+
+            string username = UsernameTextBox.Text;
+
+            HomePageWindow homepage = new HomePageWindow(username);
+            homepage.Show();
+            this.Close();
+
+
+
         }
+
+
+       
 
 
         private void BackToLogInButton_Click(object sender, RoutedEventArgs e)
@@ -98,6 +115,9 @@ namespace Travelt
 
             this.Close();
         }
+
+
+       
     }
 }
     
