@@ -44,5 +44,14 @@ namespace Travelt
             }
         }
 
+
+        private void SignUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            SignUpPageWindow signUp = new SignUpPageWindow();
+            signUp.Show();
+
+            this.Close();
+        }
+
     }
 }

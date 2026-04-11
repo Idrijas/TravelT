@@ -81,7 +81,8 @@
                 <Button Content="Sign Up Here!"
                     Background="Transparent"
                     BorderThickness="0"
-                    Foreground="#FF2D8C"/>
+                    Foreground="#FF2D8C"
+                    Click="SignUpButton_Click"/>
 
             </StackPanel>
 

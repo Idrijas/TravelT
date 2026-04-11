@@ -10,13 +10,23 @@
         Background="#1E1E1E">
 
     <Grid Background="#1A001F">
+
+        <Button Content="Back"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Left"
+                Click="BackToLogInButton_Click"/>
+        
         <Border Width="333"
                 Padding="20"
                 Background="#1A001F"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
 
+            
+
             <StackPanel>
+
+               
 
                 <TextBlock Text="Sign Up"
                            FontSize="30"

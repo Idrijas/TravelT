@@ -22,10 +22,10 @@ namespace Travelt
 
         // Dries, this are the notes:
 
-        // Here will be the SQL query code, this is just for testing
-        // Also, the profile picture and Gender Enum will be added
+        
 
-        // Also functionality from Login page -> Sign Up page will be added
+        // The profile picture and Gender Enum will be adde
+        // Also functionality from Login page -> Sign Up page will be added (idk where or when tho xd)
 
 
 
@@ -88,6 +88,15 @@ namespace Travelt
             {
                 MessageBox.Show("Username or email already exists.");
             }
+        }
+
+
+        private void BackToLogInButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoginWindow logIn = new LoginWindow();
+            logIn.Show();
+
+            this.Close();
         }
     }
 }
