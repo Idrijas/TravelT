@@ -25,7 +25,7 @@ namespace Travelt
             InitializeComponent();
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private void LoginButton(object sender, RoutedEventArgs e)
         {
             string email = EmailTextBox.Text;
             string password = PasswordTextBox.Password;
@@ -44,8 +44,8 @@ namespace Travelt
             }
         }
 
-
-        private void SignUpButton_Click(object sender, RoutedEventArgs e)
+        // transfering to Sign Up page
+        private void ToSignUp(object sender, RoutedEventArgs e)
         {
             SignUpPageWindow signUp = new SignUpPageWindow();
             signUp.Show();

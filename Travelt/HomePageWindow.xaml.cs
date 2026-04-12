@@ -31,13 +31,13 @@ namespace Travelt
             timer.Start();
 
 
-            DateTimeTextBlock.Text = DateTime.Now.ToString("dd.MM.yyyy  |  HH:mm:ss");
+            DateTimeTextBlock.Text = DateTime.Now.ToString("TODAY IS:  dd.MM.yyyy  |  IT IS:  HH:mm:ss");
 
         }
 
         private void Ticking (object sender, EventArgs e)
         {
-            DateTimeTextBlock.Text = DateTime.Now.ToString("dd.MM.yyyy  |  HH:mm:ss");
+            DateTimeTextBlock.Text = DateTime.Now.ToString("TODAY IS:  dd.MM.yyyy  |  IT IS:  HH:mm:ss");
         }
         
         public HomePageWindow()
@@ -54,17 +54,17 @@ namespace Travelt
             StartClock();
         }
 
-        private void DiscoverButton_Click(object sender, RoutedEventArgs e)
+        private void ToDiscoverPage(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Discover page will be added later :)");
         }
 
-        private void PlanningButton_Click(object sender, RoutedEventArgs e)
+        private void ToPlanningPage(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Planning page will be added later :)");
         }
 
-        private void ProfileButton_Click(object sender, RoutedEventArgs e)
+        private void ToProfilePage(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Profile page will be added when Ondrej decides :}");
         }

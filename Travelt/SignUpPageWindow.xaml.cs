@@ -37,7 +37,7 @@ namespace Travelt
         //           And change it regarding if you want to see login page change it to -> StartupUri="LoginWindow.xaml">
         //           If you want Sign Up Window, then it's this: StartupUri="SignUpPageWindow.xaml">
 
-        private void SignUpButton_Click(object sender, RoutedEventArgs e)
+        private void SignUp_Button(object sender, RoutedEventArgs e)
         {
             string firstName = FirstNameTextBox.Text;
             string lastName = LastNameTextBox.Text;
@@ -57,7 +57,7 @@ namespace Travelt
                 return;
             }
 
-            if (DobDatePicker.SelectedDate == null)
+            if (DateOfBirth.SelectedDate == null)
             {
                 MessageBox.Show("Please select your date of birth.");
                 return;
@@ -75,7 +75,7 @@ namespace Travelt
                 firstName,
                 lastName,
                 userName,
-                DobDatePicker.SelectedDate.Value,
+                DateOfBirth.SelectedDate.Value,
                 email,
                 password
             );
@@ -92,7 +92,7 @@ namespace Travelt
 
 
 
-             
+             // navigation to Home Page
 
             string username = UsernameTextBox.Text;
 
@@ -108,7 +108,7 @@ namespace Travelt
        
 
 
-        private void BackToLogInButton_Click(object sender, RoutedEventArgs e)
+        private void BackToLogin(object sender, RoutedEventArgs e)
         {
             LoginWindow logIn = new LoginWindow();
             logIn.Show();

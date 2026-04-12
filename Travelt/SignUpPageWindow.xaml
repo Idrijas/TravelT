@@ -14,7 +14,7 @@
         <Button Content="Back"
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Left"
-                Click="BackToLogInButton_Click"/>
+                Click="BackToLogin"/>
         
         <Border Width="333"
                 Padding="20"
@@ -46,7 +46,7 @@
                 <TextBox x:Name="UsernameTextBox" Margin="0,5,0,10" Height="30"/>
 
                 <TextBlock Text="Date of Birth" Foreground="White"/>
-                <DatePicker x:Name="DobDatePicker" Margin="0,5,0,10" Height="30"/>
+                <DatePicker x:Name="DateOfBirth" Margin="0,5,0,10" Height="30"/>
 
                 <TextBlock Text="Email" Foreground="White"/>
                 <TextBox x:Name="EmailTextBox" Margin="0,5,0,10" Height="30"/>
@@ -61,7 +61,7 @@
                         Height="37"
                         Background="#FF2D8C"
                         Foreground="White"
-                        Click="SignUpButton_Click" Width="284"/>
+                        Click="SignUp_Button" Width="284"/>
             </StackPanel>
         </Border>
     </Grid>

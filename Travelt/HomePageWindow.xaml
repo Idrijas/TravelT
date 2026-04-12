@@ -46,7 +46,7 @@
                 FontSize="22"
                 Background="#FF2D8C"
                 Foreground="White"
-                Click="DiscoverButton_Click"/>
+                Click="ToDiscoverPage"/>
 
             <Button Grid.Column="2"
                 Content="Planning"
@@ -54,7 +54,7 @@
                 FontSize="22"
                 Background="#FF2D8C"
                 Foreground="White"
-                Click="PlanningButton_Click"/>
+                Click="ToPlanningPage"/>
 
             <Button Grid.Column="4"
                 Content="Profile"
@@ -62,7 +62,7 @@
                 FontSize="22"
                 Background="#FF2D8C"
                 Foreground="White"
-                Click="ProfileButton_Click"/>
+                Click="ToProfilePage"/>
 
         </Grid>
 
@@ -89,7 +89,7 @@
         <StackPanel Grid.Row="4" HorizontalAlignment="Center">
 
 
-            <TextBlock Text="“Stay consistent. It will pay off.”"
+            <TextBlock x:Name="Quote" Text="“Stay consistent. It will pay off.”"
                   FontStyle="Italic"
                   Foreground="white"
                   Margin="0,0,0,0"
