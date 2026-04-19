@@ -70,9 +70,18 @@ namespace Travelt
         }
 
 
+        private void LogOut(object sender, RoutedEventArgs e)
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
+
+            this.Close();
+        }
 
 
-      
+
+
+
 
 
     }

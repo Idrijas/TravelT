@@ -28,7 +28,8 @@
 
                      <!--Ondrej: change "user" for {user}-->
 
-    
+      
+
 
 
         <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -63,11 +64,14 @@
                 Background="#FF2D8C"
                 Foreground="White"
                 Click="ToProfilePage"/>
+            
+            
 
         </Grid>
 
-      
 
+
+       
 
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Left">
@@ -80,9 +84,12 @@
                    Foreground="White"
                    VerticalAlignment="Bottom"
                    FontFamily="Comic Sans MS"/>
+            
 
 
             <!--Ondrej: add datetime function here-->
+
+
 
         </StackPanel>
 
@@ -96,7 +103,20 @@
                   FontSize="30"/>
 
             <!--Ondrej: add API for the quote-->
+           
 
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="6" HorizontalAlignment="Right">
+
+
+            <Button Content="Logout"
+                    Background="#FF2D8C"
+                    Foreground="White"
+                    Width="120"
+                    Height="40"
+                    Click="LogOut"/>
         </StackPanel>
 
     </Grid>
