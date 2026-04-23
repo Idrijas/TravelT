@@ -1,0 +1,92 @@
+﻿<Window x:Class="Travelt.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Travelt"
+        mc:Ignorable="d"
+        Title="Login" Height="450" Width="800">
+
+    <Grid Background="#1A001F">
+
+        <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="300">
+
+            <TextBlock Text="TravelT"
+                   FontSize="80"
+                   FontWeight="Bold"
+                   FontFamily="Comic Sans MS"
+                   Foreground="White"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Center"
+                   
+                   Margin="0,0,0,40"/>
+            
+
+            
+            
+            <Border Background="#2A0033"
+                     CornerRadius="10"
+                     Height="40"
+                     Margin="0,0,0,15"
+                     Padding="10,5">
+                
+                <TextBox x:Name ="EmailTextBox" Background="Transparent"
+                        BorderThickness="0"
+                        Foreground="White"
+                        VerticalContentAlignment="Center"
+                        FontSize="14"/>
+            </Border>
+
+            
+            
+
+            <Border Background="#2A0033"
+                    CornerRadius="10"
+                    Height="40"
+                    Margin="0,0,0,25"
+                    Padding="10,5">
+                
+                <PasswordBox x:Name="PasswordTextBox" Background="Transparent"
+                        BorderThickness="0"
+                        Foreground="White"
+                        FontSize="14"/>
+            </Border>
+
+
+           
+                  
+
+                <Button Content="Log In"
+                            Height="40"
+                            Margin="0,0,0,20"
+                            FontFamily="Comic Sans MS"
+                            FontWeight="Bold"
+                            Background="#FF2D8C"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Click="LoginButton"/>
+            
+
+
+            <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+
+                <TextBlock Text="Don't have an account?"
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       Margin="0,0,5,0"/>
+
+                <Button Content="Sign Up Here!"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Foreground="#FF2D8C"
+                    Click="ToSignUp"/>
+
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+</Window>
