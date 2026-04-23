@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Travelt.Service;
+using static Travelt.Service.UserService;
 
 
 namespace Travelt
@@ -27,21 +29,33 @@ namespace Travelt
 
         private void LoginButton(object sender, RoutedEventArgs e)
         {
+
+            UserService user = new UserService();
+
             string email = EmailTextBox.Text;
             string password = PasswordTextBox.Password;
 
-            Service.UserService userService = new Service.UserService();
+            bool successful_login = user.Login(email, password);
 
-            bool success = userService.Login(email, password);
-
-            if (success)
+            if (successful_login)
             {
-                MessageBox.Show("Login successful");
+
+                MessageBox.Show("Successful Login");
+
+
+                // transfering to HomePage
+
+                HomePageWindow homepagewindow = new HomePageWindow();
+                homepagewindow.Show();
+
+                this.Close();
             }
             else
             {
-                MessageBox.Show("Invalid credentials");
+                MessageBox.Show("Invalid email or password");
             }
+
+
         }
 
         // transfering to Sign Up page
