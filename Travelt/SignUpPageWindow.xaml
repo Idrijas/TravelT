@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:Travelt"
         mc:Ignorable="d"
         Title="SignUpWindow " Height="650" Width="450"
@@ -45,8 +46,15 @@
                 <TextBlock Text="Username" Foreground="White"/>
                 <TextBox x:Name="UsernameTextBox" Margin="0,5,0,10" Height="30"/>
 
+                <TextBlock Text="Gender" Foreground="White"/>
+                <ComboBox x:Name="GenderSelection" Margin="0,5,0,10" Height="30">
+                    <ComboBoxItem Content="Male"/>
+                    <ComboBoxItem Content="Female"/>
+                    <ComboBoxItem Content="Other"/>
+                </ComboBox>
+
                 <TextBlock Text="Date of Birth" Foreground="White"/>
-                <DatePicker x:Name="DateOfBirth" Margin="0,5,0,10" Height="30"/>
+                <DatePicker x:Name="DateOfBirth" Margin="0,5,0,10" Height="30" DisplayDateEnd="{x:Static sys:DateTime.Today}"/>
 
                 <TextBlock Text="Email" Foreground="White"/>
                 <TextBox x:Name="EmailTextBox" Margin="0,5,0,10" Height="30"/>
