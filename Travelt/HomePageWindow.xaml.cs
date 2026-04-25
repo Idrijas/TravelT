@@ -22,6 +22,7 @@ namespace Travelt
     {
 
         private DispatcherTimer timer;
+        
 
         private void StartClock()
         {
