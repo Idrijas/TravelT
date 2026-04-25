@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using TravelT;
 
 namespace Travelt
 {
@@ -67,7 +68,13 @@ namespace Travelt
 
         private void ToProfilePage(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Profile page will be added when Ondrej decides :}");
+
+            ProfilePageWindow profilepagewindow = new ProfilePageWindow();
+            profilepagewindow.Show();
+
+            this.Close();
+
+            MessageBox.Show("Ondrej decided to finally add Profile Page");
         }
 
 
