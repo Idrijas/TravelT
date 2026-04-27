@@ -161,7 +161,7 @@ namespace Travelt
 
                 // navigation to Home Page
 
-                HomePageWindow homepage = new HomePageWindow(userName);
+                HomePageWindow homepage = new HomePageWindow();
                 homepage.Show();
                 this.Close();
             }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2026 at 05:39 PM
+-- Generation Time: Apr 27, 2026 at 02:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -57,6 +57,21 @@ CREATE TABLE `country` (
   `country_id` int(11) NOT NULL,
   `country_name` varchar(100) NOT NULL,
   `country_code` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
+--
+
+CREATE TABLE `posts` (
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `trip_id` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `timestamp` datetime NOT NULL,
+  `imagepath` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -204,6 +219,14 @@ ALTER TABLE `country`
   ADD PRIMARY KEY (`country_id`);
 
 --
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`post_id`),
+  ADD UNIQUE KEY `user_id` (`user_id`),
+  ADD UNIQUE KEY `trip_id` (`trip_id`);
+
+--
 -- Indexes for table `rank`
 --
 ALTER TABLE `rank`
@@ -292,6 +315,12 @@ ALTER TABLE `country`
   MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `rank`
 --
 ALTER TABLE `rank`
@@ -324,6 +353,13 @@ ALTER TABLE `user`
 --
 ALTER TABLE `category`
   ADD CONSTRAINT `fk_category_trip` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`);
 
 --
 -- Constraints for table `report_participant`
