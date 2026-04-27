@@ -58,7 +58,10 @@ namespace Travelt
 
         private void ToDiscoverPage(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Discover page will be added later :)");
+            DiscoveryPageWindow discoverypagewindow = new DiscoveryPageWindow();
+            discoverypagewindow.Show();
+
+            this.Close();
         }
 
         private void ToPlanningPage(object sender, RoutedEventArgs e)

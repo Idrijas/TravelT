@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2026 at 02:22 AM
+-- Generation Time: Apr 27, 2026 at 11:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -68,10 +68,35 @@ CREATE TABLE `country` (
 CREATE TABLE `posts` (
   `post_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `trip_id` int(11) NOT NULL,
+  `trip_id` int(11) DEFAULT NULL,
   `description` varchar(255) NOT NULL,
   `timestamp` datetime NOT NULL,
   `imagepath` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `post_comments`
+--
+
+CREATE TABLE `post_comments` (
+  `comment_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comment_text` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `post_likes`
+--
+
+CREATE TABLE `post_likes` (
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -227,6 +252,21 @@ ALTER TABLE `posts`
   ADD UNIQUE KEY `trip_id` (`trip_id`);
 
 --
+-- Indexes for table `post_comments`
+--
+ALTER TABLE `post_comments`
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `fk_comments_post` (`post_id`),
+  ADD KEY `fk_comments_user` (`user_id`);
+
+--
+-- Indexes for table `post_likes`
+--
+ALTER TABLE `post_likes`
+  ADD PRIMARY KEY (`user_id`,`post_id`),
+  ADD KEY `fk_likes_post` (`post_id`);
+
+--
 -- Indexes for table `rank`
 --
 ALTER TABLE `rank`
@@ -321,6 +361,12 @@ ALTER TABLE `posts`
   MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `post_comments`
+--
+ALTER TABLE `post_comments`
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `rank`
 --
 ALTER TABLE `rank`
@@ -360,6 +406,20 @@ ALTER TABLE `category`
 ALTER TABLE `posts`
   ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`);
+
+--
+-- Constraints for table `post_comments`
+--
+ALTER TABLE `post_comments`
+  ADD CONSTRAINT `fk_comments_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_comments_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `post_likes`
+--
+ALTER TABLE `post_likes`
+  ADD CONSTRAINT `fk_likes_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_likes_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `report_participant`
