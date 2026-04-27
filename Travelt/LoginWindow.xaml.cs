@@ -35,11 +35,11 @@ namespace Travelt
             string email = EmailTextBox.Text;
             string password = PasswordTextBox.Password;
 
-            bool successful_login = user.Login(email, password);
+            User current_logged_user = user.Login(email, password);
 
-            if (successful_login)
+            if (current_logged_user != null)
             {
-
+                UserService.CurrentUser = current_logged_user;
                 MessageBox.Show("Successful Login");
 
 

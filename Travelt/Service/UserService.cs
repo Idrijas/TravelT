@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using MySqlConnector;
+using TravelT;
 
 namespace Travelt.Service
 {
@@ -25,27 +26,40 @@ namespace Travelt.Service
         }
 
 
-
-
         private readonly DatabaseConnection database_connection = new DatabaseConnection();
 
 
+        public static User CurrentUser { get;  set; }
 
 
-        public bool Login(string email, string password)
+        public User Login(string email, string password)
         {
 
             using var connection = database_connection.GetConnection();
             connection.Open();
 
-            string db_Query = "SELECT COUNT(*) FROM user WHERE email = @email AND password_hash = @password_hash";
+            string db_Query = "SELECT username, email, first_name, last_name, gender, date_of_birth FROM user WHERE email = @email AND password_hash = @password_hash";
 
             using var db_SqlCommand = new MySqlCommand(db_Query, connection);
             db_SqlCommand.Parameters.AddWithValue("@email", email);
             db_SqlCommand.Parameters.AddWithValue("@password_hash", password);
 
-            int result_count = Convert.ToInt32(db_SqlCommand.ExecuteScalar());
-            return result_count > 0;
+            using var reader = db_SqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                return new User
+                {
+                    Username = reader["username"].ToString(),
+                    Email = reader["email"].ToString(),
+                    FirstName = reader["first_name"].ToString(),
+                    LastName = reader["last_name"].ToString(),
+                    Gender = reader["gender"].ToString(),
+                    DateOfBirth = Convert.ToDateTime(reader["date_of_birth"])
+                };
+                
+            }
+            return null;
         }
 
 

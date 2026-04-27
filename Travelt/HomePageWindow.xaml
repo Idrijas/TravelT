@@ -18,7 +18,7 @@
 
 
         <TextBlock x:Name="WelcomeTextBlock"
-               Text="Welcome, User"    
+               Text="Welcome, user" 
                FontSize="120"
                Margin="0,0,70,0"
                Foreground="White"

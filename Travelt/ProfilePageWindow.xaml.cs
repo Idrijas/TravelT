@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Travelt;
+using Travelt.Service;
+using static Travelt.Service.UserService;
 
 namespace TravelT
 {
@@ -20,6 +22,11 @@ namespace TravelT
         public ProfilePageWindow()
         {
             InitializeComponent();
+
+            if (UserService.CurrentUser != null)
+            {
+                UsernameBlock.Text = UserService.CurrentUser.Username;
+            } 
         }
 
         private void ToHomePage_Button(object sender, RoutedEventArgs e)

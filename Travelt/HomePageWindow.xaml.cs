@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Travelt.Service;
 using TravelT;
 
 namespace Travelt
@@ -44,17 +45,18 @@ namespace Travelt
         
         public HomePageWindow()
         {
-
             InitializeComponent();
+
+            if (UserService.CurrentUser != null)
+            {
+                WelcomeTextBlock.Text = $"Welcome, {UserService.CurrentUser.Username}";
+            }
+
+
             StartClock();
         }
 
-        public HomePageWindow(string username)
-        {
-            InitializeComponent();
-            WelcomeTextBlock.Text = $"Welcome, {username}";
-            StartClock();
-        }
+        
 
         private void ToDiscoverPage(object sender, RoutedEventArgs e)
         {
@@ -74,7 +76,7 @@ namespace Travelt
 
             this.Close();
 
-            MessageBox.Show("Ondrej decided to finally add Profile Page");
+            
         }
 
 

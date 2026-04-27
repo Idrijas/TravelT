@@ -1,4 +1,5 @@
-﻿using MySqlConnector;
+﻿/*
+using MySqlConnector;
 using System;
 
 public class Post
@@ -17,3 +18,4 @@ public List<Post> GetAllPosts()
         return connection.Query<Post>("SELECT * FROM Posts").ToList();
     }
 }
+*/
