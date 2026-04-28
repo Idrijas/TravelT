@@ -8,9 +8,9 @@ namespace Travelt.Service
 {
     public class PostService
     {
-        private readonly string connectstring = "server=localhost;database=travelt;uid=root;pwd=;";
+        private readonly string connectstring = "server=localhost;port=3308;database=travelt;uid=root;pwd=;Allow User Variables=true;";
 
-        public List<Post> GetAllPosts()
+        public List<Post> getallposts()
         {
             using (var connection = new MySqlConnection(connectstring))
             {
@@ -18,6 +18,7 @@ namespace Travelt.Service
                     SELECT p.*, u.username 
                     FROM posts p 
                     JOIN user u ON p.user_id = u.user_id 
+                    WHERE p.description LIKE @search OR u.username LIKE @search
                     ORDER BY p.timestamp DESC";
 
                 return connection.Query<Post>(sql).ToList();
