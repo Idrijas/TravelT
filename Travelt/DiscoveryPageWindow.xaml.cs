@@ -16,9 +16,6 @@ using Travelt.Service;
 
 namespace Travelt
 {
-
-    using Travelt.Service; 
-
     public partial class DiscoveryPageWindow : Window
     {
         private readonly PostService postservice = new PostService();

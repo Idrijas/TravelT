@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Travelt.UserControl1"
+﻿<UserControl x:Class="Travelt.PostUI"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -25,30 +25,49 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="12">
-                <Ellipse Width="40" Height="40" Fill="#DDDDDD"/>
+                <Ellipse Width="50" Height="50">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{Binding Profile_PictureFullPath}" Stretch="UniformToFill"/>
+                    </Ellipse.Fill>
+                </Ellipse>
                 <StackPanel Margin="12,0,0,0">
-                    <TextBlock Text="{Binding Username}" FontWeight="Bold" FontSize="14"/>
-                    <TextBlock Text="{Binding Timestamp}" Foreground="Gray" FontSize="11"/>
+                    <TextBlock Text="{Binding Username}" FontWeight="Bold" FontSize="18"/>
+                    <TextBlock Text="{Binding GeneratedTimestamp}" Foreground="#FF2D8C" FontSize="10"/>
                 </StackPanel>
             </StackPanel>
 
             <Image Grid.Row="1" 
-                   Source="{Binding ImagePath}" 
+                   Source="{Binding ImageFullPath}"
                    Stretch="UniformToFill" 
-                   MaxHeight="300" 
-                   MinHeight="200"/>
+                   MaxHeight="450" 
+                   MinHeight="300"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
 
             <StackPanel Grid.Row="2" Margin="12">
                 <TextBlock Text="{Binding Description}" 
                            TextWrapping="Wrap" 
-                           FontSize="13" 
-                           LineHeight="18"/>
+                           FontSize="14" 
+                           LineHeight="18"
+                           Margin="10,0,10,0"/>
             </StackPanel>
 
             <Border Grid.Row="3" BorderBrush="#F0F0F0" BorderThickness="0,1,0,0" Margin="8">
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="❤️ Like" Margin="0,0,15,0" Background="Transparent" BorderThickness="0" Cursor="Hand"/>
-                    <Button Content="💬 Comment" Background="Transparent" BorderThickness="0" Cursor="Hand"/>
+                    <Button Content="❤️ Like" 
+                            Margin="5,0,20,0"
+                            FontSize="16" 
+                            Padding="10,5" 
+                            Background="Transparent" 
+                            BorderThickness="0" 
+                            Cursor="Hand"/>
+
+                    <Button Content="💬 Comment" 
+                            FontSize="16" 
+                            Padding="10,5" 
+                            Background="Transparent" 
+                            BorderThickness="0" 
+                            Cursor="Hand"/>
                 </StackPanel>
             </Border>
         </Grid>
