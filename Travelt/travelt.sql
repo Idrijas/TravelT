@@ -196,7 +196,8 @@ CREATE TABLE `user` (
   `date_of_birth` date NOT NULL,
   `gender` enum('male','female','other') NOT NULL,
   `bio` text NOT NULL,
-  `profile_picture` varchar(255) NOT NULL
+  `profile_picture` varchar(255) NOT NULL,
+  `role`  varchar(20) NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

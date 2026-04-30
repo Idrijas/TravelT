@@ -23,6 +23,8 @@ namespace Travelt
 
         public string Bio {  get; set; } 
 
+        public string Role { get; set; }
+
 
     }
 }

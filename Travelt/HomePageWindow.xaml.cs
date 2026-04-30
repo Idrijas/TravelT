@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using Travelt.Service;
 using TravelT;
+using static Travelt.Service.UserService;
 
 namespace Travelt
 {
@@ -50,6 +51,15 @@ namespace Travelt
             if (UserService.CurrentUser != null)
             {
                 WelcomeTextBlock.Text = $"Welcome, {UserService.CurrentUser.Username}";
+            }
+
+            if (CurrentUser.Role == "admin")
+            {
+                AdminButtonName.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AdminButtonName.Visibility = Visibility.Collapsed;
             }
 
 
@@ -91,6 +101,10 @@ namespace Travelt
             this.Close();
         }
 
+        private void AdminButton(object sender, RoutedEventArgs e)
+        {
+           
+        }
 
 
 

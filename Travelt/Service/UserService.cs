@@ -47,7 +47,7 @@ namespace Travelt.Service
             using var connection = database_connection.GetConnection();
             connection.Open();
 
-            string db_Query = "SELECT user_id, username, email, first_name, last_name, gender, date_of_birth, bio FROM user WHERE email = @email AND password_hash = @password_hash";
+            string db_Query = "SELECT user_id, username, email, first_name, last_name, gender, date_of_birth, bio, role FROM user WHERE email = @email AND password_hash = @password_hash";
 
             using var db_SqlCommand = new MySqlCommand(db_Query, connection);
             db_SqlCommand.Parameters.AddWithValue("@email", email);
@@ -66,7 +66,8 @@ namespace Travelt.Service
                     LastName = reader["last_name"].ToString(),
                     Gender = reader["gender"].ToString(),
                     DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
-                    Bio = reader["bio"].ToString()
+                    Bio = reader["bio"].ToString(),
+                    Role = reader["role"].ToString()
                 };
 
             }
@@ -77,7 +78,7 @@ namespace Travelt.Service
 
 
 
-        public bool Register(string firstName, string lastName, string username, string gender, DateTime dateOfBirth, string email, string password)
+        public User Register(string firstName, string lastName, string username, string gender, DateTime dateOfBirth, string email, string password)
         {
 
             using var connection = database_connection.GetConnection();
@@ -92,7 +93,7 @@ namespace Travelt.Service
 
             if (result_count > 0)
             {
-                return false;
+                return null;
             }
 
             string insert_to_db = @"INSERT INTO user (username, email, password_hash, first_name, last_name, date_of_birth, gender)
@@ -112,7 +113,24 @@ namespace Travelt.Service
 
             int count_result = insert_to_db_data.ExecuteNonQuery();
 
-            return count_result > 0;
+            if (count_result > 0)
+            {
+                User new_user = new User
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Username = username,
+                    Gender = gender,
+                    DateOfBirth = dateOfBirth,
+                    Email = email
+                };
+
+                CurrentUser = new_user;
+
+                return new_user; ;
+            }
+
+            return null;
 
 
 
