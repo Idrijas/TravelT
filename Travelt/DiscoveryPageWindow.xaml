@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Travelt"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="#F4F4F4">
+        Title="Discovery Feed" Height="450" Width="800">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="#1A001F">
         <ItemsControl x:Name="DiscoverFeed" Margin="0,10">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <local:UserControl1 HorizontalAlignment="Center" Width="450"/>
+                    <local:PostUI HorizontalAlignment="Center" Width="675"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
