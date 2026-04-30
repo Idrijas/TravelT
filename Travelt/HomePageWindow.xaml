@@ -26,7 +26,9 @@
                FontWeight="Bold"
                HorizontalAlignment="Center"/>
 
-                     <!--Ondrej: change "user" for {user}-->
+       
+
+        <!--Ondrej: change "user" for {user}-->
 
       
 
@@ -107,8 +109,18 @@
 
 
         </StackPanel>
+       
 
         <StackPanel Grid.Row="6" HorizontalAlignment="Right">
+
+            <Button x:Name ="AdminButtonName" Content="Admin Toolbar"
+                    Foreground="White"
+                    Background="#FF2D8C"
+                    Margin="0,0,0,10"
+                    Width="120"
+                    Height="40"
+                    Visibility="Collapsed"
+                    Click="AdminButton"/>
 
 
             <Button Content="Logout"
