@@ -34,18 +34,26 @@
             </Grid.ColumnDefinitions>
 
             
-            <StackPanel Grid.Column="0"
+            <Grid Grid.Column="0"
                         Margin="0,25,25,0">   <!-- this is the whole left side of the page-->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="441"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
                 <!-- Profile pic, play with the padding -->
                 
                 <Border Background="#2B124C"
                         Padding="75"            
-                        Margin="0,0,0,15">
+                        Margin="0,0,0,15" 
+                        Height="441"
+                        Grid.Row="0">
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="250"/>
+                            <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
@@ -65,14 +73,15 @@
                                        TextAlignment="Center"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
+                            
                         </Border>
 
                         <!-- username, age, rank, rating -->
                         
                         <StackPanel Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Right"
-                                    Margin="0,0,210,70">
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Margin="20,0,0,0">
 
                             <TextBlock x:Name="UsernameBlock"
                                        Text="Username"
@@ -102,18 +111,35 @@
                                        FontFamily="Comic Sans MS"
                                        FontSize="22"
                                        Margin="0,5,0,8"/>
+
+                            <TextBlock Text="You can edit your profile in Settings :)"
+                                       Foreground="White"
+                                       FontStyle="Italic"
+                                       FontFamily="Comic Sans MS"
+                                       FontSize="18"
+                                       Margin="0,15,0,8"/>
+
+
+
+
                         </StackPanel>
+
+      
+                       
                     </Grid>
+                    
+                        
                 </Border>
 
-                
-                <Expander Header="Bio"
+                <Expander Grid.Row="1" Header="Bio"
                           Background="#2B124C"
                           Foreground="White"
                           FontSize="22"
                           FontFamily="Comic Sans MS"
                           Padding="12"
                           Margin="0,0,0,15">
+                    
+                    
 
                     <TextBlock x:Name="BioExpander"
                                Text="Here will be Bio, probably max 200 characters (we can talk about it), can be editable"
@@ -122,9 +148,11 @@
                                FontSize="18"
                                TextWrapping="Wrap"
                                Margin="10"/>
+                    
+                    
                 </Expander>
 
-                <Expander Header="Achievements"
+                <Expander Grid.Row="2" Header="Achievements"
                           Background="#2B124C"
                           Foreground="White"
                           FontSize="22"
@@ -142,7 +170,7 @@
                 </Expander>
 
 
-                <Expander Header="Plans"
+                <Expander Grid.Row="3" Header="Plans"
                             Background="#2B124C"
                             Foreground="White"
                             FontSize="22"
@@ -162,14 +190,14 @@
 
                 
 
-            </StackPanel>
+            </Grid>
 
             <!-- The whole right side of the page -->
             
             <Border Grid.Column="1"
                     Background="#2B124C"
                     Padding="20" 
-                    Margin="0,25,0,95">
+                    Margin="0,25,0,0">
 
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="World Map"
@@ -180,7 +208,7 @@
                                HorizontalAlignment="Center"
                                Margin="0,0,0,85"/>
 
-                    <Border Height="380"
+                    <Border Height="441"
                             Background="#3B1A66"
                             CornerRadius="15">
 

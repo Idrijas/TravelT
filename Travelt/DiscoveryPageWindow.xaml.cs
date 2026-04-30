@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+/*
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,9 +16,6 @@ using Travelt.Service;
 
 namespace Travelt
 {
-
-    using Travelt.Service; 
-
     public partial class DiscoveryPageWindow : Window
     {
         private readonly PostService postservice = new PostService();
@@ -38,3 +36,4 @@ namespace Travelt
         }
     }
 }
+*/

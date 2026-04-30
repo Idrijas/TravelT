@@ -15,12 +15,9 @@ using System.Windows.Shapes;
 
 namespace Travelt
 {
-    /// <summary>
-    /// Interaction logic for UserControl1.xaml
-    /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class PostUI : UserControl
     {
-        public UserControl1()
+        public PostUI()
         {
             InitializeComponent();
         }

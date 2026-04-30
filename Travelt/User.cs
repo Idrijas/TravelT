@@ -19,7 +19,9 @@ namespace Travelt
 
         public DateTime DateOfBirth { get; set; }
 
+        public int UserId { get; set; }
 
+        public string Bio {  get; set; } 
 
 
     }

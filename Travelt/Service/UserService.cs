@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.Packaging;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -29,7 +30,7 @@ namespace Travelt.Service
         private readonly DatabaseConnection database_connection = new DatabaseConnection();
 
 
-        public static User CurrentUser { get;  set; }
+        public static User CurrentUser { get; set; }
 
 
         public User Login(string email, string password)
@@ -38,7 +39,7 @@ namespace Travelt.Service
             using var connection = database_connection.GetConnection();
             connection.Open();
 
-            string db_Query = "SELECT username, email, first_name, last_name, gender, date_of_birth FROM user WHERE email = @email AND password_hash = @password_hash";
+            string db_Query = "SELECT user_id, username, email, first_name, last_name, gender, date_of_birth, bio FROM user WHERE email = @email AND password_hash = @password_hash";
 
             using var db_SqlCommand = new MySqlCommand(db_Query, connection);
             db_SqlCommand.Parameters.AddWithValue("@email", email);
@@ -50,14 +51,16 @@ namespace Travelt.Service
             {
                 return new User
                 {
+                    UserId = Convert.ToInt32(reader["user_id"]),
                     Username = reader["username"].ToString(),
                     Email = reader["email"].ToString(),
                     FirstName = reader["first_name"].ToString(),
                     LastName = reader["last_name"].ToString(),
                     Gender = reader["gender"].ToString(),
-                    DateOfBirth = Convert.ToDateTime(reader["date_of_birth"])
+                    DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
+                    Bio = reader["bio"].ToString()
                 };
-                
+
             }
             return null;
         }
@@ -102,6 +105,45 @@ namespace Travelt.Service
             return count_result > 0;
 
 
+
+
+        }
+
+        public bool ChangeBio(int user_id, string bio)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+
+            string bioUpdate = "UPDATE user SET bio = @bio WHERE user_id = @user_id";
+
+            using var insert_to_db_data = new MySqlCommand(bioUpdate, connection);
+
+            insert_to_db_data.Parameters.AddWithValue("@user_id", user_id);
+            insert_to_db_data.Parameters.AddWithValue("@bio", bio);
+
+            int count_result = insert_to_db_data.ExecuteNonQuery();
+
+            return count_result > 0;
+
+        }
+
+        public bool ChangeUsername(int user_id, string username)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+
+            string usernameUpdate = "UPDATE user SET username = @username WHERE user_id = @user_id";
+
+            using var insert_to_db_data = new MySqlCommand(usernameUpdate, connection);
+
+            insert_to_db_data.Parameters.AddWithValue("@user_id", user_id);
+            insert_to_db_data.Parameters.AddWithValue("@username", username);
+
+            int count_result = insert_to_db_data.ExecuteNonQuery();
+
+            return count_result > 0;
 
         }
     }
