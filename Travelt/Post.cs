@@ -10,7 +10,7 @@ namespace Travelt.Service
 {
     public class PostService
     {
-        private readonly string connectstring = "server=localhost;port=3308;database=travelt;uid=root;pwd=;Allow User Variables=true;";
+        private readonly string connectstring = "server=localhost;port=3306;database=travelt;uid=root;pwd=;Allow User Variables=true;";
 
         public List<Post> getallposts()
         {
@@ -23,6 +23,34 @@ namespace Travelt.Service
                     ORDER BY p.timestamp DESC";
 
                 return connection.Query<Post>(sql).ToList();
+            }
+        }
+        public List<Post> getsearchresults(string search, string choice)
+        {
+            using (var connection = new MySqlConnection(connectstring))
+            {
+                string sql = @"
+            SELECT p.*, u.username, u.profile_picture 
+            FROM posts p 
+            JOIN user u ON p.user_id = u.user_id 
+            WHERE ";
+
+                if (choice == "People")
+                {
+                    sql += "u.username LIKE @searchTerm";
+                }
+                else if (choice == "Trips")
+                {
+                    sql += "p.trip_id IS NOT NULL AND p.description LIKE @searchTerm";
+                }
+                else
+                {
+                    sql += "p.description LIKE @searchTerm";
+                }
+
+                sql += " ORDER BY p.timestamp DESC";
+
+                return connection.Query<Post>(sql, new { searchTerm = "%" + search + "%" }).ToList();
             }
         }
     }

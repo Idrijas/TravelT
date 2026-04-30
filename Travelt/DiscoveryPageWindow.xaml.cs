@@ -27,11 +27,33 @@ namespace Travelt
 
         private void loadposts()
         {
-            // Fetch all posts from XAMPP
             List<Post> posts = postservice.getallposts();
-
-            // Push the list into the ItemsControl named "DiscoverFeed"
             DiscoverFeed.ItemsSource = posts;
+        }
+
+        private void search_click(object sender, RoutedEventArgs e)
+        {
+            string search = SearchBox.Text;
+
+            ComboBoxItem selecteditem = (ComboBoxItem)searchvalues.SelectedItem;
+
+            var choice = selecteditem.Content;
+            string choicestring = choice.ToString();
+
+            var results = postservice.getsearchresults(search, choicestring);
+
+            if (results == null || results.Count == 0)
+            {
+                noresultslabel.Visibility = Visibility.Visible;
+                DiscoverFeed.ItemsSource = null;
+            }
+            else
+            {
+                noresultslabel.Visibility = Visibility.Collapsed;
+                DiscoverFeed.ItemsSource = results;
+            }
+
+                
         }
     }
 }
