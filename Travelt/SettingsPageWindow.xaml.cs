@@ -22,10 +22,16 @@ namespace Travelt
     /// </summary>
     public partial class SettingsPageWindow : Window
     {
+
+
         public SettingsPageWindow()
         {
             InitializeComponent();
         }
+
+
+
+
 
         private void ChangeUsernameButton(object sender, RoutedEventArgs e)
         {
@@ -55,10 +61,59 @@ namespace Travelt
         }
 
 
+
+
+
         private void ChangePasswordButton(object sender, RoutedEventArgs e)
         {
 
+            
+
+            string oldpassword = OldPasswordBox.Password;
+            string new_password = NewPasswordBox.Password;
+            string repeat_password = RepeatNewPasswordBox.Password;
+
+            if (string.IsNullOrWhiteSpace(oldpassword) || string.IsNullOrWhiteSpace(new_password) || string.IsNullOrWhiteSpace(repeat_password))
+            {
+                MessageBox.Show("Please fill all boxes");
+                return;
+            }
+
+            if (new_password != repeat_password)
+            {
+                MessageBox.Show("Passwords don't match");
+                return;
+            }
+
+            if (new_password == oldpassword)
+            {
+                MessageBox.Show("New password must be different");
+                return;
+            }
+
+            UserService userService = new UserService();
+
+            bool successfull_change = userService.ChangePassword(CurrentUser.UserId, oldpassword, new_password);
+
+            if (successfull_change)
+            {
+                MessageBox.Show("Password changed");
+
+                OldPasswordBox.Clear();
+                NewPasswordBox.Clear();
+                RepeatNewPasswordBox.Clear();
+
+            }
+            else
+            {
+                MessageBox.Show("Something went wrong");
+            }
+
         }
+
+
+
+
 
         private void EditBioButton(object sender, RoutedEventArgs e)
         {
@@ -82,6 +137,9 @@ namespace Travelt
         }
 
 
+
+
+
         private void BackToHomePageButton(object sender, RoutedEventArgs e)
         {
             ProfilePageWindow profilePageWindow = new ProfilePageWindow();
@@ -90,10 +148,17 @@ namespace Travelt
             this.Close();
         }
 
+
+
+
+
         private void ChooseProfilePictureButton(object sender, RoutedEventArgs e)
         {
 
         }
+
+
+
 
 
         private void ChangeProfilePictureButton(object sender, RoutedEventArgs e)
@@ -101,11 +166,48 @@ namespace Travelt
 
         }
 
+
+
+
+
         private void DeleteProfileButton(object sender, RoutedEventArgs e)
         {
+            var delete_confirmation = MessageBox.Show("Do you really want to delete your account? All your data will be lost", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (delete_confirmation != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            string password = DeleteUserPasswordBox.Password;
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Please enter your password to delete profile");
+                return;
+            }
+
+            UserService userService = new UserService();
+
+            bool successful_delete = userService.DeleteUser(UserService.CurrentUser.UserId, password);
+
+            if (successful_delete)
+            {
+
+                MessageBox.Show("Account Deleted :)");
+
+                LoginWindow loginwindow = new LoginWindow();
+                loginwindow.Show();
+
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Incorrect Password");
+                return;
+            }
 
         }
 
-      
     }
 }

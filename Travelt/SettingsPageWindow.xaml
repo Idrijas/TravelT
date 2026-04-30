@@ -64,6 +64,14 @@
                       FontSize="22">
 
                 <StackPanel>
+                    <TextBlock Text="Old Password: "
+                               Foreground="White"
+                               FontFamily="Comic Sans MS"/>
+
+                    <PasswordBox x:Name="OldPasswordBox"
+                                 Height="35"
+                                 FontFamily="Comic Sans MS"/>
+
                     <TextBlock Text="New Password: "
                                Foreground="White"
                                FontFamily="Comic Sans MS"/>
@@ -169,9 +177,17 @@
 
                 <StackPanel>
 
-                    <TextBlock Text="Fair Warning Broski: no one can undo this action"
+                    <TextBlock Text="Fair Warning Broski: no one can undo this action."
                                Foreground="White"
                                FontFamily="Comic Sans MS"/>
+
+                    <TextBlock Text="Enter your password to confirm delete:"
+                               Foreground="White"
+                               FontFamily="Comic Sans MS"/>
+
+                    <PasswordBox x:Name="DeleteUserPasswordBox"
+                                 Height="35"
+                                 FontFamily="Comic Sans MS"/>
 
                     <Button Content="Delete Profile"
                             Margin="20"
