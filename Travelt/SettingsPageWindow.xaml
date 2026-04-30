@@ -8,6 +8,15 @@
         Title="SettingsPageWindow" Height="450" Width="800">
     <Grid Background="#1A001F">
 
+        <Button Content="Back To Home Page"
+                Width="125"
+                Height="35"
+                Background="#FF2D8C"
+                Foreground="White"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Click="BackToHomePageButton"/>
+
         <StackPanel    
             VerticalAlignment="Top"
             HorizontalAlignment="Center">
@@ -20,6 +29,166 @@
                         Foreground="White"
                         HorizontalAlignment="Center"
                         Margin="0,0,0,30"/>
+
+            <Expander Header="Change Username" 
+                      Margin="0,20,0,0"
+                      FontFamily="Comic Sans MS"
+                      Foreground="White"
+                      FontSize="22">
+
+                <StackPanel>
+                    <TextBlock Text="New Username: " 
+                               Foreground="White"
+                               FontFamily="Comic Sans MS"/>
+
+                    <TextBox x:Name="NewUsername" 
+                             Height="35"
+                             FontFamily="Comic Sans MS"/>
+
+                    <Button Content="Apply Changes"
+                            Margin="20"
+                            Width="150"
+                            Height="35"
+                            Click="ChangeUsernameButton"
+                            Background="#FF2D8C"
+                            Foreground="White"/>
+
+                </StackPanel>
+            </Expander>
+
+
+            <Expander Header="Change Password"
+                      Margin="0,20,0,0"
+                      FontFamily="Comic Sans MS"
+                      Foreground="White"
+                      FontSize="22">
+
+                <StackPanel>
+                    <TextBlock Text="New Password: "
+                               Foreground="White"
+                               FontFamily="Comic Sans MS"/>
+
+                    <PasswordBox x:Name="NewPasswordBox"
+                                 Height="35"
+                                 FontFamily="Comic Sans MS"/>
+
+                    <TextBlock Text="Repeat Password: "
+                               Foreground="White"
+                               FontFamily="Comic Sans MS"/>
+
+                    <PasswordBox x:Name="RepeatNewPasswordBox"
+                                 Height="35"
+                                 FontFamily="Comic Sans MS"/>
+
+                    <Button Content="Apply Changes"
+                            Margin="20"
+                            Width="150"
+                            Height="35"
+                            Background="#FF2D8C"
+                            Foreground="White"
+                            Click="ChangePasswordButton"/>
+
+                </StackPanel>
+            </Expander>
+
+            <Expander Header="Edit Bio"
+                      Margin="0,20,0,0"
+                      FontFamily="Comic Sans MS"
+                      Foreground="White"
+                      FontSize="22">
+
+                <StackPanel>
+                    <TextBlock Text="Tell us about yourself"
+                               Foreground="White"
+                               FontFamily="Comic Sans MS"/>
+
+                    <TextBox x:Name="EditBio"
+                             Height="80"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             FontFamily="Comic Sans MS"/>
+
+                    <Button Content="Apply Changes"
+                            Margin="20"
+                            Width="150"
+                            Height="35"
+                            Foreground="White"
+                            Background="#FF2D8C"
+                            Click="EditBioButton"/>
+
+
+
+                </StackPanel>
+                
+                
+            </Expander>
+
+            <Expander Header="Change Profile Picture"
+                      Margin="0,20,0,0"
+                      FontFamily="Comic Sans MS"
+                      Foreground="White"
+                      FontSize="22">
+
+                <StackPanel>
+                    <TextBlock Text="Select Image path: "
+                               Foreground="White"
+                               FontFamily="Comic Sans MS"/>
+
+                    <TextBox x:Name="ProfilePicturePathBlock"
+                             Height="35"
+                             FontFamily="Comic Sans MS"
+                             IsReadOnly="True"/>
+
+                    <Button Content="Choose Image"
+                            Margin="20"
+                            Width="150"
+                            Height="35"
+                            Background="#FF2D8C"
+                            Foreground="White"
+                            Click="ChooseProfilePictureButton"/>
+
+                    <Button Content="Apply Changes"
+                            Margin="20"
+                            Width="150"
+                            Height="35"
+                            Background="#FF2D8C"
+                            Foreground="White"
+                            Click="ChangeProfilePictureButton"/>
+
+
+                </StackPanel>
+            </Expander>
+
+
+
+            <Expander Header="Delete Profile"
+                      Margin="0,20,0,0"
+                      FontFamily="Comic Sans MS"
+                      Foreground="White"
+                      FontSize="22">
+
+                <StackPanel>
+
+                    <TextBlock Text="Fair Warning Broski: no one can undo this action"
+                               Foreground="White"
+                               FontFamily="Comic Sans MS"/>
+
+                    <Button Content="Delete Profile"
+                            Margin="20"
+                            Width="150"
+                            Height="35"
+                            Background="#FF2D8C"
+                            Foreground="White"
+                            Click="DeleteProfileButton"/>
+
+
+
+                </StackPanel>
+                
+            </Expander>
+
+
+
 
         </StackPanel>
             

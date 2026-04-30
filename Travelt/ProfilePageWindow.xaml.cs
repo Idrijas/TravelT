@@ -26,6 +26,7 @@ namespace TravelT
             if (UserService.CurrentUser != null)
             {
                 UsernameBlock.Text = UserService.CurrentUser.Username;
+                BioExpander.Text = UserService.CurrentUser.Bio; 
             } 
         }
 
@@ -39,7 +40,15 @@ namespace TravelT
 
         private void ToSettings_Button(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Ondrej will add settings shortly :)");
+            SettingsPageWindow settingsPageWindow = new SettingsPageWindow();
+            settingsPageWindow.Show();
+
+            this.Close();
+        }
+
+        private void ChangeProfilePicButton(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
