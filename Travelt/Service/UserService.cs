@@ -16,6 +16,9 @@ namespace Travelt.Service
     {
 
 
+
+
+
         public class DatabaseConnection
         {
             private readonly string connection_info = "server=localhost;port=3306;user=root;password=;database=travelt";
@@ -27,10 +30,15 @@ namespace Travelt.Service
         }
 
 
+
+
+
         private readonly DatabaseConnection database_connection = new DatabaseConnection();
 
-
         public static User CurrentUser { get; set; }
+
+
+
 
 
         public User Login(string email, string password)
@@ -64,6 +72,8 @@ namespace Travelt.Service
             }
             return null;
         }
+
+
 
 
 
@@ -109,6 +119,10 @@ namespace Travelt.Service
 
         }
 
+
+
+
+
         public bool ChangeBio(int user_id, string bio)
         {
             using var connection = database_connection.GetConnection();
@@ -128,6 +142,10 @@ namespace Travelt.Service
 
         }
 
+
+
+
+
         public bool ChangeUsername(int user_id, string username)
         {
             using var connection = database_connection.GetConnection();
@@ -146,5 +164,51 @@ namespace Travelt.Service
             return count_result > 0;
 
         }
+
+
+
+
+
+        public bool ChangePassword(int user_id, string old_password, string new_password)
+        {
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+
+            string changePassword = "UPDATE user SET password_hash = @new_password WHERE user_id = @user_id AND password_hash = @old_password";
+
+            using var insert_to_db_data = new MySqlCommand(changePassword, connection);
+
+            insert_to_db_data.Parameters.AddWithValue("@user_id", user_id);
+            insert_to_db_data.Parameters.AddWithValue("@old_password", old_password);
+            insert_to_db_data.Parameters.AddWithValue("@new_password", new_password);
+
+            int count_result = insert_to_db_data.ExecuteNonQuery();
+
+            return count_result > 0;
+
+        }
+
+
+
+
+        public bool DeleteUser(int user_id, string password) 
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string deleteUser = "DELETE FROM user WHERE user_id = @user_id AND password_hash = @password";
+
+            using var insert_to_db_data = new MySqlCommand(deleteUser, connection);
+
+            insert_to_db_data.Parameters.AddWithValue("@user_id", user_id);
+            insert_to_db_data.Parameters.AddWithValue("@password", password);
+
+            int count_result = insert_to_db_data.ExecuteNonQuery();
+
+            return count_result > 0;
+        }
+
     }
 }
