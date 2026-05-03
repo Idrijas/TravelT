@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-/*
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Travelt.Service;
 
 namespace Travelt
@@ -19,6 +10,10 @@ namespace Travelt
     public partial class DiscoveryPageWindow : Window
     {
         private readonly PostService postservice = new PostService();
+
+        // Temporary hardcoded ID for the logged-in user
+        // In the future, this will come from Login
+        private int currentUserId = 1;
 
         public DiscoveryPageWindow()
         {
@@ -28,12 +23,39 @@ namespace Travelt
 
         private void loadposts()
         {
-            // Fetch all posts from XAMPP
-            List<Post> posts = postservice.getallposts();
-
-            // Push the list into the ItemsControl named "DiscoverFeed"
+            List<Post> posts = postservice.getallposts(currentUserId);
             DiscoverFeed.ItemsSource = posts;
+        }
+
+        private void search_click(object sender, RoutedEventArgs e)
+        {
+            noresultslabel.Visibility = Visibility.Collapsed;
+
+            string search = SearchBox.Text;
+
+            if (searchvalues.SelectedItem is ComboBoxItem selecteditem)
+            {
+                string choicestring = selecteditem.Content.ToString();
+
+                var results = postservice.getsearchresults(search, choicestring, currentUserId);
+
+                if (results == null || results.Count == 0)
+                {
+                    noresultslabel.Visibility = Visibility.Visible;
+                    DiscoverFeed.ItemsSource = null;
+                }
+                else
+                {
+                    DiscoverFeed.ItemsSource = results;
+                }
+            }
+        }
+        private void SearchBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                search_click(this, new RoutedEventArgs());
+            }
         }
     }
 }
-*/
