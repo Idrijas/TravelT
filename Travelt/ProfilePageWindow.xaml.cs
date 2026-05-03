@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Travelt;
+using Travelt.Service;
+using static Travelt.Service.UserService;
 
 namespace TravelT
 {
@@ -20,6 +22,12 @@ namespace TravelT
         public ProfilePageWindow()
         {
             InitializeComponent();
+
+            if (UserService.CurrentUser != null)
+            {
+                UsernameBlock.Text = UserService.CurrentUser.Username;
+                BioExpander.Text = UserService.CurrentUser.Bio; 
+            } 
         }
 
         private void ToHomePage_Button(object sender, RoutedEventArgs e)
@@ -32,7 +40,15 @@ namespace TravelT
 
         private void ToSettings_Button(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Ondrej will add settings shortly :)");
+            SettingsPageWindow settingsPageWindow = new SettingsPageWindow();
+            settingsPageWindow.Show();
+
+            this.Close();
+        }
+
+        private void ChangeProfilePicButton(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -145,7 +145,7 @@ namespace Travelt
 
             Service.UserService userService = new Service.UserService();
 
-            bool success = userService.Register(
+            User registered_user = userService.Register(
                     firstName,
                     lastName,
                     userName,
@@ -155,19 +155,19 @@ namespace Travelt
                     password
             );
 
-            if (success)
+            if (registered_user != null)
             {
                 MessageBox.Show("Sign up successful!");
 
                 // navigation to Home Page
 
-                HomePageWindow homepage = new HomePageWindow(userName);
+                HomePageWindow homepage = new HomePageWindow();
                 homepage.Show();
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Username or email already exists.");
+                MessageBox.Show("Something went wrong, maybe user already exists? TRY AGAIN!");
             }
 
 

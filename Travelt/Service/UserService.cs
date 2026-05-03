@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.IO.Packaging;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using MySqlConnector;
+using TravelT;
 
 namespace Travelt.Service
 {
     public class UserService
     {
+
+
+
 
 
         public class DatabaseConnection
@@ -27,30 +32,53 @@ namespace Travelt.Service
 
 
 
+
         private readonly DatabaseConnection database_connection = new DatabaseConnection();
 
+        public static User CurrentUser { get; set; }
 
 
 
-        public bool Login(string email, string password)
+
+
+        public User Login(string email, string password)
         {
 
             using var connection = database_connection.GetConnection();
             connection.Open();
 
-            string db_Query = "SELECT COUNT(*) FROM user WHERE email = @email AND password_hash = @password_hash";
+            string db_Query = "SELECT user_id, username, email, first_name, last_name, gender, date_of_birth, bio, role FROM user WHERE email = @email AND password_hash = @password_hash";
 
             using var db_SqlCommand = new MySqlCommand(db_Query, connection);
             db_SqlCommand.Parameters.AddWithValue("@email", email);
             db_SqlCommand.Parameters.AddWithValue("@password_hash", password);
 
-            int result_count = Convert.ToInt32(db_SqlCommand.ExecuteScalar());
-            return result_count > 0;
+            using var reader = db_SqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                return new User
+                {
+                    UserId = Convert.ToInt32(reader["user_id"]),
+                    Username = reader["username"].ToString(),
+                    Email = reader["email"].ToString(),
+                    FirstName = reader["first_name"].ToString(),
+                    LastName = reader["last_name"].ToString(),
+                    Gender = reader["gender"].ToString(),
+                    DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
+                    Bio = reader["bio"].ToString(),
+                    Role = reader["role"].ToString()
+                };
+
+            }
+            return null;
         }
 
 
 
-        public bool Register(string firstName, string lastName, string username, string gender, DateTime dateOfBirth, string email, string password)
+
+
+        public User Register(string firstName, string lastName, string username, string gender, DateTime dateOfBirth, string email, string password)
         {
 
             using var connection = database_connection.GetConnection();
@@ -65,7 +93,7 @@ namespace Travelt.Service
 
             if (result_count > 0)
             {
-                return false;
+                return null;
             }
 
             string insert_to_db = @"INSERT INTO user (username, email, password_hash, first_name, last_name, date_of_birth, gender)
@@ -85,10 +113,120 @@ namespace Travelt.Service
 
             int count_result = insert_to_db_data.ExecuteNonQuery();
 
-            return count_result > 0;
+            if (count_result > 0)
+            {
+                User new_user = new User
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Username = username,
+                    Gender = gender,
+                    DateOfBirth = dateOfBirth,
+                    Email = email
+                };
+
+                CurrentUser = new_user;
+
+                return new_user; ;
+            }
+
+            return null;
+
 
 
 
         }
+
+
+
+
+
+        public bool ChangeBio(int user_id, string bio)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+
+            string bioUpdate = "UPDATE user SET bio = @bio WHERE user_id = @user_id";
+
+            using var insert_to_db_data = new MySqlCommand(bioUpdate, connection);
+
+            insert_to_db_data.Parameters.AddWithValue("@user_id", user_id);
+            insert_to_db_data.Parameters.AddWithValue("@bio", bio);
+
+            int count_result = insert_to_db_data.ExecuteNonQuery();
+
+            return count_result > 0;
+
+        }
+
+
+
+
+
+        public bool ChangeUsername(int user_id, string username)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+
+            string usernameUpdate = "UPDATE user SET username = @username WHERE user_id = @user_id";
+
+            using var insert_to_db_data = new MySqlCommand(usernameUpdate, connection);
+
+            insert_to_db_data.Parameters.AddWithValue("@user_id", user_id);
+            insert_to_db_data.Parameters.AddWithValue("@username", username);
+
+            int count_result = insert_to_db_data.ExecuteNonQuery();
+
+            return count_result > 0;
+
+        }
+
+
+
+
+
+        public bool ChangePassword(int user_id, string old_password, string new_password)
+        {
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+
+            string changePassword = "UPDATE user SET password_hash = @new_password WHERE user_id = @user_id AND password_hash = @old_password";
+
+            using var insert_to_db_data = new MySqlCommand(changePassword, connection);
+
+            insert_to_db_data.Parameters.AddWithValue("@user_id", user_id);
+            insert_to_db_data.Parameters.AddWithValue("@old_password", old_password);
+            insert_to_db_data.Parameters.AddWithValue("@new_password", new_password);
+
+            int count_result = insert_to_db_data.ExecuteNonQuery();
+
+            return count_result > 0;
+
+        }
+
+
+
+
+        public bool DeleteUser(int user_id, string password) 
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string deleteUser = "DELETE FROM user WHERE user_id = @user_id AND password_hash = @password";
+
+            using var insert_to_db_data = new MySqlCommand(deleteUser, connection);
+
+            insert_to_db_data.Parameters.AddWithValue("@user_id", user_id);
+            insert_to_db_data.Parameters.AddWithValue("@password", password);
+
+            int count_result = insert_to_db_data.ExecuteNonQuery();
+
+            return count_result > 0;
+        }
+
     }
 }

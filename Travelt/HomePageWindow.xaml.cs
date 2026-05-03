@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Travelt.Service;
 using TravelT;
+using static Travelt.Service.UserService;
 
 namespace Travelt
 {
@@ -44,17 +46,27 @@ namespace Travelt
         
         public HomePageWindow()
         {
-
             InitializeComponent();
+
+            if (UserService.CurrentUser != null)
+            {
+                WelcomeTextBlock.Text = $"Welcome, {UserService.CurrentUser.Username}";
+            }
+
+            if (CurrentUser.Role == "admin")
+            {
+                AdminButtonName.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AdminButtonName.Visibility = Visibility.Collapsed;
+            }
+
+
             StartClock();
         }
 
-        public HomePageWindow(string username)
-        {
-            InitializeComponent();
-            WelcomeTextBlock.Text = $"Welcome, {username}";
-            StartClock();
-        }
+        
 
         private void ToDiscoverPage(object sender, RoutedEventArgs e)
         {
@@ -77,7 +89,7 @@ namespace Travelt
 
             this.Close();
 
-            MessageBox.Show("Ondrej decided to finally add Profile Page");
+            
         }
 
 
@@ -89,6 +101,10 @@ namespace Travelt
             this.Close();
         }
 
+        private void AdminButton(object sender, RoutedEventArgs e)
+        {
+           
+        }
 
 
 
