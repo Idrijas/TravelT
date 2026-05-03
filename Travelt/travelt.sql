@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2026 at 06:01 PM
+-- Generation Time: May 03, 2026 at 09:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -212,15 +212,15 @@ CREATE TABLE `user` (
   `gender` enum('male','female','other') NOT NULL,
   `bio` text NOT NULL,
   `profile_picture` varchar(255) NOT NULL,
-  `role`  varchar(20) NOT NULL DEFAULT 'user'
+  `role` varchar(20) NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`, `profile_picture`) VALUES
-(1, 'fatpeterrealistic', 'fatpeter@gmail.com', 'petergrifin', 'peter', 'grifin', '0000-00-00', 'male', 'helooo madafakers', 'Images\\peter_profilepic.jpg');
+INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`, `profile_picture`, `role`) VALUES
+(1, 'fatpeterrealistic', 'fat@gmail.com', 'peter', 'peter', 'grifin', '2009-05-03', 'male', 'helooo madafakers', 'Images\\peter_profilepic.jpg', 'user');
 
 -- --------------------------------------------------------
 
