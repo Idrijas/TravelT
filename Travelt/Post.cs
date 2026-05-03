@@ -144,7 +144,7 @@ namespace Travelt.Service
             get => _isLikedByMe;
             set { _isLikedByMe = value; OnPropertyChanged(); OnPropertyChanged(nameof(LikeIconColor)); }
         }
-        public string LikeIconColor => IsLikedByMe ? "#D41D72" : "Gray";
+        public string LikeIconColor => IsLikedByMe ? "#FF2D8C" : "Gray";
         private int _commentCount;
         public int CommentCount
         {

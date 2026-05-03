@@ -7,6 +7,31 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="400">
 
+    <UserControl.Resources>
+        <Style x:Key="InteractionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#10000000"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Border Background="White" 
             CornerRadius="10" 
             Margin="10" 
@@ -25,6 +50,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!-- Row 0 Header -->
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="12">
                 <Ellipse Width="50" Height="50">
                     <Ellipse.Fill>
@@ -37,6 +63,7 @@
                 </StackPanel>
             </StackPanel>
 
+            <!-- Row 1 Image -->
             <Image Grid.Row="1" 
                    Source="{Binding ImageFullPath}"
                    Stretch="UniformToFill" 
@@ -45,6 +72,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"/>
 
+            <!-- Row 2 Description -->
             <StackPanel Grid.Row="2" Margin="12">
                 <TextBlock Text="{Binding Description}" 
                            TextWrapping="Wrap" 
@@ -53,26 +81,114 @@
                            Margin="10,0,10,0"/>
             </StackPanel>
 
-            <Border Grid.Row="3" BorderBrush="#F0F0F0" BorderThickness="0,1,0,0" Margin="8">
+            <!-- Row 3 Interactions -->
+            <Border Grid.Row="3" 
+                    BorderBrush="#F0F0F0" 
+                    BorderThickness="0,1,0,0" 
+                    Margin="12,0" 
+                    Padding="0,6,0,4">
                 <StackPanel Orientation="Horizontal">
-                    <Button Click="Like_Click" Background="Transparent" BorderThickness="0" Cursor="Hand">
+
+                    <Button Style="{StaticResource InteractionButtonStyle}" Click="Like_Click" Margin="0,0,20,0">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="❤" Foreground="{Binding LikeIconColor}" FontSize="18" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding LikeCount}" Margin="5,0,20,0" VerticalAlignment="Center"/>
+                            <Viewbox Width="20" Height="20">
+                                <Path Data="M 12,21.35 L 10.55,20.03 C 5.4,15.36 2,12.27 2,8.5 C 2,5.41 4.41,3 7.5,3 C 9.24,3 10.91,3.81 12,5.08 C 13.09,3.81 14.76,3 16.5,3 C 19.59,3 22,5.41 22,8.5 C 22,12.27 18.6,15.36 13.45,20.04 L 12,21.35 Z" 
+                                      Fill="{Binding LikeIconColor}" 
+                                      Stretch="Uniform"
+                                      RenderTransformOrigin="0.5,0.5">
+                                    <Path.RenderTransform>
+                                        <ScaleTransform x:Name="LikeScale" ScaleX="1" ScaleY="1" />
+                                    </Path.RenderTransform>
+                                    <Path.Style>
+                                        <Style TargetType="Path">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsLikedByMe}" Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                 From="1" To="1.4" Duration="0:0:0.1" AutoReverse="True">
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <BackEase Amplitude="0.5" EasingMode="EaseOut"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                 From="1" To="1.4" Duration="0:0:0.1" AutoReverse="True">
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <BackEase Amplitude="0.5" EasingMode="EaseOut"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                            </Viewbox>
+                            <TextBlock Text="{Binding LikeCount}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold" Foreground="DimGray"/>
                         </StackPanel>
                     </Button>
 
-                    <Button Click="CommentToggle_Click" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <Button Style="{StaticResource InteractionButtonStyle}" Click="CommentToggle_Click">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="💬" FontSize="18" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding CommentCount}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                            <Viewbox Width="20" Height="20">
+                                <Path Data="M10.96,1.605 C11.628,1.555 12.298,1.553 12.966,1.601 C15.439,1.846 17.657,2.888 19.383,4.616 C20.911,6.146 21.951,8.155 22.295,10.24 C22.754,13.027 22.113,15.821 20.503,18.052 C20.347,18.267 20.198,18.474 20.172,18.512 C20.13,18.571 20.353,18.831 21.874,20.5 L23.624,22.42 L17.602,22.432 C13.382,22.441 11.43,22.431 11.08,22.399 C9.686,22.274 8.513,21.938 7.26,21.303 C3.761,19.528 1.558,15.937 1.56,12.014 C1.555,9.624 2.369,7.304 3.865,5.44 C4.345,4.872 4.872,4.345 5.44,3.865 C7.026,2.599 8.942,1.815 10.96,1.605 Z M12.74,3.481 C11.77,3.391 10.887,3.465 9.88,3.72 C6.856,4.497 4.494,6.859 3.718,9.883 C2.964,12.807 3.818,15.912 5.96,18.04 C7.378,19.467 9.256,20.345 11.26,20.519 C11.718,20.562 19.32,20.579 19.32,20.538 C19.32,20.525 18.957,20.116 18.513,19.628 L17.627,18.651 L17.548,18.563 L18.027,18.051 C18.622,17.416 18.82,17.172 19.172,16.64 C20.161,15.142 20.668,13.184 20.528,11.405 C20.363,9.301 19.506,7.426 18.04,5.96 C16.622,4.533 14.744,3.655 12.74,3.481 Z" 
+                                      Fill="DimGray" 
+                                      Stretch="Uniform" />
+                            </Viewbox>
+                            <TextBlock Text="{Binding CommentCount}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold" Foreground="DimGray"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
             </Border>
 
-            <StackPanel Grid.Row="4" Visibility="{Binding CommentsVisibility}" Margin="12,0,12,12">
-                <Separator Background="#F0F0F0" Margin="0,0,0,10"/>
+            <!-- Row 4 Comment Section -->
+            <StackPanel Grid.Row="4" x:Name="CommentSection" Margin="12,0,12,12">
+                <StackPanel.LayoutTransform>
+                    <ScaleTransform ScaleY="0"/>
+                </StackPanel.LayoutTransform>
+
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsCommentsExpanded}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="LayoutTransform.ScaleY"
+                                                             To="1" Duration="0:0:0.3">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                             From="0" To="1" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="LayoutTransform.ScaleY"
+                                                             To="0" Duration="0:0:0.2">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseIn"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                             To="0" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <Separator Background="#F0F0F0" Margin="0,5,0,10"/>
+
                 <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding Comments}">
                         <ItemsControl.ItemTemplate>
@@ -98,49 +214,72 @@
                 </ScrollViewer>
 
                 <Grid Margin="0,10,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0">
-                 <TextBox x:Name="CommentInput" 
-                          KeyDown="CommentInput_KeyDown"
-                          Padding="8" 
-                          Background="#F4F4F4" 
-                          BorderThickness="0" 
-                          VerticalContentAlignment="Center"/>
+                    <Grid Grid.Column="0">
+                        <TextBox x:Name="CommentInput" 
+                                 KeyDown="CommentInput_KeyDown"
+                                 Padding="8" 
+                                 Background="#F4F4F4" 
+                                 BorderThickness="0" 
+                                 VerticalContentAlignment="Center"/>
 
-                    <TextBlock IsHitTestVisible="False" 
-                   Text="Write a comment..." 
-                   VerticalAlignment="Center" 
-                   HorizontalAlignment="Left" 
-                   Margin="10,0,0,0" 
-                   Foreground="DarkGray">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
+                        <TextBlock IsHitTestVisible="False" 
+                                   Text="Write a comment..." 
+                                   VerticalAlignment="Center" 
+                                   HorizontalAlignment="Left" 
+                                   Margin="10,0,0,0" 
+                                   Foreground="DarkGray">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Text, ElementName=CommentInput}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
 
-                <Button Grid.Column="1" 
-            Content="Send" 
-            Click="AddComment_Click" 
-            Margin="5,0,0,0" 
-            Padding="15,5" 
-            Background="#FF2D8C" 
-            Foreground="White" 
-            BorderThickness="0"
-            Cursor="Hand"/>
-        </Grid>
-        </StackPanel>
+                    <Button Grid.Column="1" 
+                            Content="Send" 
+                            Click="AddComment_Click" 
+                            Margin="5,0,0,0" 
+                            Padding="25,8" 
+                            MinWidth="80"
+                            Foreground="White" 
+                            FontWeight="Bold"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#FF2D8C"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="0,10,10,0">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#D41D72"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#1A001F"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </StackPanel>
         </Grid>
     </Border>
 </UserControl>
