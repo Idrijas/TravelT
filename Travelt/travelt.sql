@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2026 at 03:40 AM
+-- Generation Time: May 03, 2026 at 06:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -106,7 +106,9 @@ INSERT INTO `post_comments` (`comment_id`, `post_id`, `user_id`, `comment_text`,
 (6, 1, 1, 'i want to test something', '2026-05-03 03:26:32'),
 (7, 1, 1, 'youre an absolute *****', '2026-05-03 03:26:41'),
 (8, 1, 1, 'no sorry i did not mean that', '2026-05-03 03:26:50'),
-(9, 1, 1, 'test', '2026-05-03 03:34:02');
+(9, 1, 1, 'test', '2026-05-03 03:34:02'),
+(10, 4, 1, 'typical dad photo haha', '2026-05-03 16:06:19'),
+(11, 1, 1, 'hellooo', '2026-05-03 17:13:47');
 
 -- --------------------------------------------------------
 
@@ -118,6 +120,14 @@ CREATE TABLE `post_likes` (
   `user_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `post_likes`
+--
+
+INSERT INTO `post_likes` (`user_id`, `post_id`) VALUES
+(1, 1),
+(1, 4);
 
 -- --------------------------------------------------------
 
@@ -391,7 +401,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `post_comments`
 --
 ALTER TABLE `post_comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `rank`
