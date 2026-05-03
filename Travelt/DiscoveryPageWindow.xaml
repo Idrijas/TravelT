@@ -26,7 +26,8 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBox x:Name="SearchBox" 
+                        <TextBox x:Name="SearchBox"
+                                 KeyDown="SearchBox_KeyDown"
                                  Grid.Column="0"
                                  Padding="15,0" 
                                  FontSize="14" 
@@ -52,7 +53,6 @@
 
                             <Button Content="Search"
                                     Click="search_click"
-                                    IsDefault="True"
                                     Width="90"
                                     Height="40"
                                     Foreground="White" 
