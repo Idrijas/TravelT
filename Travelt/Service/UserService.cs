@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MySqlConnector;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO.Packaging;
 using System.Linq;
@@ -7,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using MySqlConnector;
 using TravelT;
 
 namespace Travelt.Service
@@ -226,6 +227,103 @@ namespace Travelt.Service
             int count_result = insert_to_db_data.ExecuteNonQuery();
 
             return count_result > 0;
+        }
+
+
+
+        // function to show Admin users
+
+        public List<User> GetAllUsers()
+        {
+            List<User> users_list = new List<User>();
+
+            
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string select_users = "SELECT user_id, first_name, last_name, username, email, role FROM user";
+
+            using var select_from_db_data = new MySqlCommand(select_users, connection);
+
+            using var reader = select_from_db_data.ExecuteReader();
+
+            while (reader.Read())
+            {
+                User user = new User
+                {
+                    UserId = reader.GetInt32("user_id"),
+                    FirstName = reader.GetString("first_name"),
+                    LastName = reader.GetString("last_name"),
+                    Username = reader.GetString("username"),
+                    Email = reader.GetString("email"),
+                    Role = reader.GetString("role"),
+                };
+                users_list.Add(user);
+            } 
+            return users_list; ;
+        }
+
+
+
+
+
+        public bool AdminDeleteUser(int userid)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string admin_deleteUser = "DELETE FROM user WHERE  user_id = @user_id";
+
+            using var delete_from_db_data = new MySqlCommand(admin_deleteUser, connection);
+
+            delete_from_db_data.Parameters.AddWithValue("@user_id", userid);
+
+            int count_result = delete_from_db_data.ExecuteNonQuery();
+
+            return count_result > 0;
+        }
+
+
+
+
+
+        public bool AdminUpdateUsername(int userId, string new_username)
+        {
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string admin_updateUsername = "UPDATE user SET username = @username WHERE user_id = @user_id";
+
+            using var update_new_db_data = new MySqlCommand(admin_updateUsername, connection);
+
+            update_new_db_data.Parameters.AddWithValue("@username", new_username);
+            update_new_db_data.Parameters.AddWithValue("@user_id", userId);
+
+
+            int count_result = update_new_db_data.ExecuteNonQuery();
+
+            return count_result > 0;
+
+
+
+        }
+
+        public bool AdminDeleteBio(int userId)
+        {
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string admin_deleteBio = "UPDATE user SET bio = '' WHERE user_id = @user_id";
+
+            using var command = new MySqlCommand(admin_deleteBio, connection);
+            command.Parameters.AddWithValue("@user_id", userId);
+
+            int result = command.ExecuteNonQuery();
+
+            return result > 0;
         }
 
     }

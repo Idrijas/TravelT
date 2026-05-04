@@ -103,7 +103,10 @@ namespace Travelt
 
         private void AdminButton(object sender, RoutedEventArgs e)
         {
-           
+            AdminToolboxWindow admintoolboxwindow = new AdminToolboxWindow();
+            admintoolboxwindow.Show();
+
+            this.Close();
         }
 
 
