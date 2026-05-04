@@ -11,9 +11,7 @@ namespace Travelt
     {
         private readonly PostService postservice = new PostService();
 
-        // Temporary hardcoded ID for the logged-in user
-        // In the future, this will come from Login
-        private int currentUserId = 1;
+        int currentUserId = UserService.CurrentUser.UserId;
 
         public DiscoveryPageWindow()
         {

@@ -59,6 +59,7 @@
                   
 
                 <Button Content="Log In"
+    Width="300"             IsDefault="True"
                             Height="40"
                             Margin="0,0,0,20"
                             FontFamily="Comic Sans MS"
