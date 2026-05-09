@@ -228,7 +228,7 @@
         <Grid Grid.Row="2"
               Margin="0,25,0,0">
 
-            <Button Content="To HomePage"
+            <Button Content="HomePage"
                     Width="160"
                     Height="45"
                     Foreground="White"

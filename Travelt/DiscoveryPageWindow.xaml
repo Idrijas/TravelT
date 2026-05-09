@@ -8,7 +8,13 @@
         Title="Discovery Feed" Height="600" Width="900">
 
     <Grid Background="#1A001F">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="0,30">
 
                 <Border Width="675" 
@@ -97,14 +103,56 @@
                 </ItemsControl>
             </StackPanel>
         </ScrollViewer>
+
         <Label x:Name="noresultslabel"
-       Content="No results found :("
-       HorizontalAlignment="Center" 
-       VerticalAlignment="Center" 
-       FontSize="30" 
-       Foreground="White" 
-       FontWeight="Bold" 
-       Visibility="Collapsed">
+               Grid.Row="0"
+               Content="No results found :("
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center" 
+               FontSize="30" 
+               Foreground="White" 
+               FontWeight="Bold" 
+               Visibility="Collapsed">
         </Label>
+
+        <Grid Grid.Row="2"
+              Width="675"
+              Height="60"
+              Margin="0,0,0,15">
+
+            <Button Content="HomePage"
+                    Width="160"
+                    Height="45"
+                    Foreground="White"
+                    Background="#FF2D8C"
+                    HorizontalAlignment="Left"
+                    Cursor="Hand"
+                    Click="ToHomePage_Button">
+                
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Content="Profile"
+                    Width="160"
+                    Height="45"
+                    Margin="0,0,17,0"
+                    Background="#FF2D8C"
+                    Foreground="White"
+                    HorizontalAlignment="Right"
+                    Cursor="Hand"
+                    Click="ToProfile_Button">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+        </Grid>
+
     </Grid>
 </Window>
