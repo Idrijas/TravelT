@@ -136,6 +136,22 @@
                 </Button.Resources>
             </Button>
 
+            <Button Content="New Post"
+                    Width="160"
+                    Height="45"
+                    Foreground="White"
+                    Background="#FF2D8C"
+                    HorizontalAlignment="Center"
+                    Cursor="Hand"
+                    Click="ToHomePage_Button">
+
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
             <Button Content="Profile"
                     Width="160"
                     Height="45"
