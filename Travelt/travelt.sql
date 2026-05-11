@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2026 at 09:21 PM
+-- Generation Time: May 12, 2026 at 12:14 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -80,7 +80,8 @@ CREATE TABLE `posts` (
 
 INSERT INTO `posts` (`post_id`, `user_id`, `trip_id`, `description`, `timestamp`, `imagepath`) VALUES
 (1, 1, NULL, 'At the beach with my brothers having a great time!', '2026-04-28 15:17:14', 'Images/beachpost_petergriffin.png'),
-(4, 1, NULL, 'While i was in italy i passed by pisa so i for sure had to visit this world wonder. The italians never fail to amaze us.', '2026-04-30 00:21:37', 'Images/pisapost_petergriffin.png');
+(4, 1, NULL, 'While i was in italy i passed by pisa so i for sure had to visit this world wonder. The italians never fail to amaze us.', '2026-04-30 00:21:37', 'Images/pisapost_petergriffin.png'),
+(6, 1, NULL, 'Went to santa monica pier with the fam, i love it and im gay', '2026-05-11 23:58:53', 'Images/peterfamilyvacation.jpg');
 
 -- --------------------------------------------------------
 
@@ -396,13 +397,13 @@ ALTER TABLE `country`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `post_comments`
 --
 ALTER TABLE `post_comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `rank`

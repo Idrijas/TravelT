@@ -70,5 +70,11 @@ namespace Travelt
             profilePage.Show();
             this.Close();
         }
+        private void OpenCreatePost_Click(object sender, RoutedEventArgs e)
+        {
+            CreatePostWindow createPostWin = new CreatePostWindow();
+            createPostWin.Show();
+            this.Close();
+        }
     }
 }
