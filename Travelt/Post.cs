@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using static Travelt.Service.UserService;
 
 namespace Travelt.Service
 {
@@ -95,6 +96,34 @@ namespace Travelt.Service
             WHERE c.post_id = @pId 
             ORDER BY c.created_at ASC";
                 return connection.Query<Comment>(sql, new { pId = postId }).ToList();
+            }
+        }
+        public bool CreateNewPost(int userId, string imagePath, string description)
+        {
+            try
+            {
+                string fileName = System.IO.Path.GetFileName(imagePath);
+                string extractedImagePath = "Images/" + fileName;
+
+                using (var connection = new MySqlConnection(connectstring))
+                {
+                    string sql = @"INSERT INTO posts (user_id, description, timestamp, imagepath)
+                           VALUES (@uId, @desc, NOW(), @img)";
+
+                    int rowsAffected = connection.Execute(sql, new
+                    {
+                        uId = userId,
+                        desc = description,
+                        img = extractedImagePath
+                    });
+
+                    return rowsAffected > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error creating post: " + ex.Message);
+                return false;
             }
         }
     }

@@ -136,14 +136,14 @@
                 </Button.Resources>
             </Button>
 
-            <Button Content="New Post"
+            <Button Content="Make Post"
                     Width="160"
                     Height="45"
                     Foreground="White"
                     Background="#FF2D8C"
                     HorizontalAlignment="Center"
                     Cursor="Hand"
-                    Click="ToHomePage_Button">
+                    Click="OpenCreatePost_Click">
 
                 <Button.Resources>
                     <Style TargetType="Border">
