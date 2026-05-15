@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2026 at 12:14 AM
+-- Generation Time: May 15, 2026 at 03:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -81,7 +81,9 @@ CREATE TABLE `posts` (
 INSERT INTO `posts` (`post_id`, `user_id`, `trip_id`, `description`, `timestamp`, `imagepath`) VALUES
 (1, 1, NULL, 'At the beach with my brothers having a great time!', '2026-04-28 15:17:14', 'Images/beachpost_petergriffin.png'),
 (4, 1, NULL, 'While i was in italy i passed by pisa so i for sure had to visit this world wonder. The italians never fail to amaze us.', '2026-04-30 00:21:37', 'Images/pisapost_petergriffin.png'),
-(6, 1, NULL, 'Went to santa monica pier with the fam, i love it and im gay', '2026-05-11 23:58:53', 'Images/peterfamilyvacation.jpg');
+(6, 1, NULL, 'Went to santa monica pier with the fam, i love it and im gay', '2026-05-11 23:58:53', 'Images/peterfamilyvacation.jpg'),
+(7, 1, NULL, 'a little selfie of myself, i looked great i had to', '2026-05-12 00:21:15', 'Images/peter_profilepic.jpg'),
+(8, 2, NULL, 'my dog can make me really mad sometimes', '2026-05-15 01:33:10', 'Images/shaggy_invincipost.png');
 
 -- --------------------------------------------------------
 
@@ -109,7 +111,8 @@ INSERT INTO `post_comments` (`comment_id`, `post_id`, `user_id`, `comment_text`,
 (8, 1, 1, 'no sorry i did not mean that', '2026-05-03 03:26:50'),
 (9, 1, 1, 'test', '2026-05-03 03:34:02'),
 (10, 4, 1, 'typical dad photo haha', '2026-05-03 16:06:19'),
-(11, 1, 1, 'hellooo', '2026-05-03 17:13:47');
+(11, 1, 1, 'hellooo', '2026-05-03 17:13:47'),
+(13, 8, 1, 'chill out man ', '2026-05-15 01:57:44');
 
 -- --------------------------------------------------------
 
@@ -128,7 +131,10 @@ CREATE TABLE `post_likes` (
 
 INSERT INTO `post_likes` (`user_id`, `post_id`) VALUES
 (1, 1),
-(1, 4);
+(1, 4),
+(1, 6),
+(1, 7),
+(1, 8);
 
 -- --------------------------------------------------------
 
@@ -221,7 +227,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`, `profile_picture`, `role`) VALUES
-(1, 'fatpeterrealistic', 'fat@gmail.com', 'peter', 'peter', 'grifin', '2009-05-03', 'male', 'helooo madafakers', 'Images\\peter_profilepic.jpg', 'user');
+(1, 'fatpeterrealistic', 'fat@gmail.com', 'peter', 'peter', 'grifin', '2009-05-03', 'male', 'helooo madafakers', 'Images\\peter_profilepic.jpg', 'user'),
+(2, 'shaggyboy', 'shaggy@gmail.com', 'fatter', 'shaggy', 'scooby', '2001-05-09', 'male', 'wassup boys a big travel guru here', 'Images/shaggy_pfp.jpg', 'user');
 
 -- --------------------------------------------------------
 
@@ -397,13 +404,13 @@ ALTER TABLE `country`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `post_comments`
 --
 ALTER TABLE `post_comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `rank`
@@ -427,7 +434,7 @@ ALTER TABLE `trip`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
