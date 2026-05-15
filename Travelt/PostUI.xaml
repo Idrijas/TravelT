@@ -57,9 +57,32 @@
                         <ImageBrush ImageSource="{Binding Profile_PictureFullPath}" Stretch="UniformToFill"/>
                     </Ellipse.Fill>
                 </Ellipse>
-                <StackPanel Margin="12,0,0,0">
-                    <TextBlock Text="{Binding Username}" FontWeight="Bold" FontSize="18"/>
-                    <TextBlock Text="{Binding GeneratedTimestamp}" Foreground="#FF2D8C" FontSize="10"/>
+                <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
+                    <Button Click="Username_Click" 
+                            Background="Transparent" 
+                            BorderThickness="0" 
+                            Cursor="Hand" 
+                            HorizontalAlignment="Left" 
+                            Padding="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <ContentPresenter/>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <TextBlock Text="{Binding Username}" FontWeight="Bold" FontSize="18" Foreground="#1A001F">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="TextDecorations" Value="Underline"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Button>
+
+                    <TextBlock Text="{Binding GeneratedTimestamp}" Foreground="#FF2D8C" FontSize="10" Margin="0,2,0,0"/>
                 </StackPanel>
             </StackPanel>
 
