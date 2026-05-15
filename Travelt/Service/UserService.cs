@@ -1,28 +1,16 @@
 ﻿using MySqlConnector;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO.Packaging;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using TravelT;
 
 namespace Travelt.Service
 {
     public class UserService
     {
-
-
-
-
-
         public class DatabaseConnection
         {
-            private readonly string connection_info = "server=localhost;port=3306;user=root;password=;database=travelt";
+            private readonly string connection_info = "server=localhost;port=3306;user=root;password=;database=travelt;ConvertZeroDateTime=True";
 
             public MySqlConnection GetConnection()
             {
@@ -30,21 +18,12 @@ namespace Travelt.Service
             }
         }
 
-
-
-
-
         private readonly DatabaseConnection database_connection = new DatabaseConnection();
 
         public static User CurrentUser { get; set; }
 
-
-
-
-
         public User Login(string email, string password)
         {
-
             using var connection = database_connection.GetConnection();
             connection.Open();
 
@@ -70,18 +49,12 @@ namespace Travelt.Service
                     Bio = reader["bio"].ToString(),
                     Role = reader["role"].ToString()
                 };
-
             }
             return null;
         }
 
-
-
-
-
         public User Register(string firstName, string lastName, string username, string gender, DateTime dateOfBirth, string email, string password)
         {
-
             using var connection = database_connection.GetConnection();
             connection.Open();
 
@@ -100,7 +73,6 @@ namespace Travelt.Service
             string insert_to_db = @"INSERT INTO user (username, email, password_hash, first_name, last_name, date_of_birth, gender)
                                     VALUES (@username, @email, @password_hash, @first_name, @last_name, @date_of_birth, @gender)";
 
-
             using var insert_to_db_data = new MySqlCommand(insert_to_db, connection);
 
             insert_to_db_data.Parameters.AddWithValue("@username", username);
@@ -110,7 +82,6 @@ namespace Travelt.Service
             insert_to_db_data.Parameters.AddWithValue("@last_name", lastName);
             insert_to_db_data.Parameters.AddWithValue("@date_of_birth", dateOfBirth);
             insert_to_db_data.Parameters.AddWithValue("@gender", gender);
-
 
             int count_result = insert_to_db_data.ExecuteNonQuery();
 
@@ -128,25 +99,16 @@ namespace Travelt.Service
 
                 CurrentUser = new_user;
 
-                return new_user; ;
+                return new_user;
             }
 
             return null;
-
-
-
-
         }
-
-
-
-
 
         public bool ChangeBio(int user_id, string bio)
         {
             using var connection = database_connection.GetConnection();
             connection.Open();
-
 
             string bioUpdate = "UPDATE user SET bio = @bio WHERE user_id = @user_id";
 
@@ -158,18 +120,12 @@ namespace Travelt.Service
             int count_result = insert_to_db_data.ExecuteNonQuery();
 
             return count_result > 0;
-
         }
-
-
-
-
 
         public bool ChangeUsername(int user_id, string username)
         {
             using var connection = database_connection.GetConnection();
             connection.Open();
-
 
             string usernameUpdate = "UPDATE user SET username = @username WHERE user_id = @user_id";
 
@@ -181,19 +137,12 @@ namespace Travelt.Service
             int count_result = insert_to_db_data.ExecuteNonQuery();
 
             return count_result > 0;
-
         }
-
-
-
-
 
         public bool ChangePassword(int user_id, string old_password, string new_password)
         {
-
             using var connection = database_connection.GetConnection();
             connection.Open();
-
 
             string changePassword = "UPDATE user SET password_hash = @new_password WHERE user_id = @user_id AND password_hash = @old_password";
 
@@ -206,13 +155,9 @@ namespace Travelt.Service
             int count_result = insert_to_db_data.ExecuteNonQuery();
 
             return count_result > 0;
-
         }
 
-
-
-
-        public bool DeleteUser(int user_id, string password) 
+        public bool DeleteUser(int user_id, string password)
         {
             using var connection = database_connection.GetConnection();
             connection.Open();
@@ -229,15 +174,9 @@ namespace Travelt.Service
             return count_result > 0;
         }
 
-
-
-        // function to show Admin users
-
         public List<User> GetAllUsers()
         {
             List<User> users_list = new List<User>();
-
-            
 
             using var connection = database_connection.GetConnection();
             connection.Open();
@@ -260,13 +199,9 @@ namespace Travelt.Service
                     Role = reader.GetString("role"),
                 };
                 users_list.Add(user);
-            } 
-            return users_list; ;
+            }
+            return users_list;
         }
-
-
-
-
 
         public bool AdminDeleteUser(int userid)
         {
@@ -284,13 +219,8 @@ namespace Travelt.Service
             return count_result > 0;
         }
 
-
-
-
-
         public bool AdminUpdateUsername(int userId, string new_username)
         {
-
             using var connection = database_connection.GetConnection();
             connection.Open();
 
@@ -301,18 +231,13 @@ namespace Travelt.Service
             update_new_db_data.Parameters.AddWithValue("@username", new_username);
             update_new_db_data.Parameters.AddWithValue("@user_id", userId);
 
-
             int count_result = update_new_db_data.ExecuteNonQuery();
 
             return count_result > 0;
-
-
-
         }
 
         public bool AdminDeleteBio(int userId)
         {
-
             using var connection = database_connection.GetConnection();
             connection.Open();
 
@@ -326,5 +251,42 @@ namespace Travelt.Service
             return result > 0;
         }
 
+        public User GetUserById(int userId)
+        {
+            try
+            {
+                using var connection = database_connection.GetConnection();
+                connection.Open();
+
+                string db_Query = "SELECT user_id, username, email, first_name, last_name, gender, date_of_birth, bio, role FROM user WHERE user_id = @user_id";
+
+                using var db_SqlCommand = new MySqlCommand(db_Query, connection);
+                db_SqlCommand.Parameters.AddWithValue("@user_id", userId);
+
+                using var reader = db_SqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    return new User
+                    {
+                        UserId = Convert.ToInt32(reader["user_id"]),
+                        Username = reader["username"].ToString(),
+                        Email = reader["email"].ToString(),
+                        FirstName = reader["first_name"].ToString(),
+                        LastName = reader["last_name"].ToString(),
+                        Gender = reader["gender"].ToString(),
+                        DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
+                        Bio = reader["bio"].ToString(),
+                        Role = reader["role"].ToString()
+                    };
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Database Error in GetUserById: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+        }
     }
 }

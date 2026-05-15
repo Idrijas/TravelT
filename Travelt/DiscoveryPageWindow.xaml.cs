@@ -66,7 +66,7 @@ namespace Travelt
 
         private void ToProfile_Button(object sender, RoutedEventArgs e)
         {
-            ProfilePageWindow profilePage = new ProfilePageWindow();
+            ProfilePageWindow profilePage = new ProfilePageWindow(currentUserId);
             profilePage.Show();
             this.Close();
         }
@@ -76,5 +76,6 @@ namespace Travelt
             createPostWin.Show();
             this.Close();
         }
+
     }
 }

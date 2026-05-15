@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Travelt.Service;
+using TravelT;
 
 namespace Travelt
 {
@@ -89,6 +90,22 @@ namespace Travelt
             if (e.Key == Key.Enter)
             {
                 AddComment_Click(this, new RoutedEventArgs());
+            }
+        }
+        private void Username_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is Post clickedPost)
+            {
+                int targetUserId = clickedPost.UserId;
+
+                ProfilePageWindow profilePage = new ProfilePageWindow(targetUserId);
+                profilePage.Show();
+
+                Window parentWindow = Window.GetWindow(this);
+                if (parentWindow != null)
+                {
+                    parentWindow.Close();
+                }
             }
         }
     }
