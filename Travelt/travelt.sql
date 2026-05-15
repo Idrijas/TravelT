@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2026 at 03:04 PM
+-- Generation Time: May 15, 2026 at 09:42 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -181,8 +181,10 @@ CREATE TABLE `report_participant` (
 
 CREATE TABLE `trip` (
   `trip_id` int(11) NOT NULL,
-  `date_from` date NOT NULL,
-  `date_to` date NOT NULL,
+  `date_from` date DEFAULT NULL,
+  `date_to` date DEFAULT NULL,
+  `is_flexible_date` tinyint(1) NOT NULL DEFAULT 0,
+  `flexible_months` varchar(255) DEFAULT NULL,
   `max_people` int(11) NOT NULL,
   `trip_type` enum('roadtrip','hikes','vacation') NOT NULL,
   `description` text NOT NULL,
@@ -200,6 +202,17 @@ CREATE TABLE `trip` (
 CREATE TABLE `trip_country` (
   `trip_id` int(11) NOT NULL,
   `country_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trip_place`
+--
+
+CREATE TABLE `trip_place` (
+  `trip_id` int(11) NOT NULL,
+  `place_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -347,6 +360,12 @@ ALTER TABLE `trip_country`
   ADD KEY `fk_trip_country_country` (`country_id`);
 
 --
+-- Indexes for table `trip_place`
+--
+ALTER TABLE `trip_place`
+  ADD PRIMARY KEY (`trip_id`,`place_name`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -481,6 +500,12 @@ ALTER TABLE `report_participant`
 ALTER TABLE `trip_country`
   ADD CONSTRAINT `fk_trip_country_country` FOREIGN KEY (`country_id`) REFERENCES `country` (`country_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_trip_country_trip` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `trip_place`
+--
+ALTER TABLE `trip_place`
+  ADD CONSTRAINT `fk_trip_place_trip` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `user_achievement`

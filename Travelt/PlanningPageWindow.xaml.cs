@@ -30,8 +30,9 @@ namespace Travelt
 
         private void AddTrip_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Open the "Add a Trip" window from your wireframe
-            MessageBox.Show("This will open the 'Where to, user?' window!");
+            CreatePlanWindow createPlan = new CreatePlanWindow();
+            createPlan.Show();
+            this.Close();
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
