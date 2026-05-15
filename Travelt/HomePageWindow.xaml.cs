@@ -76,11 +76,6 @@ namespace Travelt
             this.Close();
         }
 
-        private void ToPlanningPage(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Planning page will be added later :)");
-        }
-
         private void ToProfilePage(object sender, RoutedEventArgs e)
         {
             ProfilePageWindow profilepagewindow = new ProfilePageWindow(UserService.CurrentUser.UserId);
@@ -105,11 +100,12 @@ namespace Travelt
 
             this.Close();
         }
-
-
-
-
-
+        private void ToPlanningPage(object sender, RoutedEventArgs e)
+        {
+            PlanningPageWindow planningPage = new PlanningPageWindow();
+            planningPage.Show();
+            this.Close();
+        }
 
     }
 }
