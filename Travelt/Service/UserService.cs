@@ -22,6 +22,10 @@ namespace Travelt.Service
 
         public static User CurrentUser { get; set; }
 
+
+
+
+
         public User Login(string email, string password)
         {
             using var connection = database_connection.GetConnection();
@@ -52,6 +56,10 @@ namespace Travelt.Service
             }
             return null;
         }
+
+
+
+
 
         public User Register(string firstName, string lastName, string username, string gender, DateTime dateOfBirth, string email, string password)
         {
@@ -105,6 +113,10 @@ namespace Travelt.Service
             return null;
         }
 
+
+
+
+
         public bool ChangeBio(int user_id, string bio)
         {
             using var connection = database_connection.GetConnection();
@@ -122,6 +134,10 @@ namespace Travelt.Service
             return count_result > 0;
         }
 
+
+
+
+
         public bool ChangeUsername(int user_id, string username)
         {
             using var connection = database_connection.GetConnection();
@@ -138,6 +154,10 @@ namespace Travelt.Service
 
             return count_result > 0;
         }
+
+
+
+
 
         public bool ChangePassword(int user_id, string old_password, string new_password)
         {
@@ -157,6 +177,10 @@ namespace Travelt.Service
             return count_result > 0;
         }
 
+
+
+
+
         public bool DeleteUser(int user_id, string password)
         {
             using var connection = database_connection.GetConnection();
@@ -173,6 +197,10 @@ namespace Travelt.Service
 
             return count_result > 0;
         }
+
+
+
+
 
         public List<User> GetAllUsers()
         {
@@ -203,6 +231,10 @@ namespace Travelt.Service
             return users_list;
         }
 
+
+
+
+
         public bool AdminDeleteUser(int userid)
         {
             using var connection = database_connection.GetConnection();
@@ -218,6 +250,10 @@ namespace Travelt.Service
 
             return count_result > 0;
         }
+
+
+
+
 
         public bool AdminUpdateUsername(int userId, string new_username)
         {
@@ -236,6 +272,10 @@ namespace Travelt.Service
             return count_result > 0;
         }
 
+
+
+
+
         public bool AdminDeleteBio(int userId)
         {
             using var connection = database_connection.GetConnection();
@@ -250,6 +290,10 @@ namespace Travelt.Service
 
             return result > 0;
         }
+
+
+
+
 
         public User GetUserById(int userId)
         {

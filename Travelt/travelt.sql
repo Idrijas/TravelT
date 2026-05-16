@@ -231,7 +231,7 @@ INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name
 (2, 'shaggyboy', 'shaggy@gmail.com', 'fatter', 'shaggy', 'scooby', '2001-05-09', 'male', 'wassup boys a big travel guru here', 'Images/shaggy_pfp.jpg', 'user');
 
 INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`, `role`) VALUES
-(2,'admin1', 'admin1@travelt.com', '1234', 'Admin', 'Ondrej', '2000-01-01','male', 'admin wassup', 'admin');
+(3,'admin1', 'admin1@travelt.com', '1234', 'Admin', 'Ondrej', '2000-01-01','male', 'admin wassup', 'admin');
 
 -- --------------------------------------------------------
 

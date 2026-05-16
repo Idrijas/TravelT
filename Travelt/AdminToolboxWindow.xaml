@@ -99,6 +99,19 @@
         </DataGrid>
 
 
+        <Button Content="View User"
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="120"
+                FontFamily="Comic Sans MS"
+                Background="#FF2D8C"
+                Foreground="White"
+                Height="40"
+                HorizontalAlignment="Center"
+                Margin="10"
+                Click="ShowUserButton"/>
+
+
         <Button Content="Exit"
             Grid.Row="2"
             Grid.Column="0"
@@ -119,7 +132,7 @@
                 Background="#FF2D8C"
                 Foreground="White"
                 Height="40"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Right"
                 Margin="10"
                 Click="ClearButton"/>
                 
