@@ -24,13 +24,15 @@ namespace Travelt
     {
 
         private int selectedUserId;
+        private int currentUserId;
         private bool isAdminView;
-        public ViewUserWindow(int userId, bool isAdmin)
+        public ViewUserWindow(int userId, bool isAdmin, int currentUserId)
         {
             InitializeComponent();
 
             selectedUserId = userId;
             isAdminView = isAdmin;
+            this.currentUserId = currentUserId;
 
             LoadUserData();
 
@@ -89,7 +91,8 @@ namespace Travelt
 
         private void ReportUser_Button(object sender, RoutedEventArgs e)
         {
-            
+            ReportUserWindow reportuserwindow = new ReportUserWindow(selectedUserId, currentUserId);
+            reportuserwindow.ShowDialog();
         }
 
 
