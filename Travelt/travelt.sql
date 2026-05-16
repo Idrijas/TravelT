@@ -222,6 +222,9 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`, `profile_picture`, `role`) VALUES
 (1, 'fatpeterrealistic', 'fat@gmail.com', 'peter', 'peter', 'grifin', '2009-05-03', 'male', 'helooo madafakers', 'Images\\peter_profilepic.jpg', 'user');
 
+INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`, `role`) VALUES
+(2,'admin1', 'admin1@travelt.com', '1234', 'Admin', 'Ondrej', '2000-01-01','male', 'admin wassup', 'admin');
+
 -- --------------------------------------------------------
 
 --
