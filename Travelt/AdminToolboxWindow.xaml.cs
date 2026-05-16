@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using TravelT;
 using Travelt.Service;
 using static Travelt.Service.UserService;
+using static Travelt.Service.ReportService;
 namespace Travelt
 {
     /// <summary>
@@ -66,19 +67,23 @@ namespace Travelt
         {
             User selectedUser = AdminDataGrid.SelectedItem as User;
 
-            if(selectedUser == null)
+            if (selectedUser == null)
             {
                 MessageBox.Show("Select user to see his profile");
                 return;
             }
 
-            ViewUserWindow viewuserwindow = new ViewUserWindow(selectedUser.UserId, true);
+            ViewUserWindow viewuserwindow = new ViewUserWindow(
+                selectedUser.UserId,
+                true,
+                UserService.CurrentUser.UserId
+            );
+
             viewuserwindow.ShowDialog();
 
             AdminDataGrid.ItemsSource = new UserService().GetAllUsers();
+
         }
-
-
 
 
 
