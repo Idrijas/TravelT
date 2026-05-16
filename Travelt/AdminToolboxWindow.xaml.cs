@@ -62,6 +62,26 @@ namespace Travelt
 
 
 
+        public void ShowUserButton(object sender, RoutedEventArgs e)
+        {
+            User selectedUser = AdminDataGrid.SelectedItem as User;
+
+            if(selectedUser == null)
+            {
+                MessageBox.Show("Select user to see his profile");
+                return;
+            }
+
+            ViewUserWindow viewuserwindow = new ViewUserWindow(selectedUser.UserId, true);
+            viewuserwindow.ShowDialog();
+
+            AdminDataGrid.ItemsSource = new UserService().GetAllUsers();
+        }
+
+
+
+
+
         public void ViewUsersReportsButton(object sender, RoutedEventArgs e)
         {
 

@@ -49,7 +49,7 @@ namespace Travelt
 
             if (new_name)
             {
-                MessageBox.Show("Username changed successfully");
+                MessageBox.Show("Changes saved successfully");
                 
             }
             else
