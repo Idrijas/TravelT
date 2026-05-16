@@ -16,8 +16,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        
-        <TextBlock Text="Your Profile"
+
+        <TextBlock x:Name="PageTitleText" 
+                   Text="Your Profile"
                    Foreground="White"
                    FontSize="70"
                    FontFamily="Comic Sans MS"
@@ -25,7 +26,7 @@
                    HorizontalAlignment="Center"
                    Margin="0,0,0,25"/>
 
-       
+
         <Grid Grid.Row="1">
 
             <Grid.ColumnDefinitions>
@@ -228,7 +229,7 @@
         <Grid Grid.Row="2"
               Margin="0,25,0,0">
 
-            <Button Content="To HomePage"
+            <Button Content="HomePage"
                     Width="160"
                     Height="45"
                     Foreground="White"
@@ -236,7 +237,8 @@
                     HorizontalAlignment="Left"
                     Click="ToHomePage_Button"/>
 
-            <Button Content="Settings"
+            <Button x:Name="SettingsButton"
+                    Content="Settings"
                     Width="160"
                     Height="45"
                     Background="#FF2D8C"

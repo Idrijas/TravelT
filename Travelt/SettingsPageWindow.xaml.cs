@@ -142,7 +142,7 @@ namespace Travelt
 
         private void BackToHomePageButton(object sender, RoutedEventArgs e)
         {
-            ProfilePageWindow profilePageWindow = new ProfilePageWindow();
+            ProfilePageWindow profilePageWindow = new ProfilePageWindow(UserService.CurrentUser.UserId);
             profilePageWindow.Show();
 
             this.Close();

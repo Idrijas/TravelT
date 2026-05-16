@@ -83,13 +83,10 @@ namespace Travelt
 
         private void ToProfilePage(object sender, RoutedEventArgs e)
         {
-
-            ProfilePageWindow profilepagewindow = new ProfilePageWindow();
+            ProfilePageWindow profilepagewindow = new ProfilePageWindow(UserService.CurrentUser.UserId);
             profilepagewindow.Show();
 
             this.Close();
-
-            
         }
 
 

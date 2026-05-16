@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Travelt.Service;
+using TravelT;
 
 namespace Travelt
 {
@@ -55,5 +57,25 @@ namespace Travelt
                 search_click(this, new RoutedEventArgs());
             }
         }
+        private void ToHomePage_Button(object sender, RoutedEventArgs e)
+        {
+            HomePageWindow homePage = new HomePageWindow();
+            homePage.Show();
+            this.Close();
+        }
+
+        private void ToProfile_Button(object sender, RoutedEventArgs e)
+        {
+            ProfilePageWindow profilePage = new ProfilePageWindow(currentUserId);
+            profilePage.Show();
+            this.Close();
+        }
+        private void OpenCreatePost_Click(object sender, RoutedEventArgs e)
+        {
+            CreatePostWindow createPostWin = new CreatePostWindow();
+            createPostWin.Show();
+            this.Close();
+        }
+
     }
 }
