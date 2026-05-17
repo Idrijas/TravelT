@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using TravelT;
 using Travelt.Service;
 using static Travelt.Service.UserService;
+using Microsoft.Win32;
 
 namespace Travelt
 {
@@ -155,6 +156,13 @@ namespace Travelt
         private void ChooseProfilePictureButton(object sender, RoutedEventArgs e)
         {
 
+            OpenFileDialog openfiledialog = new OpenFileDialog();
+            openfiledialog.Filter = "Image Files: (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png";
+
+            if(openfiledialog.ShowDialog() == true)
+            {
+                ProfilePicturePath_Expander.Text = openfiledialog.FileName;
+            }
         }
 
 
@@ -163,6 +171,29 @@ namespace Travelt
 
         private void ChangeProfilePictureButton(object sender, RoutedEventArgs e)
         {
+
+            string profilepicturepath = ProfilePicturePath_Expander.Text;
+
+            if (string.IsNullOrWhiteSpace(profilepicturepath))
+            {
+                MessageBox.Show("There is nothing to change");
+                return;
+            }
+
+            UserService userservice = new UserService();
+
+            bool changed_successfully = userservice.ChangeProfilePicture(UserService.CurrentUser.UserId, profilepicturepath);
+
+            if (changed_successfully) 
+            {
+                UserService.CurrentUser.ProfilePicture = profilepicturepath;
+                MessageBox.Show("Profile Picture changed successfully");
+            }
+            else
+            {
+                MessageBox.Show("Something went wrong");
+            }
+
 
         }
 

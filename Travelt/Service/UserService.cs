@@ -31,7 +31,7 @@ namespace Travelt.Service
             using var connection = database_connection.GetConnection();
             connection.Open();
 
-            string db_Query = "SELECT user_id, username, email, first_name, last_name, gender, date_of_birth, bio, role FROM user WHERE email = @email AND password_hash = @password_hash";
+            string db_Query = "SELECT user_id, username, email, first_name, last_name, gender, date_of_birth, bio, profile_picture, role FROM user WHERE email = @email AND password_hash = @password_hash";
 
             using var db_SqlCommand = new MySqlCommand(db_Query, connection);
             db_SqlCommand.Parameters.AddWithValue("@email", email);
@@ -51,6 +51,7 @@ namespace Travelt.Service
                     Gender = reader["gender"].ToString(),
                     DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
                     Bio = reader["bio"].ToString(),
+                    ProfilePicture = reader["profile_picture"] == DBNull.Value ? "" : reader["profile_picture"].ToString(),
                     Role = reader["role"].ToString()
                 };
             }
@@ -302,7 +303,7 @@ namespace Travelt.Service
                 using var connection = database_connection.GetConnection();
                 connection.Open();
 
-                string db_Query = "SELECT user_id, username, email, first_name, last_name, gender, date_of_birth, bio, role FROM user WHERE user_id = @user_id";
+                string db_Query = "SELECT user_id, username, email, first_name, last_name, gender, date_of_birth, bio, profile_picture, role FROM user WHERE user_id = @user_id";
 
                 using var db_SqlCommand = new MySqlCommand(db_Query, connection);
                 db_SqlCommand.Parameters.AddWithValue("@user_id", userId);
@@ -321,6 +322,7 @@ namespace Travelt.Service
                         Gender = reader["gender"].ToString(),
                         DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
                         Bio = reader["bio"].ToString(),
+                        ProfilePicture = reader["profile_picture"] == DBNull.Value ? "" : reader["profile_picture"].ToString(),
                         Role = reader["role"].ToString()
                     };
                 }
@@ -331,6 +333,29 @@ namespace Travelt.Service
                 MessageBox.Show("Database Error in GetUserById: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
+        }
+
+
+
+
+
+        public bool ChangeProfilePicture(int user_id,  string profilePicturePath)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+
+            string change_pic_query = "UPDATE user SET profile_picture = @profile_picture WHERE user_id = @user_id";
+
+            using var update_picture_db = new MySqlCommand(change_pic_query, connection);
+
+            update_picture_db.Parameters.AddWithValue("@profile_picture", profilePicturePath);
+            update_picture_db.Parameters.AddWithValue("@user_id", user_id);
+
+            int result_count = update_picture_db.ExecuteNonQuery();
+
+            return result_count > 0;
+
         }
     }
 }

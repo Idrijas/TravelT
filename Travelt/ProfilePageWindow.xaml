@@ -67,14 +67,11 @@
                                 Background="#FF2D8C"
                                 HorizontalAlignment="Center">
 
-                            <TextBlock Text="Profile Picture"
-                                       Foreground="White"
-                                       FontSize="22"
-                                       FontWeight="Bold"
-                                       TextAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
-                            
+                            <Image x:Name="ProfilePicturePlace"
+                                   Width="230"
+                                   Height="230"
+                                   Stretch="UniformToFill"/>
+
                         </Border>
 
                         <!-- username, age, rank, rating -->

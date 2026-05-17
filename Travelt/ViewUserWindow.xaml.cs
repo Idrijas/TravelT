@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.IO;
 using System.Windows.Shapes;
 using TravelT;
 using Travelt.Service;
@@ -40,6 +41,24 @@ namespace Travelt
 
         }
 
+
+
+
+
+        private void Load_Picture(string profilepicturepath)
+        {
+            if (!string.IsNullOrWhiteSpace(profilepicturepath) && File.Exists(profilepicturepath))
+            {
+                    ProfilePicturePlaceholder.Source = new BitmapImage(
+                    new Uri(profilepicturepath, UriKind.Absolute)
+                );
+            }
+        }
+
+
+
+
+
         private void LoadUserData()
         {
             UserService userService = new UserService();
@@ -59,6 +78,7 @@ namespace Travelt
             Rank_Text.Text = "To be added";
             Rating_Text.Text = "To be added";
             BioBlock.Text = string.IsNullOrWhiteSpace(selectedUser.Bio) ? "No Bio Yet" : selectedUser.Bio;
+            Load_Picture(selectedUser.ProfilePicture);  
                     
 
         }
