@@ -83,6 +83,48 @@ namespace Travelt.Service
         }
 
 
+        public List<Report> GetAllReports()
+        {
+            List<Report> reports = new List<Report>();
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+
+            string get_reports_query = @"
+                        SELECT 
+                            r.report_id,
+                            r.reason,
+                            r.description,
+                            r.report_date,
+                            reporter.username AS reporter_username,
+                            reported.username AS reported_username
+                        FROM report r
+                        INNER JOIN report_participant rp ON r.report_id = rp.report_id
+                        INNER JOIN user reporter ON rp.reporter_id = reporter.user_id
+                        INNER JOIN user reported ON rp.reported_user_id = reported.user_id
+                        ORDER BY r.report_date DESC;";
+
+            using var get_from_db = new MySqlCommand(get_reports_query, connection);
+            using var reader = get_from_db.ExecuteReader();
+
+            while (reader.Read())
+            {
+                reports.Add(new Report
+                {
+                    ReportId = Convert.ToInt32(reader["report_id"]),
+                    Reason = reader["reason"].ToString(),
+                    Description = reader["description"].ToString(),
+                    ReportDate = Convert.ToDateTime(reader["report_date"]),
+                    ReporterUsername = reader["reporter_username"].ToString(),
+                    ReportedUsername = reader["reported_username"].ToString()
+                });
+            }
+
+            return reports;
+
+        }
+
 
     }
 }
