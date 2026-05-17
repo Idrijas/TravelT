@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.IO;
 using System.Windows.Shapes;
 using Travelt;
 using Travelt.Service;
@@ -22,12 +23,31 @@ namespace TravelT
         private int profileUserId;
         private readonly UserService _userService = new UserService();
 
+
+        private void Load_Picture(string profilepicturepath)
+        {
+            if (!string.IsNullOrWhiteSpace(profilepicturepath) && File.Exists(profilepicturepath))
+            {
+                ProfilePicturePlace.Source = new BitmapImage(
+                    new Uri(profilepicturepath, UriKind.Absolute)
+                );
+            }
+        }
+
+
+
+
+
         private void ToHomePage_Button(object sender, RoutedEventArgs e)
         {
             HomePageWindow homePageWindow = new HomePageWindow();
             homePageWindow.Show();
             this.Close();
         }
+
+
+
+
 
         private void ToSettings_Button(object sender, RoutedEventArgs e)
         {
@@ -36,10 +56,18 @@ namespace TravelT
             this.Close();
         }
 
+
+
+
+
         private void ChangeProfilePicButton(object sender, RoutedEventArgs e)
         {
 
         }
+
+
+
+
 
         public ProfilePageWindow(int userIdToLoad)
         {
@@ -51,6 +79,7 @@ namespace TravelT
                 PageTitleText.Text = "Your Profile";
                 UsernameBlock.Text = UserService.CurrentUser.Username;
                 BioExpander.Text = UserService.CurrentUser.Bio;
+                Load_Picture(UserService.CurrentUser.ProfilePicture);   
 
                 int myAge = DateTime.Today.Year - UserService.CurrentUser.DateOfBirth.Year;
                 if (UserService.CurrentUser.DateOfBirth.Date > DateTime.Today.AddYears(-myAge)) myAge--;
