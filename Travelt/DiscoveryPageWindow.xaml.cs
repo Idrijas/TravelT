@@ -64,12 +64,22 @@ namespace Travelt
             this.Close();
         }
 
+
+
+
         private void ToProfile_Button(object sender, RoutedEventArgs e)
         {
-            ProfilePageWindow profilePage = new ProfilePageWindow(currentUserId);
-            profilePage.Show();
+
+            ProfilePageWindow profilepagewindow = new ProfilePageWindow(currentUserId);
+            profilepagewindow.Show();
+
             this.Close();
-        }
+
+
+        } 
+
+
+
         private void OpenCreatePost_Click(object sender, RoutedEventArgs e)
         {
             CreatePostWindow createPostWin = new CreatePostWindow();

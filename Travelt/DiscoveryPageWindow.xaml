@@ -152,7 +152,7 @@
                 </Button.Resources>
             </Button>
 
-            <Button Content="Profile"
+            <Button Content="To Profile"
                     Width="160"
                     Height="45"
                     Margin="0,0,17,0"

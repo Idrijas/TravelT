@@ -103,20 +103,30 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 Width="120"
-                FontFamily="Comic Sans MS"
                 Background="#FF2D8C"
                 Foreground="White"
                 Height="40"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Right"
                 Margin="10"
                 Click="ShowUserButton"/>
+
+        <Button Content="View Report"
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="120"
+                Background="#FF2D8C"
+                Foreground="White"
+                Height="40"
+                HorizontalAlignment="Left"
+                Margin="10"
+                Click="ShowReportButton"/>
+
 
 
         <Button Content="Exit"
             Grid.Row="2"
             Grid.Column="0"
             Width="120"
-            FontFamily="Comic Sans MS"
             Background="#FF2D8C"
             Foreground="White"
             Height="40"
@@ -128,7 +138,6 @@
                 Grid.Row="2"
                 Grid.Column="2"
                 Width="120"
-                FontFamily="Comic Sans MS"
                 Background="#FF2D8C"
                 Foreground="White"
                 Height="40"

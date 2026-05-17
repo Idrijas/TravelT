@@ -91,7 +91,7 @@ namespace Travelt
 
         private void ReportUser_Button(object sender, RoutedEventArgs e)
         {
-            ReportUserWindow reportuserwindow = new ReportUserWindow(selectedUserId, currentUserId);
+            ReportUserWindow reportuserwindow = new ReportUserWindow(currentUserId, selectedUserId);
             reportuserwindow.ShowDialog();
         }
 
