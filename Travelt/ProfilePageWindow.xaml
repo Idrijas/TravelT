@@ -44,7 +44,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Profile pic, play with the padding -->
+                
                 
                 <Border Background="#2B124C"
                         Padding="75"            
@@ -58,7 +58,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- profile pic -->
+                        
                         
                         
                         <Border Grid.Column="0"
@@ -74,7 +74,7 @@
 
                         </Border>
 
-                        <!-- username, age, rank, rating -->
+                        
                         
                         <StackPanel Grid.Column="1"
                                     VerticalAlignment="Top"
@@ -151,21 +151,41 @@
                 </Expander>
 
                 <Expander Grid.Row="2" Header="Achievements"
-                          Background="#2B124C"
-                          Foreground="White"
-                          FontSize="22"
-                          FontFamily="Comic Sans MS"
-                          Padding="12"
-                          Margin="0,0,0,15">
+                           Background="#2B124C"
+                           Foreground="White"
+                           FontSize="22"
+                           FontFamily="Comic Sans MS"
+                           Padding="12"
+                           Margin="0,0,0,15">
+                    <ItemsControl x:Name="AchievementsBlock" Margin="10">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <TextBlock x:Name="AchievementsExpander"
-                               Text="Here will be all achievements (I suggest adding icons and when clicked on them -> description"
-                               Foreground="White"
-                               FontFamily="Comic Sans MS"
-                               FontSize="18"
-                               TextWrapping="Wrap"
-                               Margin="10"/>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+
+                                <Button Background="Transparent"
+                                        BorderThickness="0"
+                                        Padding="0"
+                                        Margin="20"
+                                        Cursor="Hand"
+                                        Tag="{Binding}"
+                                        Click="Achievement_Show">
+
+                                    <Image Source="{Binding IconUrl}"
+                                           Width="65"
+                                           Height="65"
+                                           Opacity="{Binding Opacity}" />
+
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </Expander>
+              
 
 
                 <Expander Grid.Row="3" Header="Plans"
@@ -222,7 +242,6 @@
 
         </Grid>
 
-        <!-- Bottom navigation buttons -->
         <Grid Grid.Row="2"
               Margin="0,25,0,0">
 

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 using TravelT;
 using Travelt.Service;
 using static Travelt.Service.UserService;
@@ -127,7 +128,8 @@ namespace Travelt
 
             if (successful_edit)
             {
-                UserService.CurrentUser.Bio = editBio; 
+                UserService.CurrentUser.Bio = editBio;
+                userService.GiveAchievementToUser(UserService.CurrentUser.UserId, 2);
                 MessageBox.Show("Bio changed successfully");
             }
             else
@@ -172,27 +174,44 @@ namespace Travelt
         private void ChangeProfilePictureButton(object sender, RoutedEventArgs e)
         {
 
-            string profilepicturepath = ProfilePicturePath_Expander.Text;
+            string selectedPath = ProfilePicturePath_Expander.Text;
 
-            if (string.IsNullOrWhiteSpace(profilepicturepath))
+            if (string.IsNullOrWhiteSpace(selectedPath))
             {
                 MessageBox.Show("There is nothing to change");
                 return;
             }
 
+            string extension = System.IO.Path.GetExtension(selectedPath);
+
+            string fileName = $"profilepic_user_{UserService.CurrentUser.UserId}{extension}";
+
+            string relativePath = System.IO.Path.Combine("Images", "ProfilePictures", fileName);
+
+            string destinationPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
+
+            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(destinationPath));
+            File.Copy(selectedPath, destinationPath, true);
+
             UserService userservice = new UserService();
 
-            bool changed_successfully = userservice.ChangeProfilePicture(UserService.CurrentUser.UserId, profilepicturepath);
+            bool changed_successfully = userservice.ChangeProfilePicture(UserService.CurrentUser.UserId, relativePath);
+
 
             if (changed_successfully) 
             {
-                UserService.CurrentUser.ProfilePicture = profilepicturepath;
+                UserService.CurrentUser.ProfilePicture = relativePath;
+
+                userservice.GiveAchievementToUser(UserService.CurrentUser.UserId, 3);
+
                 MessageBox.Show("Profile Picture changed successfully");
             }
             else
             {
                 MessageBox.Show("Something went wrong");
             }
+
+            
 
 
         }

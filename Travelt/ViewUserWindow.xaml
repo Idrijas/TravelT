@@ -123,7 +123,7 @@
                                Margin="10"/>
                 </Expander>
 
-                
+
                 <Expander Grid.Row="2"
                           Header="Achievements"
                           Background="#2B124C"
@@ -132,29 +132,33 @@
                           FontFamily="Comic Sans MS"
                           Padding="12"
                           Margin="0,0,0,0">
+                    <ItemsControl x:Name="ViewUserAchievementsBlock" Margin="10">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <WrapPanel x:Name="AchievementsPanel"
-                               Margin="10">
-                        <Border Background="#3B1A66"
-                                CornerRadius="10"
-                                Padding="12"
-                                Margin="5">
-                            <TextBlock Text="1st achievement"
-                                       Foreground="White"
-                                       FontSize="16"
-                                       FontFamily="Comic Sans MS"/>
-                        </Border>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
 
-                        <Border Background="#3B1A66"
-                                CornerRadius="10"
-                                Padding="12"
-                                Margin="5">
-                            <TextBlock Text="2nd Achievement"
-                                       Foreground="White"
-                                       FontSize="16"
-                                       FontFamily="Comic Sans MS"/>
-                        </Border>
-                    </WrapPanel>
+                                <Button Background="Transparent"
+                                        BorderThickness="0"
+                                        Padding="0"
+                                        Margin="15"
+                                        Cursor="Hand"
+                                        Tag="{Binding}"
+                                        Click="Achievement_Show">
+
+                                    <Image Source="{Binding IconUrl}"
+                                            Width="60"
+                                            Height="60"
+                                            Opacity="{Binding Opacity}" />
+
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </Expander>
             </Grid>
 

@@ -26,12 +26,28 @@ namespace TravelT
 
         private void Load_Picture(string profilepicturepath)
         {
-            if (!string.IsNullOrWhiteSpace(profilepicturepath) && File.Exists(profilepicturepath))
+            if (!string.IsNullOrWhiteSpace(profilepicturepath))
             {
-                ProfilePicturePlace.Source = new BitmapImage(
-                    new Uri(profilepicturepath, UriKind.Absolute)
-                );
+                string full_Path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, profilepicturepath);
+
+                if (File.Exists(full_Path)) 
+                {
+                    ProfilePicturePlace.Source = new BitmapImage(new Uri(full_Path, UriKind.Absolute));
+                }
             }
+                
+        }
+
+
+
+
+
+        private void Load_Achievements()
+        {
+            UserService userservice = new UserService();
+            List<AchievementsDisplay> achievementsDisplays = userservice.GetUserAchievements(CurrentUser.UserId);
+
+            AchievementsBlock.ItemsSource = achievementsDisplays;
         }
 
 
@@ -60,19 +76,14 @@ namespace TravelT
 
 
 
-        private void ChangeProfilePicButton(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-
-
-
-
         public ProfilePageWindow(int userIdToLoad)
         {
             InitializeComponent();
+
+            
             profileUserId = userIdToLoad;
+
+            Load_Achievements();
 
             if (profileUserId == UserService.CurrentUser.UserId)
             {
@@ -109,6 +120,26 @@ namespace TravelT
                     AgeBlock.Text = "Age: Unknown";
                 }
             }
+        }
+
+
+
+
+
+        private void Achievement_Show(object sender, RoutedEventArgs e)
+        {
+            Button show_button = sender as Button;
+
+            if (show_button?.Tag is AchievementsDisplay achievement)
+            {
+                AchievementDetailsWindow achievementdetailwindow = new AchievementDetailsWindow(achievement);
+
+                achievementdetailwindow.ShowDialog();
+
+
+            }
+
+
         }
     }
 }
