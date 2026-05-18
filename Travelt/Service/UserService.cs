@@ -284,12 +284,33 @@ namespace Travelt.Service
 
             string admin_deleteBio = "UPDATE user SET bio = '' WHERE user_id = @user_id";
 
-            using var command = new MySqlCommand(admin_deleteBio, connection);
-            command.Parameters.AddWithValue("@user_id", userId);
+            using var update_delete_bio_db = new MySqlCommand(admin_deleteBio, connection);
+            update_delete_bio_db.Parameters.AddWithValue("@user_id", userId);
 
-            int result = command.ExecuteNonQuery();
+            int count_result = update_delete_bio_db.ExecuteNonQuery();
 
-            return result > 0;
+            return count_result > 0;
+        }
+
+
+
+
+
+        public bool AdminDeleteProfilePicture (int userId)
+        {
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string admin_deleteProfilePicture = "UPDATE user SET profile_picture = NULL WHERE user_id = @user_id";
+
+            using var update_delete_profile_pic_db = new MySqlCommand(admin_deleteProfilePicture, connection);
+
+            update_delete_profile_pic_db.Parameters.AddWithValue("@user_id", userId);
+
+            int count_result = update_delete_profile_pic_db.ExecuteNonQuery();
+
+            return count_result > 0;
         }
 
 
