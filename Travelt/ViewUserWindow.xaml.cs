@@ -35,6 +35,8 @@ namespace Travelt
             isAdminView = isAdmin;
             this.currentUserId = currentUserId;
 
+            Load_Achievements();
+
             LoadUserData();
 
             EditUserButton.Visibility= isAdminView ? Visibility.Visible : Visibility.Collapsed;
@@ -47,10 +49,15 @@ namespace Travelt
 
         private void Load_Picture(string profilepicturepath)
         {
-            if (!string.IsNullOrWhiteSpace(profilepicturepath) && File.Exists(profilepicturepath))
+            if (string.IsNullOrWhiteSpace(profilepicturepath))
+                return;
+
+            string fullPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, profilepicturepath);
+
+            if (File.Exists(fullPath))
             {
-                    ProfilePicturePlaceholder.Source = new BitmapImage(
-                    new Uri(profilepicturepath, UriKind.Absolute)
+                ProfilePicturePlaceholder.Source = new BitmapImage(
+                    new Uri(fullPath, UriKind.Absolute)
                 );
             }
         }
@@ -81,6 +88,20 @@ namespace Travelt
             Load_Picture(selectedUser.ProfilePicture);  
                     
 
+        }
+
+
+
+
+
+        private void Load_Achievements()
+        {
+            UserService userService = new UserService();
+
+            List<AchievementsDisplay> achievementDisplays =
+                userService.GetUserAchievements(selectedUserId);
+
+            ViewUserAchievementsBlock.ItemsSource = achievementDisplays;
         }
 
 
@@ -134,6 +155,26 @@ namespace Travelt
             edituserwindow.ShowDialog();
 
             LoadUserData();
+        }
+
+
+
+
+
+        private void Achievement_Show(object sender, RoutedEventArgs e)
+        {
+            Button show_button = sender as Button;
+
+            if(show_button?.Tag is AchievementsDisplay achievement)
+            {
+                AchievementDetailsWindow achievementdetailwindow = new AchievementDetailsWindow(achievement);
+
+                achievementdetailwindow.ShowDialog();
+
+
+            }
+
+
         }
 
 

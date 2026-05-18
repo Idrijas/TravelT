@@ -96,8 +96,12 @@ namespace Travelt.Service
 
             if (count_result > 0)
             {
+
+                int newUserId = (int)insert_to_db_data.LastInsertedId;
+
                 User new_user = new User
                 {
+                    UserId = newUserId,
                     FirstName = firstName,
                     LastName = lastName,
                     Username = username,
@@ -107,6 +111,8 @@ namespace Travelt.Service
                 };
 
                 CurrentUser = new_user;
+
+                GiveAchievementToUser(newUserId, 1);
 
                 return new_user;
             }
@@ -123,14 +129,16 @@ namespace Travelt.Service
             using var connection = database_connection.GetConnection();
             connection.Open();
 
+            
+
             string bioUpdate = "UPDATE user SET bio = @bio WHERE user_id = @user_id";
 
-            using var insert_to_db_data = new MySqlCommand(bioUpdate, connection);
+            using var command = new MySqlCommand(bioUpdate, connection);
 
-            insert_to_db_data.Parameters.AddWithValue("@user_id", user_id);
-            insert_to_db_data.Parameters.AddWithValue("@bio", bio);
+            command.Parameters.AddWithValue("@user_id", user_id);
+            command.Parameters.AddWithValue("@bio", bio);
 
-            int count_result = insert_to_db_data.ExecuteNonQuery();
+            int count_result = command.ExecuteNonQuery();
 
             return count_result > 0;
         }
@@ -377,6 +385,113 @@ namespace Travelt.Service
 
             return result_count > 0;
 
+        }
+
+
+
+
+
+        public List<Achievements> GetAllAchievements()
+        {
+            List<Achievements> achievements = new List<Achievements>();
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string get_achievement = "SELECT * FROM achievement";
+
+            using var get_from_db = new MySqlCommand(get_achievement, connection);
+
+            using var reader = get_from_db.ExecuteReader();
+
+            while (reader.Read()) 
+            {
+                Achievements achievement = new Achievements()
+                {
+                    AchievementId = Convert.ToInt32(reader["achievement_id"]),
+                    Title = reader["title"].ToString(),
+                    Description = reader["description"].ToString(),
+                    IconUrl = reader["icon_url"].ToString()
+                };
+
+                achievements.Add(achievement);
+            }
+            return achievements;
+        }
+
+
+
+
+
+        public List<AchievementsDisplay> GetUserAchievements(int userId)
+        {
+            List<AchievementsDisplay> achievementsDisplays = new List<AchievementsDisplay>();
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string get_user_achievement = @"SELECT 
+                                            a.achievement_id,
+                                            a.title,
+                                            a.description,
+                                            a.icon_url,
+                                           CASE 
+                                           WHEN ua.user_id IS NOT NULL THEN 1
+                                           ELSE 0
+                                           END AS is_unlocked
+                                           FROM achievement a
+                                           LEFT JOIN user_achievement ua 
+                                           ON a.achievement_id = ua.achievement_id
+                                           AND ua.user_id = @user_id;";
+
+            using var get_achievements_from_db = new MySqlCommand(get_user_achievement, connection);
+            get_achievements_from_db.Parameters.AddWithValue("user_id", userId);
+
+            using var reader = get_achievements_from_db.ExecuteReader();
+
+            while (reader.Read()) 
+            {
+                AchievementsDisplay achievements_display = new AchievementsDisplay()
+                {
+                    AchievementId = Convert.ToInt32(reader["achievement_id"]),
+                    Title = reader["title"].ToString(),
+                    Description = reader["description"].ToString(),
+                    IconUrl = reader["icon_url"].ToString(),
+                    AchievementUnlocked = Convert.ToInt32(reader["is_unlocked"]) == 1
+                };
+                achievementsDisplays.Add(achievements_display);
+
+            }
+            return achievementsDisplays;
+
+
+        }
+
+
+
+
+
+        public bool GiveAchievementToUser(int userId, int achievementId)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string give_achievement = @"
+                            INSERT INTO user_achievement (user_id, achievement_id, date_earned)
+                            SELECT @user_id, @achievement_id, NOW()
+                            WHERE NOT EXISTS (
+                                                SELECT 1 
+                                                FROM user_achievement 
+                                                WHERE user_id = @user_id 
+                                                AND achievement_id = @achievement_id);";
+
+            using var assing_to_db = new MySqlCommand(give_achievement, connection);
+            assing_to_db.Parameters.AddWithValue("@user_id", userId);
+            assing_to_db.Parameters.AddWithValue("@achievement_id", achievementId);
+
+            int result = assing_to_db.ExecuteNonQuery();
+
+            return result > 0;
         }
     }
 }
