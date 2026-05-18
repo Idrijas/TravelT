@@ -67,7 +67,7 @@ namespace Travelt
         private void DeleteBioButton(object sender, RoutedEventArgs e)
         {
 
-            MessageBoxResult choice_confirm = MessageBox.Show("Are you sure you want to delete this user's bio?", "Absolutely sure?",MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            MessageBoxResult choice_confirm = MessageBox.Show("Are you sure you want to delete this user's Bio?", "Absolutely sure?",MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (choice_confirm != MessageBoxResult.Yes)
             {
@@ -85,7 +85,7 @@ namespace Travelt
             }
             else
             {
-                MessageBox.Show("Almighty Admin cannot delete this user's bio");
+                MessageBox.Show("Almighty Admin cannot delete this user's Bio");
             }
 
         }
@@ -93,7 +93,25 @@ namespace Travelt
 
         private void DeleteProfilePictureButton(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Ondrej will implement profile picture soon, I promise!");
+            MessageBoxResult choice_confirm = MessageBox.Show("Are you sure you want to delete this user's Profile Picture?", "Absolutely sure?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (choice_confirm != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            UserService userservice = new UserService();
+
+            bool picture_deleted = userservice.AdminDeleteProfilePicture(selectedUserId);
+
+            if (picture_deleted)
+            {
+                MessageBox.Show("Profile Picture deleted");
+            }
+            else
+            {
+                MessageBox.Show("Almighty Admin cannot delete this user's Profile Picture");
+            }
         }
 
         
