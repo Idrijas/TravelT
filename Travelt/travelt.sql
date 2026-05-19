@@ -395,6 +395,24 @@ CREATE TABLE `user_rank` (
   `assigned_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+
+CREATE TABLE IF NOT EXISTS `user_visited_country` (
+    `user_id` INT NOT NULL,
+    `country_id` INT NOT NULL,
+    `visited_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (`user_id`, `country_id`),
+
+    CONSTRAINT `fk_visited_user`
+        FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`)
+        ON DELETE CASCADE,
+
+    CONSTRAINT `fk_visited_country`
+        FOREIGN KEY (`country_id`) REFERENCES `country`(`country_id`)
+        ON DELETE CASCADE
+);
+
 -- --------------------------------------------------------
 
 --

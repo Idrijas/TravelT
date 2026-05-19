@@ -41,6 +41,8 @@ namespace Travelt
 
             Load_Rank();
 
+            Load_Visited_Countries();
+
             EditUserButton.Visibility= isAdminView ? Visibility.Visible : Visibility.Collapsed;
 
         }
@@ -121,6 +123,28 @@ namespace Travelt
         }
 
 
+
+
+        private void Load_Visited_Countries()
+        {
+            UserService userservice = new UserService();
+
+            int countries_count = userservice.CountVisitedCountries(selectedUserId);
+
+            VisitedCountriesButton_User.Content = $"Countries visited: {countries_count}";
+
+        }
+
+
+
+
+        private void ShowCountriesInfo_User(object sender, RoutedEventArgs e)
+        {
+            VisitedUserCountriesWindow viewuservisitedcountrieswindow = new VisitedUserCountriesWindow(selectedUserId);
+            viewuservisitedcountrieswindow.ShowDialog();
+
+            Load_Visited_Countries();
+        }
 
 
 

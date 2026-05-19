@@ -584,6 +584,98 @@ namespace Travelt.Service
 
             return result ?? "Not Selected";
         }
+
+
+
+
+
+        public int CountVisitedCountries(int userId)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string count_db = @"SELECT COUNT(*) FROM user_visited_country WHERE user_id = @userId;";
+
+            using var count_countries_db = new MySqlCommand(count_db, connection);
+            count_countries_db.Parameters.AddWithValue("@userId", userId);
+
+            return Convert.ToInt32(count_countries_db.ExecuteScalar());
+
+        }
+
+
+
+
+
+        public List<Country>GetVisitedCountries(int userId)
+        {
+            List<Country> countries_list = new List<Country>();
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string get_country = @"SELECT c.country_id, c.country_name, c.country_code
+                             FROM user_visited_country uvc
+                             JOIN country c ON uvc.country_id = c.country_id
+                             WHERE uvc.user_id = @userId
+                             ORDER BY c.country_name;";
+
+            using var get_country_from_db = new MySqlCommand(get_country, connection);
+
+            get_country_from_db.Parameters.AddWithValue("@userId", userId);
+
+            using var reader = get_country_from_db.ExecuteReader();
+
+            while (reader.Read()) 
+            {
+                countries_list.Add(new Country
+                {
+                    CountryId = Convert.ToInt32(reader["country_id"]),
+                    CountryName = reader["country_name"].ToString(),
+                    CountryCode = reader["country_code"].ToString()
+                });
+            }
+            return countries_list;
+        }
+
+
+
+
+
+        public void AddVisitedCountry(int userId, int countryId) 
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string add_country = @"INSERT IGNORE INTO user_visited_country (user_id, country_id, visited_at)
+                                 VALUES (@userId, @countryId, NOW());";
+
+            using var add_country_db = new MySqlCommand(add_country, connection);
+
+            add_country_db.Parameters.AddWithValue("@userId", userId);
+            add_country_db.Parameters.AddWithValue("@countryId", countryId);
+
+            add_country_db.ExecuteNonQuery();
+
+        }
+
+
+
+
+        public void DeleteVisitedCountry(int userId, int countryId)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string delete_from = @"DELETE FROM user_visited_country WHERE user_id = @userId AND country_id = @countryId;";
+            
+            using var delete_visited_country = new MySqlCommand(delete_from, connection);
+
+            delete_visited_country.Parameters.AddWithValue("@userId", userId);
+            delete_visited_country.Parameters.AddWithValue("@countryId", countryId);
+
+            delete_visited_country.ExecuteNonQuery();
+        }
     }
 
 }
