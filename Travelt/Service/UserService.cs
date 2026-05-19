@@ -112,6 +112,16 @@ namespace Travelt.Service
 
                 CurrentUser = new_user;
 
+
+                string get_rank = @" INSERT INTO user_rank (user_id, rank_id, assigned_at)
+                                    VALUES (@userId, 1, NOW());";
+
+                using var get_rank_from_db = new MySqlCommand(get_rank, connection);
+
+                get_rank_from_db.Parameters.AddWithValue("@userId", newUserId);
+
+                get_rank_from_db.ExecuteNonQuery();
+
                 GiveAchievementToUser(newUserId, 1);
 
                 return new_user;
@@ -493,5 +503,32 @@ namespace Travelt.Service
 
             return result > 0;
         }
+
+
+
+
+
+        public string GetUserRank(int userId)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string get_rank = @"SELECT r.name
+                                FROM user_rank ur
+                                JOIN `rank` r ON ur.rank_id = r.rank_id
+                                WHERE ur.user_id = @userId
+                                ORDER BY ur.assigned_at DESC
+                                LIMIT 1;";
+
+            using var get_from_db = new MySqlCommand(get_rank, connection);
+
+            get_from_db.Parameters.AddWithValue("@userId", userId);
+
+            string? result = get_from_db.ExecuteScalar()?.ToString();
+
+            return result ?? "Wanderer";
+
+        }
     }
+
 }

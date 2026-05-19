@@ -54,6 +54,19 @@ namespace TravelT
 
 
 
+        private void Load_Rank()
+        {
+            UserService userservice = new UserService();
+
+            string rank = userservice.GetUserRank(UserService.CurrentUser.UserId);
+
+            RankButton.Content = $"Rank: {rank}";
+        }
+
+
+
+
+
         private void ToHomePage_Button(object sender, RoutedEventArgs e)
         {
             HomePageWindow homePageWindow = new HomePageWindow();
@@ -76,6 +89,17 @@ namespace TravelT
 
 
 
+        private void ShowRankInfo(object sender, RoutedEventArgs e)
+        {
+            RankInfoWindow rankinfowindow = new RankInfoWindow();
+
+            rankinfowindow.ShowDialog();
+        }
+
+
+
+
+
         public ProfilePageWindow(int userIdToLoad)
         {
             InitializeComponent();
@@ -84,6 +108,8 @@ namespace TravelT
             profileUserId = userIdToLoad;
 
             Load_Achievements();
+
+            Load_Rank();
 
             if (profileUserId == UserService.CurrentUser.UserId)
             {

@@ -39,6 +39,8 @@ namespace Travelt
 
             LoadUserData();
 
+            Load_Rank();
+
             EditUserButton.Visibility= isAdminView ? Visibility.Visible : Visibility.Collapsed;
 
         }
@@ -102,6 +104,19 @@ namespace Travelt
                 userService.GetUserAchievements(selectedUserId);
 
             ViewUserAchievementsBlock.ItemsSource = achievementDisplays;
+        }
+
+
+
+
+
+        private void Load_Rank()
+        {
+            UserService userservice = new UserService();
+
+            string rank = userservice.GetUserRank(selectedUserId);
+
+            Rank_Text.Text = $"Rank: {rank}";
         }
 
 
