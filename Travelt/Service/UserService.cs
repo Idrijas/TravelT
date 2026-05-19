@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Windows;
 using TravelT;
 
@@ -62,7 +63,7 @@ namespace Travelt.Service
 
 
 
-        public User Register(string firstName, string lastName, string username, string gender, DateTime dateOfBirth, string email, string password)
+        public User Register(string firstName, string lastName, string username, string gender, DateTime dateOfBirth, string email, string password, int nationalityCountryId)
         {
             using var connection = database_connection.GetConnection();
             connection.Open();
@@ -79,8 +80,8 @@ namespace Travelt.Service
                 return null;
             }
 
-            string insert_to_db = @"INSERT INTO user (username, email, password_hash, first_name, last_name, date_of_birth, gender)
-                                    VALUES (@username, @email, @password_hash, @first_name, @last_name, @date_of_birth, @gender)";
+            string insert_to_db = @"INSERT INTO user (username, email, password_hash, first_name, last_name, date_of_birth, gender, nationality_country_id)
+                                    VALUES (@username, @email, @password_hash, @first_name, @last_name, @date_of_birth, @gender, @nationality_country_id)";
 
             using var insert_to_db_data = new MySqlCommand(insert_to_db, connection);
 
@@ -91,6 +92,7 @@ namespace Travelt.Service
             insert_to_db_data.Parameters.AddWithValue("@last_name", lastName);
             insert_to_db_data.Parameters.AddWithValue("@date_of_birth", dateOfBirth);
             insert_to_db_data.Parameters.AddWithValue("@gender", gender);
+            insert_to_db_data.Parameters.AddWithValue("@nationality_country_id", nationalityCountryId);
 
             int count_result = insert_to_db_data.ExecuteNonQuery();
 
@@ -107,7 +109,8 @@ namespace Travelt.Service
                     Username = username,
                     Gender = gender,
                     DateOfBirth = dateOfBirth,
-                    Email = email
+                    Email = email,
+                    NationalityCountryId = nationalityCountryId
                 };
 
                 CurrentUser = new_user;
@@ -528,6 +531,58 @@ namespace Travelt.Service
 
             return result ?? "Wanderer";
 
+        }
+
+
+
+
+
+        public List<Country> GetAllCountrie()
+        {
+            List<Country> countries = new List<Country>();
+
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string get_country = @"SELECT country_id, country_name, country_code FROM country ORDER BY country_name;";
+
+            using var get_from_db = new MySqlCommand(get_country, connection);
+
+            using var reader = get_from_db.ExecuteReader();
+
+            while (reader.Read())
+            {
+                countries.Add(new Country{
+                    CountryId = Convert.ToInt32(reader["country_id"]),
+                    CountryName = reader["country_name"].ToString(),
+                    CountryCode = reader["country_code"].ToString()
+
+                });
+            }
+            return countries;
+
+        }
+
+
+
+
+
+        public string GetUserNationality(int userId)
+        {
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string get_from_db = @"SELECT c.country_name
+                                   FROM `user` u
+                                   JOIN country c ON u.nationality_country_id = c.country_id
+                                   WHERE u.user_id = @userId;";
+
+            using var get_nat_from_db = new MySqlCommand(get_from_db, connection);
+            get_nat_from_db.Parameters.AddWithValue("@userId", userId);
+
+            string? result = get_nat_from_db.ExecuteScalar()?.ToString();
+
+            return result ?? "Not Selected";
         }
     }
 

@@ -25,6 +25,8 @@ namespace Travelt
         public string ProfilePicture { get; set; }
 
         public string Role { get; set; }
+        public int NationalityCountryId { get; set; }
+
 
 
     }

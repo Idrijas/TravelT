@@ -84,6 +84,7 @@ namespace Travelt
             PageHeader.Text = selectedUser.Username;
             Username_Text.Text = selectedUser.Username;
             Age_Text.Text = $"Age: {UserAge_Calc(selectedUser.DateOfBirth)}";
+            Nationality_Text.Text = $"Nationality: {userService.GetUserNationality(selectedUserId)}";
             Rank_Text.Text = "To be added";
             Rating_Text.Text = "To be added";
             BioBlock.Text = string.IsNullOrWhiteSpace(selectedUser.Bio) ? "No Bio Yet" : selectedUser.Bio;

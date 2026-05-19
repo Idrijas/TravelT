@@ -84,6 +84,13 @@
                                        FontFamily="Comic Sans MS"
                                        FontSize="22"
                                        Margin="0,0,0,8"/>
+                            
+                            <TextBlock x:Name="Nationality_Text"
+                                       Text="Nationality: "
+                                       Foreground="White"
+                                       FontFamily="Comic Sans MS"
+                                       FontSize="22"
+                                       Margin="0,0,0,8"/>
 
                             <TextBlock x:Name="Rank_Text"
                                        Text="Rank:"

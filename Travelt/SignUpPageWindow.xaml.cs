@@ -19,6 +19,11 @@ namespace Travelt
         public SignUpPageWindow()
         {
             InitializeComponent();
+
+            Service.UserService userService = new Service.UserService();
+
+            NationalitySelection.ItemsSource = userService.GetAllCountrie();
+            
         }
 
 
@@ -145,6 +150,14 @@ namespace Travelt
 
             Service.UserService userService = new Service.UserService();
 
+            if (NationalitySelection.SelectedValue == null)
+            {
+                MessageBox.Show("Please select your nationality.");
+                return;
+            }
+
+            int nationalityCountryId = Convert.ToInt32(NationalitySelection.SelectedValue);
+
             User registered_user = userService.Register(
                     firstName,
                     lastName,
@@ -152,7 +165,8 @@ namespace Travelt
                     gender,
                     dateOfBirth,
                     email,
-                    password
+                    password,
+                    nationalityCountryId
             );
 
             if (registered_user != null)
