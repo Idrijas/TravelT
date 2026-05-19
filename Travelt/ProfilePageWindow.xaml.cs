@@ -121,6 +121,12 @@ namespace TravelT
                 int myAge = DateTime.Today.Year - UserService.CurrentUser.DateOfBirth.Year;
                 if (UserService.CurrentUser.DateOfBirth.Date > DateTime.Today.AddYears(-myAge)) myAge--;
                 AgeBlock.Text = $"Age: {myAge}";
+
+                UserService userService = new UserService();
+
+                string nationality = userService.GetUserNationality(UserService.CurrentUser.UserId);
+
+                NationalityBlock.Text = $"Nationality: {nationality}";
             }
             else
             {

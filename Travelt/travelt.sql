@@ -59,6 +59,144 @@ CREATE TABLE `country` (
   `country_code` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+INSERT INTO `country` (country_name, country_code) VALUES
+('Afghanistan', 'AF'),
+('Albania', 'AL'),
+('Algeria', 'DZ'),
+('Andorra', 'AD'),
+('Angola', 'AO'),
+('Argentina', 'AR'),
+('Armenia', 'AM'),
+('Australia', 'AU'),
+('Austria', 'AT'),
+('Azerbaijan', 'AZ'),
+('Bahamas', 'BS'),
+('Bahrain', 'BH'),
+('Bangladesh', 'BD'),
+('Belarus', 'BY'),
+('Belgium', 'BE'),
+('Belize', 'BZ'),
+('Benin', 'BJ'),
+('Bhutan', 'BT'),
+('Bolivia', 'BO'),
+('Bosnia and Herzegovina', 'BA'),
+('Botswana', 'BW'),
+('Brazil', 'BR'),
+('Brunei', 'BN'),
+('Bulgaria', 'BG'),
+('Burkina Faso', 'BF'),
+('Cambodia', 'KH'),
+('Cameroon', 'CM'),
+('Canada', 'CA'),
+('Chile', 'CL'),
+('China', 'CN'),
+('Colombia', 'CO'),
+('Costa Rica', 'CR'),
+('Croatia', 'HR'),
+('Cuba', 'CU'),
+('Cyprus', 'CY'),
+('Czech Republic', 'CZ'),
+('Denmark', 'DK'),
+('Dominican Republic', 'DO'),
+('Ecuador', 'EC'),
+('Egypt', 'EG'),
+('El Salvador', 'SV'),
+('Estonia', 'EE'),
+('Ethiopia', 'ET'),
+('Finland', 'FI'),
+('France', 'FR'),
+('Georgia', 'GE'),
+('Germany', 'DE'),
+('Ghana', 'GH'),
+('Greece', 'GR'),
+('Guatemala', 'GT'),
+('Haiti', 'HT'),
+('Honduras', 'HN'),
+('Hungary', 'HU'),
+('Iceland', 'IS'),
+('India', 'IN'),
+('Indonesia', 'ID'),
+('Iran', 'IR'),
+('Iraq', 'IQ'),
+('Ireland', 'IE'),
+('Israel', 'IL'),
+('Italy', 'IT'),
+('Jamaica', 'JM'),
+('Japan', 'JP'),
+('Jordan', 'JO'),
+('Kazakhstan', 'KZ'),
+('Kenya', 'KE'),
+('Kuwait', 'KW'),
+('Kyrgyzstan', 'KG'),
+('Laos', 'LA'),
+('Latvia', 'LV'),
+('Lebanon', 'LB'),
+('Libya', 'LY'),
+('Liechtenstein', 'LI'),
+('Lithuania', 'LT'),
+('Luxembourg', 'LU'),
+('Madagascar', 'MG'),
+('Malaysia', 'MY'),
+('Maldives', 'MV'),
+('Mali', 'ML'),
+('Malta', 'MT'),
+('Mexico', 'MX'),
+('Moldova', 'MD'),
+('Monaco', 'MC'),
+('Mongolia', 'MN'),
+('Montenegro', 'ME'),
+('Morocco', 'MA'),
+('Mozambique', 'MZ'),
+('Myanmar', 'MM'),
+('Namibia', 'NA'),
+('Nepal', 'NP'),
+('Netherlands', 'NL'),
+('New Zealand', 'NZ'),
+('Nicaragua', 'NI'),
+('Nigeria', 'NG'),
+('North Korea', 'KP'),
+('North Macedonia', 'MK'),
+('Norway', 'NO'),
+('Oman', 'OM'),
+('Pakistan', 'PK'),
+('Panama', 'PA'),
+('Paraguay', 'PY'),
+('Peru', 'PE'),
+('Philippines', 'PH'),
+('Poland', 'PL'),
+('Portugal', 'PT'),
+('Qatar', 'QA'),
+('Romania', 'RO'),
+('Russia', 'RU'),
+('Saudi Arabia', 'SA'),
+('Serbia', 'RS'),
+('Singapore', 'SG'),
+('Slovakia', 'SK'),
+('Slovenia', 'SI'),
+('South Africa', 'ZA'),
+('South Korea', 'KR'),
+('Spain', 'ES'),
+('Sri Lanka', 'LK'),
+('Sweden', 'SE'),
+('Switzerland', 'CH'),
+('Syria', 'SY'),
+('Taiwan', 'TW'),
+('Thailand', 'TH'),
+('Tunisia', 'TN'),
+('Turkey', 'TR'),
+('Ukraine', 'UA'),
+('United Arab Emirates', 'AE'),
+('United Kingdom', 'GB'),
+('United States', 'US'),
+('Uruguay', 'UY'),
+('Uzbekistan', 'UZ'),
+('Venezuela', 'VE'),
+('Vietnam', 'VN'),
+('Yemen', 'YE'),
+('Zambia', 'ZM'),
+('Zimbabwe', 'ZW');
+
 -- --------------------------------------------------------
 
 --
@@ -292,6 +430,9 @@ ALTER TABLE `category`
 ALTER TABLE `country`
   ADD PRIMARY KEY (`country_id`);
 
+
+
+
 --
 -- Indexes for table `posts`
 --
@@ -356,6 +497,16 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `username` (`username`),
   ADD UNIQUE KEY `email` (`email`);
+
+
+ALTER TABLE `user`
+	ADD COLUMN `nationality_country_id` INT NULL;
+
+
+ALTER TABLE `user`
+	ADD CONSTRAINT `fk_user_nationality_country`
+	FOREIGN KEY (`nationality_country_id`)
+	REFERENCES `country`(`country_id`);
 
 --
 -- Indexes for table `user_achievement`
