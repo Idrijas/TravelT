@@ -1,0 +1,62 @@
+﻿<Window x:Class="Travelt.VisitedCountriesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Travelt"
+        mc:Ignorable="d"
+        Title="VisitedCountriesWindow" Height="450" Width="800">
+    <Grid Background="#1A001F">
+        <StackPanel Margin="20">
+
+            <TextBlock Text="Visited Countries"
+               FontSize="40"
+               FontWeight="Bold"
+               Foreground="White"
+               FontFamily="Comic Sans MS"
+               HorizontalAlignment="Center"
+               Margin="0,0,0,20"/>
+
+            <ComboBox x:Name="CountrySelection"
+              Height="35"
+              Width="250"
+              HorizontalAlignment="Center"
+              DisplayMemberPath="CountryName"
+              SelectedValuePath="CountryId"/>
+
+            <Button Content="Add Country"
+            Width="150"
+            Height="35"
+            Margin="0,15,0,5"
+            Background="#FF2D8C"
+            Foreground="White"
+            HorizontalAlignment="Center"
+            Click="AddCountry_Button"/>
+
+            <Button Content="Delete Country"
+                    Width="150"
+                    Height="35"
+                    Margin="0,15,0,10"
+                    Background="#FF2D8C"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    Click="DeleteCountry_Button"/>
+
+            <ListBox x:Name="VisitedCountriesListBox"
+                     DisplayMemberPath="CountryName"
+                     Height="250"
+                     Width="300"
+                     HorizontalAlignment="Center"
+                     FontSize="18"/>    
+
+        </StackPanel>
+        <Button Content="Back"
+                Width="150"
+                Height="35"
+                Background="#FF2D8C"
+                Foreground="White"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Click="Back_Button"/>
+    </Grid>
+</Window>

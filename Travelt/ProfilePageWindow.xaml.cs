@@ -67,6 +67,19 @@ namespace TravelT
 
 
 
+        private void Load_Visited_Countries()
+        {
+            UserService userservice = new UserService();
+
+            int countries_count = userservice.CountVisitedCountries(UserService.CurrentUser.UserId);
+
+            VisitedCountriesButton.Content = $"Countries visited: {countries_count}";
+        }
+
+
+
+
+
         private void ToHomePage_Button(object sender, RoutedEventArgs e)
         {
             HomePageWindow homePageWindow = new HomePageWindow();
@@ -100,6 +113,19 @@ namespace TravelT
 
 
 
+        private void ShowCountriesInfo(object sender, RoutedEventArgs e)
+        {
+            VisitedCountriesWindow visitedcountrieswindow = new VisitedCountriesWindow();
+
+            visitedcountrieswindow.ShowDialog();
+
+            Load_Visited_Countries();
+        }
+
+
+
+
+
         public ProfilePageWindow(int userIdToLoad)
         {
             InitializeComponent();
@@ -110,6 +136,8 @@ namespace TravelT
             Load_Achievements();
 
             Load_Rank();
+
+            Load_Visited_Countries();
 
             if (profileUserId == UserService.CurrentUser.UserId)
             {
