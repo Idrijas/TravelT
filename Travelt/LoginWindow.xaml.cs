@@ -33,7 +33,9 @@ namespace Travelt
             UserService user = new UserService();
 
             string email = EmailTextBox.Text;
-            string password = PasswordTextBox.Password;
+            string password = ShowPasswordCheckBox.IsChecked == true
+                                                ? PasswordTextBox.Text
+                                                : PasswordBox.Password;
 
             User current_logged_user = user.Login(email, password);
 
@@ -56,6 +58,25 @@ namespace Travelt
             }
 
 
+        }
+
+
+
+
+        private void ShowPasswordCheck(object sender, RoutedEventArgs e)
+        {
+            PasswordTextBox.Text = PasswordBox.Password;
+
+            PasswordHiddenBorder.Visibility = Visibility.Collapsed;
+            PasswordVisibleBorder.Visibility = Visibility.Visible;
+        }
+
+        private void ShowPasswordUnCheck(object sender, RoutedEventArgs e)
+        {
+            PasswordBox.Password = PasswordTextBox.Text;
+
+            PasswordHiddenBorder.Visibility = Visibility.Visible;
+            PasswordVisibleBorder.Visibility = Visibility.Collapsed;
         }
 
         // transfering to Sign Up page

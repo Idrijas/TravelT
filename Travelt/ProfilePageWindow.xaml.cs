@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Travelt;
 using Travelt.Service;
 using static Travelt.Service.UserService;
+using System.Diagnostics;
 
 namespace TravelT
 {
@@ -22,6 +23,7 @@ namespace TravelT
     {
         private int profileUserId;
         private readonly UserService _userService = new UserService();
+        
 
 
         private void Load_Picture(string profilepicturepath)
@@ -130,7 +132,7 @@ namespace TravelT
         {
             InitializeComponent();
 
-            
+
             profileUserId = userIdToLoad;
 
             Load_Achievements();
@@ -200,6 +202,11 @@ namespace TravelT
             }
 
 
+        }
+
+        private void OpenWorldMap(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo { FileName = "https://www.openstreetmap.org", UseShellExecute = true });
         }
     }
 }
