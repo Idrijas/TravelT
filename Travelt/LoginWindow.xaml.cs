@@ -42,9 +42,6 @@ namespace Travelt
                 UserService.CurrentUser = current_logged_user;
                 MessageBox.Show("Successful Login");
 
-
-                // transfering to HomePage
-
                 HomePageWindow homepagewindow = new HomePageWindow();
                 homepagewindow.Show();
 
@@ -58,7 +55,6 @@ namespace Travelt
 
         }
 
-        // transfering to Sign Up page
         private void ToSignUp(object sender, RoutedEventArgs e)
         {
             SignUpPageWindow signUp = new SignUpPageWindow();
