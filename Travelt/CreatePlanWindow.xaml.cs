@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using Travelt.Service;
 
 namespace Travelt
@@ -23,7 +13,9 @@ namespace Travelt
     {
         public ObservableCollection<string> SelectedCountries { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> SelectedPlaces { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> SelectedMonths { get; set; } = new ObservableCollection<string>(); // New list for Months!
+        public ObservableCollection<string> SelectedMonths { get; set; } = new ObservableCollection<string>();
+
+        private readonly TripService _tripService = new TripService();
 
         public CreatePlanWindow()
         {
@@ -34,7 +26,6 @@ namespace Travelt
                 TitleText.Text = $"WHERE TO, {UserService.CurrentUser.Username.ToUpper()}?";
             }
 
-            // Bind all UI lists
             SelectedCountriesList.ItemsSource = SelectedCountries;
             SelectedPlacesList.ItemsSource = SelectedPlaces;
             SelectedMonthsList.ItemsSource = SelectedMonths;
@@ -43,9 +34,6 @@ namespace Travelt
             LoadUpcomingMonths();
         }
 
-        // ==========================================
-        // DATES LOGIC
-        // ==========================================
         private void FlexibleDatesCheck_Click(object sender, RoutedEventArgs e)
         {
             if (FlexibleDatesCheck.IsChecked == true)
@@ -62,11 +50,10 @@ namespace Travelt
 
         private void AnytimeCheck_Click(object sender, RoutedEventArgs e)
         {
-            // If they can go anytime, hide the specific month selector!
             if (AnytimeCheck.IsChecked == true)
             {
                 MonthSelectionPanel.Visibility = Visibility.Collapsed;
-                SelectedMonths.Clear(); // Clear any months they accidentally picked
+                SelectedMonths.Clear();
             }
             else
             {
@@ -79,8 +66,7 @@ namespace Travelt
             List<string> months = new List<string>();
             DateTime currentMonth = DateTime.Now;
 
-            // Generate the next 24 months
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < 48; i++)
             {
                 months.Add(currentMonth.ToString("MMMM yyyy"));
                 currentMonth = currentMonth.AddMonths(1);
@@ -110,9 +96,6 @@ namespace Travelt
             }
         }
 
-        // ==========================================
-        // COUNTRIES LOGIC
-        // ==========================================
         private void LoadAllCountries()
         {
             List<string> countryList = new List<string>();
@@ -150,9 +133,6 @@ namespace Travelt
             }
         }
 
-        // ==========================================
-        // PLACES LOGIC
-        // ==========================================
         private void PlaceInputBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -175,16 +155,113 @@ namespace Travelt
             }
         }
 
-        // ==========================================
-        // ACTIONS
-        // ==========================================
         private void AddTrip_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("This will save the trip to the database!");
+            if (SelectedCountries.Count == 0)
+            {
+                MessageBox.Show("Please specify at least one target destination country.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            PlanningPageWindow planningPage = new PlanningPageWindow();
-            planningPage.Show();
-            this.Close();
+            if (SelectedPlaces.Count == 0)
+            {
+                MessageBox.Show("Please add at least one specific place (city, town, or national park).", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            string description = DescriptionInput.Text.Trim();
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                MessageBox.Show("Please write a short description or note for this trip plan.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(MaxPeopleInput.Text))
+            {
+                MessageBox.Show("Please enter the maximum number of people for this trip.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(MaxPeopleInput.Text, out int maxPeople) || maxPeople <= 0)
+            {
+                MessageBox.Show("Please enter a valid number of people greater than 0.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (TripTypeCombo.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a trip style category classification.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            DateTime? dateFrom = null;
+            DateTime? dateTo = null;
+            bool isFlexible = FlexibleDatesCheck.IsChecked ?? false;
+            string flexibleMonthsString = "";
+
+            if (!isFlexible)
+            {
+                if (DateFromPicker.SelectedDate == null || DateToPicker.SelectedDate == null)
+                {
+                    MessageBox.Show("Please fill out complete fields for exact dates or opt into Flexible Settings.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (DateToPicker.SelectedDate < DateFromPicker.SelectedDate)
+                {
+                    MessageBox.Show("Your 'Date To' cannot be earlier than your 'Date From'.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                dateFrom = DateFromPicker.SelectedDate;
+                dateTo = DateToPicker.SelectedDate;
+            }
+            else
+            {
+                if (AnytimeCheck.IsChecked == true)
+                {
+                    flexibleMonthsString = "Anytime";
+                }
+                else
+                {
+                    if (SelectedMonths.Count == 0)
+                    {
+                        MessageBox.Show("Please choose at least one flexible target month range option or check 'I can go ANYTIME!'.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    flexibleMonthsString = string.Join(", ", SelectedMonths);
+                }
+            }
+
+            bool isPublic = !(MakePrivateCheck.IsChecked ?? false);
+
+            string tripType = "vacation";
+            if (TripTypeCombo.SelectedItem is ComboBoxItem selectedType && selectedType.Tag != null)
+            {
+                tripType = selectedType.Tag.ToString();
+            }
+
+            bool success = _tripService.SaveNewTrip(
+                UserService.CurrentUser.UserId,
+                dateFrom,
+                dateTo,
+                isFlexible,
+                flexibleMonthsString,
+                maxPeople,
+                tripType,
+                description,
+                isPublic,
+                SelectedCountries,
+                SelectedPlaces
+            );
+
+            if (success)
+            {
+                MessageBox.Show("Your brand new travel itinerary has been updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                PlanningPageWindow planningPage = new PlanningPageWindow();
+                planningPage.Show();
+                this.Close();
+            }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

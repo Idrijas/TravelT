@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Travelt.Service;
 
 namespace Travelt
 {
@@ -24,8 +25,14 @@ namespace Travelt
 
         private void LoadUserTrips()
         {
-            // TODO: In the future, we will call TripService.GetUserTrips(UserService.CurrentUser.UserId)
-            // and set TripsList.ItemsSource to those results!
+            if (UserService.CurrentUser != null)
+            {
+                TripService tripService = new TripService();
+
+                var myTrips = tripService.GetUserTrips(UserService.CurrentUser.UserId);
+
+                TripsList.ItemsSource = myTrips;
+            }
         }
 
         private void AddTrip_Click(object sender, RoutedEventArgs e)
@@ -37,7 +44,6 @@ namespace Travelt
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
-            // Navigate back to the Home Page
             HomePageWindow homePage = new HomePageWindow();
             homePage.Show();
             this.Close();

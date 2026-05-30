@@ -123,10 +123,15 @@
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="Trip Type" Foreground="White" FontSize="16" Margin="0,0,0,5"/>
-                            <ComboBox x:Name="TripTypeCombo" Height="35" FontSize="16">
-                                <ComboBoxItem Content="Roadtrip"/>
-                                <ComboBoxItem Content="Hikes"/>
-                                <ComboBoxItem Content="Vacation"/>
+                            <ComboBox x:Name="TripTypeCombo" Height="35" FontSize="16" SelectedIndex="0">
+                                <ComboBoxItem Content="Vacation" Tag="vacation"/>
+                                <ComboBoxItem Content="City Trip" Tag="city_trip"/>
+                                <ComboBoxItem Content="Roadtrip" Tag="roadtrip"/>
+                                <ComboBoxItem Content="Backpacking" Tag="backpacking"/>
+                                <ComboBoxItem Content="Camping" Tag="camping"/>
+                                <ComboBoxItem Content="Hikes" Tag="hikes"/>
+                                <ComboBoxItem Content="Business" Tag="business"/>
+                                <ComboBoxItem Content="Other" Tag="other"/>
                             </ComboBox>
                         </StackPanel>
                     </Grid>
@@ -135,8 +140,7 @@
                     <TextBox x:Name="DescriptionInput" Height="60" FontSize="16" Padding="5" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,15"/>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <CheckBox x:Name="SplitCostsCheck" Content="Split Costs" Foreground="White" FontSize="14" Margin="0,0,15,0"/>
-                        <CheckBox x:Name="MakePublicCheck" Content="Make Public" Foreground="White" FontSize="14"/>
+                        <CheckBox x:Name="MakePrivateCheck" Content="Make Private" Foreground="White" FontSize="14"/>
                     </StackPanel>
 
                 </StackPanel>
