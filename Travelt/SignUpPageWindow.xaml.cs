@@ -53,8 +53,13 @@ namespace Travelt
             string userName = UsernameTextBox.Text;
             string gender = "";
             string email = EmailTextBox.Text;
-            string password = PasswordBox.Password;
-            string repeatPassword = RepeatPasswordBox.Password;
+            string password = ShowPasswordCheckBox.IsChecked == true
+                                ? PasswordTextBox.Text
+                                : PasswordBox.Password;
+
+            string repeatPassword = ShowPasswordCheckBox.IsChecked == true
+                                ? RepeatPasswordTextBox.Text
+                                : RepeatPasswordBox.Password;
 
 
 
@@ -192,7 +197,30 @@ namespace Travelt
         }
 
 
-       
+
+
+        private void ShowPasswordCheck(object sender, RoutedEventArgs e)
+        {
+            PasswordTextBox.Text = PasswordBox.Password;
+            RepeatPasswordTextBox.Text = RepeatPasswordBox.Password;
+            PasswordBox.Visibility = Visibility.Collapsed;
+            RepeatPasswordBox.Visibility = Visibility.Collapsed;
+            PasswordTextBox.Visibility = Visibility.Visible;
+            RepeatPasswordTextBox.Visibility = Visibility.Visible;
+        }
+
+        private void ShowPasswordUnCheck(object sender, RoutedEventArgs e)
+        {
+            PasswordBox.Password = PasswordTextBox.Text;
+            RepeatPasswordBox.Password = RepeatPasswordTextBox.Text;
+            PasswordBox.Visibility = Visibility.Visible;
+            RepeatPasswordBox.Visibility = Visibility.Visible;
+            PasswordTextBox.Visibility = Visibility.Collapsed;
+            RepeatPasswordTextBox.Visibility = Visibility.Collapsed;
+        }
+
+
+
         // transfering to login page
 
         private void BackToLogin(object sender, RoutedEventArgs e)

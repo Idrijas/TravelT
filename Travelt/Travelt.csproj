@@ -23,6 +23,7 @@
     <None Remove="Images\ProfilePictures\profilepic2.png" />
     <None Remove="Images\shaggy_invincipost.png" />
     <None Remove="Images\shaggy_pfp.jpg" />
+    <None Remove="Images\unnamed.jpg" />
   </ItemGroup>
 
   <ItemGroup>

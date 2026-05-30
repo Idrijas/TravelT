@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Travelt.Service;
+using System.Net.Http;
+using System.Text.Json;
 using TravelT;
 using static Travelt.Service.UserService;
 
@@ -47,6 +50,7 @@ namespace Travelt
         public HomePageWindow()
         {
             InitializeComponent();
+            LoadQuote();
 
             if (UserService.CurrentUser != null)
             {
@@ -65,6 +69,36 @@ namespace Travelt
 
             StartClock();
         }
+
+
+
+
+        private async void LoadQuote()
+        {
+            try
+            {
+                using HttpClient client = new HttpClient();
+
+                string json = await client.GetStringAsync("https://dummyjson.com/quotes/random");
+
+                QuoteResult quote = JsonSerializer.Deserialize<QuoteResult>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
+
+                Quote.Text = $"\"{quote.Quote}\"\n- {quote.Author}";
+
+
+            }
+            catch
+            {
+                Quote.Text = "“Stay consistent. It will pay off.”";
+            }
+        }
+
+        public class QuoteResult
+        {
+            public string Quote { get; set; }
+            public string Author { get; set; }
+        }
+
 
         
 

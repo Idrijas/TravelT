@@ -1,4 +1,5 @@
 ﻿<Window x:Class="Travelt.LoginWindow"
+        WindowState="Maximized"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -39,27 +40,53 @@
                         FontSize="14"/>
             </Border>
 
-            
-            
 
-            <Border Background="#2A0033"
+
+
+            <Border x:Name="PasswordHiddenBorder"
+                    Background="#2A0033"
                     CornerRadius="10"
                     Height="40"
                     Margin="0,0,0,25"
                     Padding="10,5">
-                
-                <PasswordBox x:Name="PasswordTextBox" Background="Transparent"
+
+                <PasswordBox x:Name="PasswordBox"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Foreground="White"
+                            FontSize="14"
+                            VerticalContentAlignment="Center"/>
+            </Border>
+            <Border x:Name="PasswordVisibleBorder"
+                    Background="#2A0033"
+                    CornerRadius="10"
+                    Height="40"
+                    Margin="0,0,0,10"
+                    Padding="10,5"
+                    Visibility="Collapsed">
+
+                <TextBox x:Name="PasswordTextBox"
+                        Background="Transparent"
                         BorderThickness="0"
                         Foreground="White"
                         FontSize="14"/>
             </Border>
-
-
            
-                  
 
-                <Button Content="Log In"
-    Width="300"             IsDefault="True"
+            <CheckBox x:Name="ShowPasswordCheckBox"
+                    Content="Show Password"
+                    Foreground="White"
+                    Margin="0,0,0,15"
+                    Checked="ShowPasswordCheck"
+                    Unchecked="ShowPasswordUnCheck"/>
+
+
+
+
+
+            <Button Content="Log In"
+                            Width="300" 
+                            IsDefault="True"
                             Height="40"
                             Margin="0,0,0,20"
                             FontFamily="Comic Sans MS"
