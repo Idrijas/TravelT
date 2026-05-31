@@ -48,5 +48,38 @@ namespace Travelt
             homePage.Show();
             this.Close();
         }
+        private void MemberAvatar_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is User clickedMember)
+            {
+                bool isAdmin = UserService.CurrentUser.Role?.Equals("admin", StringComparison.OrdinalIgnoreCase) ?? false;
+
+                ViewUserWindow viewUserWin = new ViewUserWindow(clickedMember.UserId, isAdmin, UserService.CurrentUser.UserId);
+                viewUserWin.Show();
+            }
+        }
+
+        private void EditTrip_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is TripService.TripDisplayModel trip)
+            {
+                CreatePlanWindow editWin = new CreatePlanWindow(trip.TripId);
+                editWin.Show();
+                this.Close();
+            }
+        }
+
+        private void DeleteTrip_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is TripService.TripDisplayModel trip)
+            {
+                var result = MessageBox.Show("Are you sure?", "Delete", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    TripService ts = new TripService();
+                    if (ts.DeleteTrip(trip.TripId)) LoadUserTrips();
+                }
+            }
+        }
     }
 }

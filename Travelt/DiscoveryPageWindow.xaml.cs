@@ -65,7 +65,7 @@ namespace Travelt
             if (TripsFeed != null) TripsFeed.Visibility = Visibility.Visible;
 
             TripService tripService = new TripService();
-            TripsFeed.ItemsSource = tripService.GetNewestPublicTrips();
+            TripsFeed.ItemsSource = tripService.GetNewestPublicTrips(currentUserId);
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -96,7 +96,7 @@ namespace Travelt
             else if (TripsToggle.IsChecked == true)
             {
                 TripService tripService = new TripService();
-                var results = tripService.SearchPublicTrips(query);
+                var results = tripService.SearchPublicTrips(query, currentUserId);
                 TripsFeed.ItemsSource = results;
                 noresultslabel.Visibility = results.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             }
@@ -140,6 +140,51 @@ namespace Travelt
 
                 ViewUserWindow viewUserWin = new ViewUserWindow(clickedUser.UserId, isAdmin, currentUserId);
 
+                viewUserWin.Show();
+            }
+        }
+        private void JoinTrip_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is TripService.TripDisplayModel trip)
+            {
+                if (trip.IsJoined || !trip.CanJoin) return;
+
+                TripService tripService = new TripService();
+
+                if (tripService.JoinTrip(trip.TripId, currentUserId))
+                {
+                    trip.JoinedCount++;
+                    trip.IsJoined = true;
+
+                    var updatedMembersList = new List<User>(trip.JoinedMembers);
+                    updatedMembersList.Add(UserService.CurrentUser);
+                    trip.JoinedMembers = updatedMembersList;
+                }
+                else
+                {
+                    MessageBox.Show("Could not join the trip. You may already be a member.", "Error");
+                }
+            }
+        }
+
+        private void MemberAvatar_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is User clickedMember)
+            {
+                bool isAdmin = UserService.CurrentUser.Role?.Equals("admin", StringComparison.OrdinalIgnoreCase) ?? false;
+
+                ViewUserWindow viewUserWin = new ViewUserWindow(clickedMember.UserId, isAdmin, currentUserId);
+                viewUserWin.Show();
+            }
+        }
+
+        private void TripAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is TripService.TripDisplayModel trip)
+            {
+                bool isAdmin = UserService.CurrentUser.Role?.Equals("admin", StringComparison.OrdinalIgnoreCase) ?? false;
+
+                ViewUserWindow viewUserWin = new ViewUserWindow(trip.AdminUserId, isAdmin, currentUserId);
                 viewUserWin.Show();
             }
         }
