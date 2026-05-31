@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Plan a Trip" Height="650" Width="800"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         Background="#1A0B2E">
 
     <Border Background="#2B124C" CornerRadius="25" Margin="30" Padding="30">

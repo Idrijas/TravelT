@@ -4,6 +4,7 @@
         Title="Plan a Trip" 
         Height="650" Width="1000"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         Background="#1A0B2E">
 
     <Grid Margin="25">

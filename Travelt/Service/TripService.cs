@@ -139,8 +139,6 @@ namespace Travelt.Service
 
                 while (reader.Read())
                 {
-                    bool splitCosts = Convert.ToBoolean(reader["split_costs"]);
-                    string splitPrefix = splitCosts ? "Splitted " : "";
 
                     string rawTripType = reader["trip_type"].ToString().Replace("_", " ");
                     string cleanTripType = char.ToUpper(rawTripType[0]) + rawTripType.Substring(1);
