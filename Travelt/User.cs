@@ -26,7 +26,7 @@ namespace Travelt
 
         public string Role { get; set; }
         public int NationalityCountryId { get; set; }
-        public string ProfilePictureFullPath
+        public System.Windows.Media.ImageSource ProfilePictureFullPath
         {
             get
             {
@@ -34,7 +34,24 @@ namespace Travelt
 
                 string basedir = System.AppDomain.CurrentDomain.BaseDirectory;
                 string convert = ProfilePicture.Replace("/", "\\");
-                return System.IO.Path.Combine(basedir, convert);
+                string fullPath = System.IO.Path.Combine(basedir, convert);
+
+                if (!System.IO.File.Exists(fullPath)) return null;
+
+                try
+                {
+                    var bitmap = new System.Windows.Media.Imaging.BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad; // breaks the file lock
+                    bitmap.UriSource = new Uri(fullPath);
+                    bitmap.EndInit();
+                    bitmap.Freeze(); // Enhances performance and allows cross-thread UI safety
+                    return bitmap;
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
 
