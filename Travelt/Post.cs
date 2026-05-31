@@ -77,6 +77,47 @@ namespace Travelt.Service
                 connection.Execute(sql, new { pId = postId, uId = userId, txt = text });
             }
         }
+
+        public bool DeletePost(int postId, int userId)
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(connectstring))
+                {
+                    connection.Open();
+                    using (var transaction = connection.BeginTransaction())
+                    {
+                        string selectSql = "SELECT imagepath FROM posts WHERE post_id = @pId AND user_id = @uId";
+                        string imagePath = connection.QueryFirstOrDefault<string>(selectSql, new { pId = postId, uId = userId }, transaction);
+
+                        if (string.IsNullOrEmpty(imagePath))
+                        {
+                            return false;
+                        }
+
+                        connection.Execute("DELETE FROM post_likes WHERE post_id = @pId", new { pId = postId }, transaction);
+                        connection.Execute("DELETE FROM post_comments WHERE post_id = @pId", new { pId = postId }, transaction);
+
+                        connection.Execute("DELETE FROM posts WHERE post_id = @pId", new { pId = postId }, transaction);
+
+                        transaction.Commit();
+
+                        string fullPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, imagePath.Replace("/", "\\"));
+                        if (System.IO.File.Exists(fullPath))
+                        {
+                            System.IO.File.Delete(fullPath);
+                        }
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error deleting post: " + ex.Message);
+                return false;
+            }
+        }
         public List<Comment> GetCommentsForPost(int postId)
         {
             using (var connection = new MySqlConnection(connectstring))
