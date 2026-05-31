@@ -16,10 +16,17 @@ namespace Travelt
         public ObservableCollection<string> SelectedMonths { get; set; } = new ObservableCollection<string>();
 
         private readonly TripService _tripService = new TripService();
+        private int? _editingTripId;
 
-        public CreatePlanWindow()
+        public CreatePlanWindow(int? tripId = null)
         {
             InitializeComponent();
+            _editingTripId = tripId;
+
+            if (_editingTripId.HasValue)
+            {
+                LoadTripData(_editingTripId.Value);
+            }
 
             if (UserService.CurrentUser != null)
             {
@@ -32,6 +39,40 @@ namespace Travelt
 
             LoadAllCountries();
             LoadUpcomingMonths();
+        }
+
+        private void LoadTripData(int tripId)
+        {
+            var trip = _tripService.GetFullTripById(tripId);
+            if (trip == null) return;
+
+            DescriptionInput.Text = trip.Description;
+            MaxPeopleInput.Text = trip.MaxPeople.ToString();
+            FlexibleDatesCheck.IsChecked = trip.IsFlexible;
+            MakePrivateCheck.IsChecked = !trip.IsPublic;
+
+            foreach (var c in trip.Countries) SelectedCountries.Add(c);
+            foreach (var p in trip.Places) SelectedPlaces.Add(p);
+
+            if (trip.IsFlexible)
+            {
+                ExactDatesPanel.Visibility = Visibility.Collapsed;
+                FlexibleDatesPanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                DateFromPicker.SelectedDate = trip.DateFrom;
+                DateToPicker.SelectedDate = trip.DateTo;
+            }
+
+            foreach (ComboBoxItem item in TripTypeCombo.Items)
+            {
+                if (item.Tag?.ToString() == trip.TripType)
+                {
+                    TripTypeCombo.SelectedItem = item;
+                    break;
+                }
+            }
         }
 
         private void FlexibleDatesCheck_Click(object sender, RoutedEventArgs e)
@@ -65,7 +106,6 @@ namespace Travelt
         {
             List<string> months = new List<string>();
             DateTime currentMonth = DateTime.Now;
-
             for (int i = 0; i < 48; i++)
             {
                 months.Add(currentMonth.ToString("MMMM yyyy"));
@@ -89,11 +129,7 @@ namespace Travelt
 
         private void RemoveMonth_Click(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = sender as Button;
-            if (clickedButton?.DataContext is string monthToRemove)
-            {
-                SelectedMonths.Remove(monthToRemove);
-            }
+            if ((sender as Button)?.DataContext is string monthToRemove) SelectedMonths.Remove(monthToRemove);
         }
 
         private void LoadAllCountries()
@@ -102,10 +138,7 @@ namespace Travelt
             foreach (CultureInfo cul in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
             {
                 RegionInfo region = new RegionInfo(cul.Name);
-                if (!countryList.Contains(region.EnglishName))
-                {
-                    countryList.Add(region.EnglishName);
-                }
+                if (!countryList.Contains(region.EnglishName)) countryList.Add(region.EnglishName);
             }
             countryList.Sort();
             CountrySearchBox.ItemsSource = countryList;
@@ -126,11 +159,7 @@ namespace Travelt
 
         private void RemoveCountry_Click(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = sender as Button;
-            if (clickedButton?.DataContext is string countryToRemove)
-            {
-                SelectedCountries.Remove(countryToRemove);
-            }
+            if ((sender as Button)?.DataContext is string countryToRemove) SelectedCountries.Remove(countryToRemove);
         }
 
         private void PlaceInputBox_KeyDown(object sender, KeyEventArgs e)
@@ -148,127 +177,79 @@ namespace Travelt
 
         private void RemovePlace_Click(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = sender as Button;
-            if (clickedButton?.DataContext is string placeToRemove)
-            {
-                SelectedPlaces.Remove(placeToRemove);
-            }
+            if ((sender as Button)?.DataContext is string placeToRemove) SelectedPlaces.Remove(placeToRemove);
         }
 
         private void AddTrip_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedCountries.Count == 0)
-            {
-                MessageBox.Show("Please specify at least one target destination country.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            if (SelectedCountries.Count == 0) { MessageBox.Show("Please specify at least one target destination country."); return; }
+            if (SelectedPlaces.Count == 0) { MessageBox.Show("Please add at least one specific place."); return; }
+            if (string.IsNullOrWhiteSpace(DescriptionInput.Text)) { MessageBox.Show("Please write a description."); return; }
+            if (!int.TryParse(MaxPeopleInput.Text, out int maxPeople) || maxPeople <= 0) { MessageBox.Show("Enter a valid number of people."); return; }
+            if (TripTypeCombo.SelectedItem == null) { MessageBox.Show("Please select a trip style."); return; }
 
-            if (SelectedPlaces.Count == 0)
-            {
-                MessageBox.Show("Please add at least one specific place (city, town, or national park).", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            string description = DescriptionInput.Text.Trim();
-            if (string.IsNullOrWhiteSpace(description))
-            {
-                MessageBox.Show("Please write a short description or note for this trip plan.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(MaxPeopleInput.Text))
-            {
-                MessageBox.Show("Please enter the maximum number of people for this trip.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (!int.TryParse(MaxPeopleInput.Text, out int maxPeople) || maxPeople <= 0)
-            {
-                MessageBox.Show("Please enter a valid number of people greater than 0.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (TripTypeCombo.SelectedItem == null)
-            {
-                MessageBox.Show("Please select a trip style category classification.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            DateTime? dateFrom = null;
-            DateTime? dateTo = null;
             bool isFlexible = FlexibleDatesCheck.IsChecked ?? false;
-            string flexibleMonthsString = "";
+            string flexibleMonthsString = (AnytimeCheck.IsChecked == true) ? "Anytime" : string.Join(", ", SelectedMonths);
+            bool isPublic = !(MakePrivateCheck.IsChecked ?? false);
+            string tripType = (TripTypeCombo.SelectedItem as ComboBoxItem)?.Tag.ToString() ?? "vacation";
 
-            if (!isFlexible)
+            if (_editingTripId.HasValue)
             {
-                if (DateFromPicker.SelectedDate == null || DateToPicker.SelectedDate == null)
+                var model = new FullTripModel
                 {
-                    MessageBox.Show("Please fill out complete fields for exact dates or opt into Flexible Settings.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
+                    TripId = _editingTripId.Value,
+                    Description = DescriptionInput.Text.Trim(),
+                    MaxPeople = maxPeople,
+                    IsFlexible = isFlexible,
+                    FlexibleMonths = flexibleMonthsString,
+                    IsPublic = isPublic,
+                    TripType = tripType,
+                    DateFrom = isFlexible ? null : DateFromPicker.SelectedDate,
+                    DateTo = isFlexible ? null : DateToPicker.SelectedDate,
+                    Countries = new List<string>(SelectedCountries),
+                    Places = new List<string>(SelectedPlaces)
+                };
 
-                if (DateToPicker.SelectedDate < DateFromPicker.SelectedDate)
+                if (_tripService.UpdateTrip(model))
                 {
-                    MessageBox.Show("Your 'Date To' cannot be earlier than your 'Date From'.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    MessageBox.Show("Trip updated successfully!");
+                    OpenPlanningPage();
                 }
-
-                dateFrom = DateFromPicker.SelectedDate;
-                dateTo = DateToPicker.SelectedDate;
             }
             else
             {
-                if (AnytimeCheck.IsChecked == true)
+                bool success = _tripService.SaveNewTrip(
+                    UserService.CurrentUser.UserId,
+                    isFlexible ? null : DateFromPicker.SelectedDate,
+                    isFlexible ? null : DateToPicker.SelectedDate,
+                    isFlexible,
+                    flexibleMonthsString,
+                    maxPeople,
+                    tripType,
+                    DescriptionInput.Text.Trim(),
+                    isPublic,
+                    SelectedCountries,
+                    SelectedPlaces
+                );
+
+                if (success)
                 {
-                    flexibleMonthsString = "Anytime";
-                }
-                else
-                {
-                    if (SelectedMonths.Count == 0)
-                    {
-                        MessageBox.Show("Please choose at least one flexible target month range option or check 'I can go ANYTIME!'.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                    flexibleMonthsString = string.Join(", ", SelectedMonths);
+                    MessageBox.Show("Your brand new travel itinerary has been updated!");
+                    OpenPlanningPage();
                 }
             }
+        }
 
-            bool isPublic = !(MakePrivateCheck.IsChecked ?? false);
-
-            string tripType = "vacation";
-            if (TripTypeCombo.SelectedItem is ComboBoxItem selectedType && selectedType.Tag != null)
-            {
-                tripType = selectedType.Tag.ToString();
-            }
-
-            bool success = _tripService.SaveNewTrip(
-                UserService.CurrentUser.UserId,
-                dateFrom,
-                dateTo,
-                isFlexible,
-                flexibleMonthsString,
-                maxPeople,
-                tripType,
-                description,
-                isPublic,
-                SelectedCountries,
-                SelectedPlaces
-            );
-
-            if (success)
-            {
-                MessageBox.Show("Your brand new travel itinerary has been updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                PlanningPageWindow planningPage = new PlanningPageWindow();
-                planningPage.Show();
-                this.Close();
-            }
+        private void OpenPlanningPage()
+        {
+            PlanningPageWindow p = new PlanningPageWindow();
+            p.Show();
+            this.Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            PlanningPageWindow planningPage = new PlanningPageWindow();
-            planningPage.Show();
-            this.Close();
+            OpenPlanningPage();
         }
     }
 }
