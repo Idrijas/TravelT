@@ -1,4 +1,5 @@
-﻿using MySqlConnector;
+﻿using Microsoft.Windows.Themes;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -261,6 +262,26 @@ namespace Travelt.Service
         }
 
         public List<TripDisplayModel> SearchPublicTrips(string query, int currentUserId)
+
+
+
+
+
+        public class AdminTripModel
+        {
+            public int TripId { get; set; }
+            public string TripType { get; set; }
+            public string Description { get; set; }
+            public int MaxPeople  { get; set; }
+            public bool isPublic { get; set; }
+            public string Status { get; set; }
+
+        }
+
+
+
+
+        public List<TripDisplayModel> SearchPublicTrips(string query)
         {
             List<TripDisplayModel> publicTrips = new List<TripDisplayModel>();
             try
@@ -387,6 +408,75 @@ namespace Travelt.Service
             public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
             protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             public List<User> JoinedMembers { get; set; } = new List<User>();
+
+
+
+
+        public List<AdminTripModel> GetAllTrips()
+        {
+            List<AdminTripModel> trips = new ();
+
+            using var connection = new MySqlConnection(connection_info);
+            connection.Open();
+
+            string select_trips = @"
+                    SELECT
+                            trip_id,
+                            trip_type,
+                            description,
+                            max_people,
+                            is_public,
+                            status
+                    FROM trip
+                    ORDER BY trip_id DESC";
+
+            using var select_from_db_data = new MySqlCommand(select_trips, connection);
+            using var reader = select_from_db_data.ExecuteReader();
+
+            while (reader.Read())
+            {
+                trips.Add(new AdminTripModel
+                {
+                    TripId = Convert.ToInt32(reader["trip_id"]),
+                    TripType = reader["trip_type"].ToString(),
+                    Description = reader["description"].ToString(),
+                    MaxPeople = Convert.ToInt32(reader["max_people"]),
+                    isPublic = Convert.ToBoolean(reader["is_public"]),
+                    Status = reader["status"].ToString()
+                });
+            }
+            return trips;
+        }
+        
+
+
+
+        public bool AdminDeleteTrip(int tripId)
+        {
+            using var connection = new MySqlConnection(connection_info);
+            connection.Open();
+
+            string delete_places = "DELETE FROM trip_place WHERE trip_id = @trip_id";
+            using var delete_from_db = new MySqlCommand(delete_places, connection);
+            delete_from_db.Parameters.AddWithValue("@trip_id", tripId);
+            delete_from_db.ExecuteNonQuery();
+
+            string delete_countries = "DELETE FROM trip_country WHERE trip_id = @trip_id";
+            using var delete_countries_db = new MySqlCommand(delete_countries, connection);
+            delete_countries_db.Parameters.AddWithValue("@trip_id", tripId);
+            delete_countries_db.ExecuteNonQuery();
+
+            string delete_user_trip = "DELETE FROM user_trip WHERE trip_id = @trip_id";
+            using var delete_user_trip_db = new MySqlCommand(delete_user_trip, connection);
+            delete_user_trip_db.Parameters.AddWithValue("@trip_id", tripId);
+            delete_user_trip_db.ExecuteNonQuery();
+
+            string delete_trip = "DELETE FROM trip WHERE trip_id = @trip_id";
+            using var delete_trip_db = new MySqlCommand(delete_trip, connection);
+            delete_trip_db.Parameters.AddWithValue("@trip_id", tripId);
+
+            int count_result = delete_trip_db.ExecuteNonQuery();
+            return count_result > 0;
         }
     }
 }

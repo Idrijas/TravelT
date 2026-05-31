@@ -63,142 +63,142 @@ CREATE TABLE `country` (
 -- Dumping data for table `country`
 --
 
-INSERT INTO `country` (country_name, country_code) VALUES
-('Afghanistan', 'AF'),
-('Albania', 'AL'),
-('Algeria', 'DZ'),
-('Andorra', 'AD'),
-('Angola', 'AO'),
-('Argentina', 'AR'),
-('Armenia', 'AM'),
-('Australia', 'AU'),
-('Austria', 'AT'),
-('Azerbaijan', 'AZ'),
-('Bahamas', 'BS'),
-('Bahrain', 'BH'),
-('Bangladesh', 'BD'),
-('Belarus', 'BY'),
-('Belgium', 'BE'),
-('Belize', 'BZ'),
-('Benin', 'BJ'),
-('Bhutan', 'BT'),
-('Bolivia', 'BO'),
-('Bosnia and Herzegovina', 'BA'),
-('Botswana', 'BW'),
-('Brazil', 'BR'),
-('Brunei', 'BN'),
-('Bulgaria', 'BG'),
-('Burkina Faso', 'BF'),
-('Cambodia', 'KH'),
-('Cameroon', 'CM'),
-('Canada', 'CA'),
-('Chile', 'CL'),
-('China', 'CN'),
-('Colombia', 'CO'),
-('Costa Rica', 'CR'),
-('Croatia', 'HR'),
-('Cuba', 'CU'),
-('Cyprus', 'CY'),
-('Czech Republic', 'CZ'),
-('Denmark', 'DK'),
-('Dominican Republic', 'DO'),
-('Ecuador', 'EC'),
-('Egypt', 'EG'),
-('El Salvador', 'SV'),
-('Estonia', 'EE'),
-('Ethiopia', 'ET'),
-('Finland', 'FI'),
-('France', 'FR'),
-('Georgia', 'GE'),
-('Germany', 'DE'),
-('Ghana', 'GH'),
-('Greece', 'GR'),
-('Guatemala', 'GT'),
-('Haiti', 'HT'),
-('Honduras', 'HN'),
-('Hungary', 'HU'),
-('Iceland', 'IS'),
-('India', 'IN'),
-('Indonesia', 'ID'),
-('Iran', 'IR'),
-('Iraq', 'IQ'),
-('Ireland', 'IE'),
-('Israel', 'IL'),
-('Italy', 'IT'),
-('Jamaica', 'JM'),
-('Japan', 'JP'),
-('Jordan', 'JO'),
-('Kazakhstan', 'KZ'),
-('Kenya', 'KE'),
-('Kuwait', 'KW'),
-('Kyrgyzstan', 'KG'),
-('Laos', 'LA'),
-('Latvia', 'LV'),
-('Lebanon', 'LB'),
-('Libya', 'LY'),
-('Liechtenstein', 'LI'),
-('Lithuania', 'LT'),
-('Luxembourg', 'LU'),
-('Madagascar', 'MG'),
-('Malaysia', 'MY'),
-('Maldives', 'MV'),
-('Mali', 'ML'),
-('Malta', 'MT'),
-('Mexico', 'MX'),
-('Moldova', 'MD'),
-('Monaco', 'MC'),
-('Mongolia', 'MN'),
-('Montenegro', 'ME'),
-('Morocco', 'MA'),
-('Mozambique', 'MZ'),
-('Myanmar', 'MM'),
-('Namibia', 'NA'),
-('Nepal', 'NP'),
-('Netherlands', 'NL'),
-('New Zealand', 'NZ'),
-('Nicaragua', 'NI'),
-('Nigeria', 'NG'),
-('North Korea', 'KP'),
-('North Macedonia', 'MK'),
-('Norway', 'NO'),
-('Oman', 'OM'),
-('Pakistan', 'PK'),
-('Panama', 'PA'),
-('Paraguay', 'PY'),
-('Peru', 'PE'),
-('Philippines', 'PH'),
-('Poland', 'PL'),
-('Portugal', 'PT'),
-('Qatar', 'QA'),
-('Romania', 'RO'),
-('Russia', 'RU'),
-('Saudi Arabia', 'SA'),
-('Serbia', 'RS'),
-('Singapore', 'SG'),
-('Slovakia', 'SK'),
-('Slovenia', 'SI'),
-('South Africa', 'ZA'),
-('South Korea', 'KR'),
-('Spain', 'ES'),
-('Sri Lanka', 'LK'),
-('Sweden', 'SE'),
-('Switzerland', 'CH'),
-('Syria', 'SY'),
-('Taiwan', 'TW'),
-('Thailand', 'TH'),
-('Tunisia', 'TN'),
-('Turkey', 'TR'),
-('Ukraine', 'UA'),
-('United Arab Emirates', 'AE'),
-('United Kingdom', 'GB'),
-('United States', 'US'),
-('Uruguay', 'UY'),
-('Uzbekistan', 'UZ'),
-('Venezuela', 'VE'),
-('Vietnam', 'VN'),
-('Yemen', 'YE'),
-('Zambia', 'ZM'),
-('Zimbabwe', 'ZW');
+INSERT INTO `country` (`country_id`, `country_name`, `country_code`) VALUES
+(1, 'Afghanistan', 'AF'),
+(2, 'Albania', 'AL'),
+(3, 'Algeria', 'DZ'),
+(4, 'Andorra', 'AD'),
+(5, 'Angola', 'AO'),
+(6, 'Argentina', 'AR'),
+(7, 'Armenia', 'AM'),
+(8, 'Australia', 'AU'),
+(9, 'Austria', 'AT'),
+(10, 'Azerbaijan', 'AZ'),
+(11, 'Bahamas', 'BS'),
+(12, 'Bahrain', 'BH'),
+(13, 'Bangladesh', 'BD'),
+(14, 'Belarus', 'BY'),
+(15, 'Belgium', 'BE'),
+(16, 'Belize', 'BZ'),
+(17, 'Benin', 'BJ'),
+(18, 'Bhutan', 'BT'),
+(19, 'Bolivia', 'BO'),
+(20, 'Bosnia and Herzegovina', 'BA'),
+(21, 'Botswana', 'BW'),
+(22, 'Brazil', 'BR'),
+(23, 'Brunei', 'BN'),
+(24, 'Bulgaria', 'BG'),
+(25, 'Burkina Faso', 'BF'),
+(26, 'Cambodia', 'KH'),
+(27, 'Cameroon', 'CM'),
+(28, 'Canada', 'CA'),
+(29, 'Chile', 'CL'),
+(30, 'China', 'CN'),
+(31, 'Colombia', 'CO'),
+(32, 'Costa Rica', 'CR'),
+(33, 'Croatia', 'HR'),
+(34, 'Cuba', 'CU'),
+(35, 'Cyprus', 'CY'),
+(36, 'Czech Republic', 'CZ'),
+(37, 'Denmark', 'DK'),
+(38, 'Dominican Republic', 'DO'),
+(39, 'Ecuador', 'EC'),
+(40, 'Egypt', 'EG'),
+(41, 'El Salvador', 'SV'),
+(42, 'Estonia', 'EE'),
+(43, 'Ethiopia', 'ET'),
+(44, 'Finland', 'FI'),
+(45, 'France', 'FR'),
+(46, 'Georgia', 'GE'),
+(47, 'Germany', 'DE'),
+(48, 'Ghana', 'GH'),
+(49, 'Greece', 'GR'),
+(50, 'Guatemala', 'GT'),
+(51, 'Haiti', 'HT'),
+(52, 'Honduras', 'HN'),
+(53, 'Hungary', 'HU'),
+(54, 'Iceland', 'IS'),
+(55, 'India', 'IN'),
+(56, 'Indonesia', 'ID'),
+(57, 'Iran', 'IR'),
+(58, 'Iraq', 'IQ'),
+(59, 'Ireland', 'IE'),
+(60, 'Israel', 'IL'),
+(61, 'Italy', 'IT'),
+(62, 'Jamaica', 'JM'),
+(63, 'Japan', 'JP'),
+(64, 'Jordan', 'JO'),
+(65, 'Kazakhstan', 'KZ'),
+(66, 'Kenya', 'KE'),
+(67, 'Kuwait', 'KW'),
+(68, 'Kyrgyzstan', 'KG'),
+(69, 'Laos', 'LA'),
+(70, 'Latvia', 'LV'),
+(71, 'Lebanon', 'LB'),
+(72, 'Libya', 'LY'),
+(73, 'Liechtenstein', 'LI'),
+(74, 'Lithuania', 'LT'),
+(75, 'Luxembourg', 'LU'),
+(76, 'Madagascar', 'MG'),
+(77, 'Malaysia', 'MY'),
+(78, 'Maldives', 'MV'),
+(79, 'Mali', 'ML'),
+(80, 'Malta', 'MT'),
+(81, 'Mexico', 'MX'),
+(82, 'Moldova', 'MD'),
+(83, 'Monaco', 'MC'),
+(84, 'Mongolia', 'MN'),
+(85, 'Montenegro', 'ME'),
+(86, 'Morocco', 'MA'),
+(87, 'Mozambique', 'MZ'),
+(88, 'Myanmar', 'MM'),
+(89, 'Namibia', 'NA'),
+(90, 'Nepal', 'NP'),
+(91, 'Netherlands', 'NL'),
+(92, 'New Zealand', 'NZ'),
+(93, 'Nicaragua', 'NI'),
+(94, 'Nigeria', 'NG'),
+(95, 'North Korea', 'KP'),
+(96, 'North Macedonia', 'MK'),
+(97, 'Norway', 'NO'),
+(98, 'Oman', 'OM'),
+(99, 'Pakistan', 'PK'),
+(100, 'Panama', 'PA'),
+(101, 'Paraguay', 'PY'),
+(102, 'Peru', 'PE'),
+(103, 'Philippines', 'PH'),
+(104, 'Poland', 'PL'),
+(105, 'Portugal', 'PT'),
+(106, 'Qatar', 'QA'),
+(107, 'Romania', 'RO'),
+(108, 'Russia', 'RU'),
+(109, 'Saudi Arabia', 'SA'),
+(110, 'Serbia', 'RS'),
+(111, 'Singapore', 'SG'),
+(112, 'Slovakia', 'SK'),
+(113, 'Slovenia', 'SI'),
+(114, 'South Africa', 'ZA'),
+(115, 'South Korea', 'KR'),
+(116, 'Spain', 'ES'),
+(117, 'Sri Lanka', 'LK'),
+(118, 'Sweden', 'SE'),
+(119, 'Switzerland', 'CH'),
+(120, 'Syria', 'SY'),
+(121, 'Taiwan', 'TW'),
+(122, 'Thailand', 'TH'),
+(123, 'Tunisia', 'TN'),
+(124, 'Turkey', 'TR'),
+(125, 'Ukraine', 'UA'),
+(126, 'United Arab Emirates', 'AE'),
+(127, 'United Kingdom', 'GB'),
+(128, 'United States', 'US'),
+(129, 'Uruguay', 'UY'),
+(130, 'Uzbekistan', 'UZ'),
+(131, 'Venezuela', 'VE'),
+(132, 'Vietnam', 'VN'),
+(133, 'Yemen', 'YE'),
+(134, 'Zambia', 'ZM'),
+(135, 'Zimbabwe', 'ZW');
 
 -- --------------------------------------------------------
 
@@ -408,8 +408,8 @@ INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name
 (1, 'fatpeterrealistic', 'fat@gmail.com', 'peter', 'peter', 'grifin', '2009-05-03', 'male', 'helooo madafakers', 'Images\\peter_profilepic.jpg', 'user'),
 (2, 'shaggyboy', 'shaggy@gmail.com', 'fatter', 'shaggy', 'scooby', '2001-05-09', 'male', 'wassup boys a big travel guru here', 'Images/shaggy_pfp.jpg', 'user');
 
-INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`, `role`) VALUES
-(3,'admin1', 'admin1@travelt.com', '1234', 'Admin', 'Ondrej', '2000-01-01','male', 'admin wassup', 'admin');
+INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`,`profile_picture`,`role`) VALUES
+(3,'admin1', 'admin1@travelt.com', '1234', 'Admin', 'Ondrej', '2000-01-01','male', 'admin wassup',"Images/ProfilePictures/profilepic1.png" ,'admin');
 
 -- --------------------------------------------------------
 
@@ -435,23 +435,6 @@ CREATE TABLE `user_rank` (
   `assigned_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
-
-CREATE TABLE IF NOT EXISTS `user_visited_country` (
-    `user_id` INT NOT NULL,
-    `country_id` INT NOT NULL,
-    `visited_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY (`user_id`, `country_id`),
-
-    CONSTRAINT `fk_visited_user`
-        FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`)
-        ON DELETE CASCADE,
-
-    CONSTRAINT `fk_visited_country`
-        FOREIGN KEY (`country_id`) REFERENCES `country`(`country_id`)
-        ON DELETE CASCADE
-);
 
 -- --------------------------------------------------------
 
@@ -624,7 +607,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `country`
 --
 ALTER TABLE `country`
-  MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -734,6 +717,35 @@ ALTER TABLE `user_rank`
 ALTER TABLE `user_trip`
   ADD CONSTRAINT `fk_user_trip_trip` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_user_trip_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
+
+INSERT INTO achievement (achievement_id, title, description, icon_url) VALUES
+(1, 'Create a Profile', 'Create your TravelT profile.', 'Images/Achievements/create_a_profile_icon.png'),
+(2, 'Add Bio', 'Add a biography to your profile.', 'Images/Achievements/add_bio_icon.png'),
+(3, 'Add Profile Picture', 'Upload your first profile picture.', 'Images/Achievements/add_profile_pic_icon.png'),
+(4, 'Add First Post', 'Create your first post.', 'Images/Achievements/add_first_post_icon.png'),
+(5, 'Create First Trip', 'Create your first trip.', 'Images/Achievements/create_first_trip_icon.png'),
+(6, 'Create Five Trips', 'Create five trips.', 'Images/Achievements/create_five_trips_icon.png');
+
+
+INSERT INTO rank (rank_id, name, description)
+VALUES
+(1, 'Wanderer', 'Create account, add biography/profile picture and complete first trip'),
+(2, 'Scout', 'Complete 5 trips and visit 2 countries'),
+(3, 'Explorer', 'Complete 10 trips and visit 5 countries'),
+(4, 'Voyager', 'Complete 25 trips, visit 10 countries and add 5 travel posts'),
+(5, 'Globetrotter', 'Complete 50 trips, visit 20 countries and add 10 travel posts'),
+(6, 'Phileas Fogg', 'Complete 80 trips, visit 40 countries and add 20 travel posts');
+
+
+CREATE TABLE IF NOT EXISTS `user_visited_country` (
+    `user_id` int(11) NOT NULL,
+    `country_id` int(11) NOT NULL,
+    `visited_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
