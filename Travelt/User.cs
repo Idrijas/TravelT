@@ -26,7 +26,17 @@ namespace Travelt
 
         public string Role { get; set; }
         public int NationalityCountryId { get; set; }
+        public string ProfilePictureFullPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ProfilePicture)) return null;
 
+                string basedir = System.AppDomain.CurrentDomain.BaseDirectory;
+                string convert = ProfilePicture.Replace("/", "\\");
+                return System.IO.Path.Combine(basedir, convert);
+            }
+        }
 
 
     }
