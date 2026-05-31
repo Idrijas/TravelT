@@ -262,13 +262,36 @@ namespace Travelt.Service
             using var connection = database_connection.GetConnection();
             connection.Open();
 
-            string admin_deleteUser = "DELETE FROM user WHERE  user_id = @user_id";
+            string delete_posts = "DELETE FROM posts WHERE user_id = @user_id";
+            using var delete_posts_db = new MySqlCommand(delete_posts, connection);
+            delete_posts_db.Parameters.AddWithValue("@user_id", userid);
+            delete_posts_db.ExecuteNonQuery();
 
-            using var delete_from_db_data = new MySqlCommand(admin_deleteUser, connection);
+            string delete_achievements = "DELETE FROM user_achievement WHERE user_id = @user_id";
+            using var delete_achievements_db = new MySqlCommand(delete_achievements, connection);
+            delete_achievements_db.Parameters.AddWithValue("@user_id", userid);
+            delete_achievements_db.ExecuteNonQuery();
 
-            delete_from_db_data.Parameters.AddWithValue("@user_id", userid);
+            string delete_rank = "DELETE FROM user_rank WHERE user_id = @user_id";
+            using var delete_rank_db = new MySqlCommand(delete_rank, connection);
+            delete_rank_db.Parameters.AddWithValue("@user_id", userid);
+            delete_rank_db.ExecuteNonQuery();
 
-            int count_result = delete_from_db_data.ExecuteNonQuery();
+            string delete_trips = "DELETE FROM user_trip WHERE user_id = @user_id";
+            using var delete_trips_db = new MySqlCommand(delete_trips, connection);
+            delete_trips_db.Parameters.AddWithValue("@user_id", userid);
+            delete_trips_db.ExecuteNonQuery();
+
+            string delete_visited_countries = "DELETE FROM user_visited_country WHERE user_id = @user_id";
+            using var delete_visited_countries_db = new MySqlCommand(delete_visited_countries, connection);
+            delete_visited_countries_db.Parameters.AddWithValue("@user_id", userid);
+            delete_visited_countries_db.ExecuteNonQuery();
+
+            string delete_user = "DELETE FROM user WHERE user_id = @user_id";
+            using var delete_user_db = new MySqlCommand(delete_user, connection);
+            delete_user_db.Parameters.AddWithValue("@user_id", userid);
+
+            int count_result = delete_user_db.ExecuteNonQuery();
 
             return count_result > 0;
         }
