@@ -36,7 +36,7 @@ namespace Travelt.Service
                 return connection.Query<Post>(sql, new { userId = currentUserId }).ToList();
             }
         }
-        public List<Post> getsearchresults(string search, string choice, int currentUserId)
+        public List<Post> getsearchresults(string search, int currentUserId)
         {
             using (var connection = new MySqlConnection(connectstring))
             {
@@ -47,16 +47,8 @@ namespace Travelt.Service
                 EXISTS(SELECT 1 FROM post_likes WHERE post_id = p.post_id AND user_id = @userId) AS IsLikedByMe
             FROM posts p 
             JOIN user u ON p.user_id = u.user_id 
-            WHERE ";
-
-                if (choice == "People")
-                    sql += "u.username LIKE @searchTerm";
-                else if (choice == "Trips")
-                    sql += "p.trip_id IS NOT NULL AND p.description LIKE @searchTerm";
-                else
-                    sql += "p.description LIKE @searchTerm";
-
-                sql += " ORDER BY p.timestamp DESC";
+            WHERE p.description LIKE @searchTerm
+            ORDER BY p.timestamp DESC";
 
                 return connection.Query<Post>(sql, new
                 {

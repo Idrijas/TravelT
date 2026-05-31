@@ -23,38 +23,89 @@ namespace Travelt
 
         private void loadposts()
         {
-            List<Post> posts = postservice.getallposts(currentUserId);
-            DiscoverFeed.ItemsSource = posts;
+            // Only try to update the UI if the UI has actually finished loading
+            if (PostsFeed != null)
+            {
+                List<Post> posts = postservice.getallposts(currentUserId);
+                PostsFeed.ItemsSource = posts;
+            }
         }
 
-        private void search_click(object sender, RoutedEventArgs e)
+        private void HideAllFeeds()
         {
-            noresultslabel.Visibility = Visibility.Collapsed;
+            if (PostsFeed != null) PostsFeed.Visibility = Visibility.Collapsed;
+            if (PeopleFeed != null) PeopleFeed.Visibility = Visibility.Collapsed;
+            if (TripsFeed != null) TripsFeed.Visibility = Visibility.Collapsed;
+            if (noresultslabel != null) noresultslabel.Visibility = Visibility.Collapsed;
+        }
 
-            string search = SearchBox.Text;
+        private void PostsToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            if (SearchBox != null) SearchBox.Text = "";
+            HideAllFeeds();
+            if (PostsFeed != null) PostsFeed.Visibility = Visibility.Visible;
 
-            if (searchvalues.SelectedItem is ComboBoxItem selecteditem)
+            loadposts();
+        }
+
+        private void PeopleToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            if (SearchBox != null) SearchBox.Text = "";
+            HideAllFeeds();
+            if (PeopleFeed != null) PeopleFeed.Visibility = Visibility.Visible;
+
+            UserService userService = new UserService();
+            PeopleFeed.ItemsSource = userService.GetNewestUsers();
+        }
+
+        private void TripsToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            if (SearchBox != null) SearchBox.Text = "";
+            HideAllFeeds();
+            if (TripsFeed != null) TripsFeed.Visibility = Visibility.Visible;
+
+            TripService tripService = new TripService();
+            TripsFeed.ItemsSource = tripService.GetNewestPublicTrips();
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string query = SearchBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(query))
             {
-                string choicestring = selecteditem.Content.ToString();
+                if (PostsToggle.IsChecked == true) PostsToggle_Checked(null, null);
+                if (PeopleToggle.IsChecked == true) PeopleToggle_Checked(null, null);
+                if (TripsToggle.IsChecked == true) TripsToggle_Checked(null, null);
+                return;
+            }
 
-                var results = postservice.getsearchresults(search, choicestring, currentUserId);
-
-                if (results == null || results.Count == 0)
-                {
-                    noresultslabel.Visibility = Visibility.Visible;
-                    DiscoverFeed.ItemsSource = null;
-                }
-                else
-                {
-                    DiscoverFeed.ItemsSource = results;
-                }
+            if (PostsToggle.IsChecked == true)
+            {
+                var results = postservice.getsearchresults(query, currentUserId);
+                PostsFeed.ItemsSource = results;
+                noresultslabel.Visibility = results.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else if (PeopleToggle.IsChecked == true)
+            {
+                UserService userService = new UserService();
+                var results = userService.SearchUsers(query);
+                PeopleFeed.ItemsSource = results;
+                noresultslabel.Visibility = results.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else if (TripsToggle.IsChecked == true)
+            {
+                TripService tripService = new TripService();
+                var results = tripService.SearchPublicTrips(query);
+                TripsFeed.ItemsSource = results;
+                noresultslabel.Visibility = results.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             }
         }
         private void SearchBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                search_click(this, new RoutedEventArgs());
+                SearchButton_Click(this, new RoutedEventArgs());
             }
         }
         private void ToHomePage_Button(object sender, RoutedEventArgs e)
@@ -63,9 +114,6 @@ namespace Travelt
             homePage.Show();
             this.Close();
         }
-
-
-
 
         private void ToProfile_Button(object sender, RoutedEventArgs e)
         {
@@ -78,13 +126,22 @@ namespace Travelt
 
         } 
 
-
-
         private void OpenCreatePost_Click(object sender, RoutedEventArgs e)
         {
             CreatePostWindow createPostWin = new CreatePostWindow();
             createPostWin.Show();
             this.Close();
+        }
+        private void PersonCard_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is User clickedUser)
+            {
+                bool isAdmin = UserService.CurrentUser.Role?.Equals("admin", StringComparison.OrdinalIgnoreCase) ?? false;
+
+                ViewUserWindow viewUserWin = new ViewUserWindow(clickedUser.UserId, isAdmin, currentUserId);
+
+                viewUserWin.Show();
+            }
         }
 
     }

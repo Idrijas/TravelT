@@ -676,6 +676,61 @@ namespace Travelt.Service
 
             delete_visited_country.ExecuteNonQuery();
         }
+
+        public List<User> SearchUsers(string query)
+        {
+            List<User> users_list = new List<User>();
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string search_users = @"SELECT user_id, first_name, last_name, username, profile_picture 
+                                    FROM user 
+                                    WHERE username LIKE @q OR first_name LIKE @q OR last_name LIKE @q 
+                                    ORDER BY user_id DESC LIMIT 50";
+
+            using var cmd = new MySqlCommand(search_users, connection);
+            cmd.Parameters.AddWithValue("@q", "%" + query + "%");
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                users_list.Add(new User
+                {
+                    UserId = reader.GetInt32("user_id"),
+                    FirstName = reader.GetString("first_name"),
+                    LastName = reader.GetString("last_name"),
+                    Username = reader.GetString("username"),
+                    ProfilePicture = reader["profile_picture"] == DBNull.Value ? "" : reader.GetString("profile_picture")
+                });
+            }
+            return users_list;
+        }
+        public List<User> GetNewestUsers()
+        {
+            List<User> users_list = new List<User>();
+            using var connection = database_connection.GetConnection();
+            connection.Open();
+
+            string query = @"SELECT user_id, first_name, last_name, username, profile_picture 
+                             FROM user 
+                             ORDER BY user_id DESC LIMIT 50";
+
+            using var cmd = new MySqlCommand(query, connection);
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                users_list.Add(new User
+                {
+                    UserId = reader.GetInt32("user_id"),
+                    FirstName = reader.GetString("first_name"),
+                    LastName = reader.GetString("last_name"),
+                    Username = reader.GetString("username"),
+                    ProfilePicture = reader["profile_picture"] == DBNull.Value ? "" : reader.GetString("profile_picture")
+                });
+            }
+            return users_list;
+        }
     }
 
 }

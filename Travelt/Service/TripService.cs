@@ -196,5 +196,102 @@ namespace Travelt.Service
 
             return userTrips;
         }
+        public List<TripDisplayModel> SearchPublicTrips(string query)
+        {
+            List<TripDisplayModel> publicTrips = new List<TripDisplayModel>();
+            try
+            {
+                using var connection = new MySqlConnection(connection_info);
+                connection.Open();
+
+                string sql = @"
+                    SELECT DISTINCT
+                        t.trip_id, t.trip_type, t.date_from, t.date_to, t.is_flexible_date, t.flexible_months, t.description, t.max_people,
+                        (SELECT GROUP_CONCAT(c2.country_name SEPARATOR ', ') FROM trip_country tc2 JOIN country c2 ON tc2.country_id = c2.country_id WHERE tc2.trip_id = t.trip_id) AS countries,
+                        (SELECT GROUP_CONCAT(tp2.place_name SEPARATOR ', ') FROM trip_place tp2 WHERE tp2.trip_id = t.trip_id) AS places,
+                        (SELECT COUNT(*) FROM user_trip ut2 WHERE ut2.trip_id = t.trip_id) AS joined_count
+                    FROM trip t
+                    LEFT JOIN trip_country tc ON t.trip_id = tc.trip_id
+                    LEFT JOIN country c ON tc.country_id = c.country_id
+                    LEFT JOIN trip_place tp ON t.trip_id = tp.trip_id
+                    WHERE t.is_public = 1 
+                    AND (c.country_name LIKE @q OR tp.place_name LIKE @q OR t.description LIKE @q)
+                    ORDER BY t.trip_id DESC LIMIT 50";
+
+                using var command = new MySqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@q", "%" + query + "%");
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    publicTrips.Add(MapTripDisplayModel(reader));
+                }
+            }
+            catch (Exception ex) { MessageBox.Show("Error searching trips: " + ex.Message); }
+            return publicTrips;
+        }
+
+        public List<TripDisplayModel> GetNewestPublicTrips()
+        {
+            List<TripDisplayModel> publicTrips = new List<TripDisplayModel>();
+            try
+            {
+                using var connection = new MySqlConnection(connection_info);
+                connection.Open();
+
+                string sql = @"
+                    SELECT 
+                        t.trip_id, t.trip_type, t.date_from, t.date_to, t.is_flexible_date, t.flexible_months, t.description, t.max_people,
+                        (SELECT GROUP_CONCAT(c.country_name SEPARATOR ', ') FROM trip_country tc JOIN country c ON tc.country_id = c.country_id WHERE tc.trip_id = t.trip_id) AS countries,
+                        (SELECT GROUP_CONCAT(tp.place_name SEPARATOR ', ') FROM trip_place tp WHERE tp.trip_id = t.trip_id) AS places,
+                        (SELECT COUNT(*) FROM user_trip ut2 WHERE ut2.trip_id = t.trip_id) AS joined_count
+                    FROM trip t
+                    WHERE t.is_public = 1 
+                    ORDER BY t.trip_id DESC LIMIT 50";
+
+                using var command = new MySqlCommand(sql, connection);
+                using var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    publicTrips.Add(MapTripDisplayModel(reader));
+                }
+            }
+            catch (Exception ex) { MessageBox.Show("Error loading newest trips: " + ex.Message); }
+            return publicTrips;
+        }
+
+        // Helper method so we don't have to copy/paste the UI formatting 3 times!
+        private TripDisplayModel MapTripDisplayModel(MySqlDataReader reader)
+        {
+            string rawTripType = reader["trip_type"].ToString().Replace("_", " ");
+            string cleanTripType = char.ToUpper(rawTripType[0]) + rawTripType.Substring(1);
+            string countries = reader["countries"]?.ToString();
+            if (string.IsNullOrEmpty(countries)) countries = "Unknown Location";
+
+            string places = reader["places"]?.ToString();
+
+            string dateDisplay = "";
+            if (Convert.ToBoolean(reader["is_flexible_date"]))
+            {
+                string flexMonths = reader["flexible_months"]?.ToString();
+                dateDisplay = (string.IsNullOrWhiteSpace(flexMonths) || flexMonths.Equals("Anytime", StringComparison.OrdinalIgnoreCase)) ? "Flexible" : flexMonths;
+            }
+            else
+            {
+                string dFrom = reader["date_from"] != DBNull.Value ? Convert.ToDateTime(reader["date_from"]).ToString("dd/MM/yyyy") : "?";
+                string dTo = reader["date_to"] != DBNull.Value ? Convert.ToDateTime(reader["date_to"]).ToString("dd/MM/yyyy") : "?";
+                dateDisplay = $"{dFrom} - {dTo}";
+            }
+
+            return new TripDisplayModel
+            {
+                Title = $"{cleanTripType} in {countries}",
+                Subtitle = string.IsNullOrWhiteSpace(places) ? "No specific places added" : places,
+                Description = reader["description"]?.ToString(),
+                PeopleCount = $"{Convert.ToInt32(reader["joined_count"])}/{Convert.ToInt32(reader["max_people"])}",
+                DateDisplay = dateDisplay
+            };
+        }
     }
 }
