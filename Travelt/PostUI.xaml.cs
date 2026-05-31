@@ -121,16 +121,17 @@ namespace Travelt
                 if (result == MessageBoxResult.Yes)
                 {
                     PostService service = new PostService();
-                    bool success = service.DeletePost(post.PostId, UserService.CurrentUser.UserId);
 
-                    if (success)
+                    string resultMessage = service.DeletePost(post.PostId, UserService.CurrentUser.UserId);
+
+                    if (resultMessage == "Success")
                     {
-                        MessageBox.Show("Post deleted successfully.");
+                        MessageBox.Show("Post deleted successfully. Refresh to confirm.");
                         PostDeleted?.Invoke(this, post);
                     }
                     else
                     {
-                        MessageBox.Show("Failed to delete post.");
+                        MessageBox.Show(resultMessage, "Delete Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }

@@ -10,6 +10,8 @@ using System.Windows;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using static Travelt.Service.UserService;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Travelt.Service
 {
@@ -78,7 +80,7 @@ namespace Travelt.Service
             }
         }
 
-        public bool DeletePost(int postId, int userId)
+        public string DeletePost(int postId, int userId)
         {
             try
             {
@@ -87,13 +89,17 @@ namespace Travelt.Service
                     connection.Open();
                     using (var transaction = connection.BeginTransaction())
                     {
-                        string selectSql = "SELECT imagepath FROM posts WHERE post_id = @pId AND user_id = @uId";
-                        string imagePath = connection.QueryFirstOrDefault<string>(selectSql, new { pId = postId, uId = userId }, transaction);
+                        var postRecord = connection.QueryFirstOrDefault(
+                            "SELECT post_id, imagepath FROM posts WHERE post_id = @pId AND user_id = @uId",
+                            new { pId = postId, uId = userId },
+                            transaction);
 
-                        if (string.IsNullOrEmpty(imagePath))
+                        if (postRecord == null)
                         {
-                            return false;
+                            return "Database Error: Post not found or you are not the owner.";
                         }
+
+                        string imagePath = postRecord.imagepath?.ToString();
 
                         connection.Execute("DELETE FROM post_likes WHERE post_id = @pId", new { pId = postId }, transaction);
                         connection.Execute("DELETE FROM post_comments WHERE post_id = @pId", new { pId = postId }, transaction);
@@ -102,20 +108,33 @@ namespace Travelt.Service
 
                         transaction.Commit();
 
-                        string fullPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, imagePath.Replace("/", "\\"));
-                        if (System.IO.File.Exists(fullPath))
+                        if (!string.IsNullOrEmpty(imagePath))
                         {
-                            System.IO.File.Delete(fullPath);
+                            try
+                            {
+                                string fullPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, imagePath.Replace("/", "\\"));
+                                if (System.IO.File.Exists(fullPath))
+                                {
+                                    System.IO.File.Delete(fullPath);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Warning: Could not delete physical file: " + ex.Message);
+                            }
                         }
 
-                        return true;
+                        return "Success";
                     }
                 }
             }
+            catch (MySqlException sqlEx)
+            {
+                return "MySQL Error: " + sqlEx.Message;
+            }
             catch (Exception ex)
             {
-                Console.WriteLine("Error deleting post: " + ex.Message);
-                return false;
+                return "System Error: " + ex.Message;
             }
         }
         public List<Comment> GetCommentsForPost(int postId)
@@ -190,20 +209,41 @@ namespace Travelt.Service
         }
         public string ImagePath { get; set; }
         public string Profile_Picture { get; set; }
-        public string ImageFullPath
+        public ImageSource ImageFullPath
         {
             get
             {
                 if (string.IsNullOrEmpty(ImagePath)) return null;
-                else return pathconverter(ImagePath);
+                return LoadImageWithoutLocking(pathconverter(ImagePath));
             }
         }
-        public string Profile_PictureFullPath
+
+        public ImageSource Profile_PictureFullPath
         {
             get
             {
                 if (string.IsNullOrEmpty(Profile_Picture)) return null;
-                else return pathconverter(Profile_Picture);
+                return LoadImageWithoutLocking(pathconverter(Profile_Picture));
+            }
+        }
+
+        private ImageSource LoadImageWithoutLocking(string path)
+        {
+            if (!System.IO.File.Exists(path)) return null;
+
+            try
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.UriSource = new Uri(path);
+                bitmap.EndInit();
+                bitmap.Freeze();
+                return bitmap;
+            }
+            catch
+            {
+                return null;
             }
         }
         private int _likeCount;
