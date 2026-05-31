@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2026 at 04:26 AM
+-- Generation Time: May 31, 2026 at 11:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,6 +33,18 @@ CREATE TABLE `achievement` (
   `description` text NOT NULL,
   `icon_url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `achievement`
+--
+
+INSERT INTO `achievement` (`achievement_id`, `title`, `description`, `icon_url`) VALUES
+(1, 'Create a Profile', 'Create your TravelT profile.', 'Images/Achievements/create_a_profile_icon.png'),
+(2, 'Add Bio', 'Add a biography to your profile.', 'Images/Achievements/add_bio_icon.png'),
+(3, 'Add Profile Picture', 'Upload your first profile picture.', 'Images/Achievements/add_profile_pic_icon.png'),
+(4, 'Add First Post', 'Create your first post.', 'Images/Achievements/add_first_post_icon.png'),
+(5, 'Create First Trip', 'Create your first trip.', 'Images/Achievements/create_first_trip_icon.png'),
+(6, 'Create Five Trips', 'Create five trips.', 'Images/Achievements/create_five_trips_icon.png');
 
 -- --------------------------------------------------------
 
@@ -253,7 +265,11 @@ INSERT INTO `post_comments` (`comment_id`, `post_id`, `user_id`, `comment_text`,
 (9, 1, 1, 'test', '2026-05-03 03:34:02'),
 (10, 4, 1, 'typical dad photo haha', '2026-05-03 16:06:19'),
 (11, 1, 1, 'hellooo', '2026-05-03 17:13:47'),
-(13, 8, 1, 'chill out man ', '2026-05-15 01:57:44');
+(13, 8, 1, 'chill out man ', '2026-05-15 01:57:44'),
+(14, 1, 1, 'amazing vibes', '2026-05-31 22:49:36'),
+(15, 7, 1, 'beautiful face', '2026-05-31 22:50:31'),
+(16, 7, 2, 'damn you look good here', '2026-05-31 22:54:28'),
+(17, 1, 2, 'stop commenting so much on your own post bro', '2026-05-31 22:54:50');
 
 -- --------------------------------------------------------
 
@@ -273,9 +289,11 @@ CREATE TABLE `post_likes` (
 INSERT INTO `post_likes` (`user_id`, `post_id`) VALUES
 (1, 1),
 (1, 4),
-(1, 6),
 (1, 7),
-(1, 8);
+(1, 8),
+(2, 1),
+(2, 4),
+(2, 7);
 
 -- --------------------------------------------------------
 
@@ -288,6 +306,18 @@ CREATE TABLE `rank` (
   `name` varchar(100) NOT NULL,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rank`
+--
+
+INSERT INTO `rank` (`rank_id`, `name`, `description`) VALUES
+(1, 'Wanderer', 'Create account, add biography/profile picture and complete first trip'),
+(2, 'Scout', 'Complete 5 trips and visit 2 countries'),
+(3, 'Explorer', 'Complete 10 trips and visit 5 countries'),
+(4, 'Voyager', 'Complete 25 trips, visit 10 countries and add 5 travel posts'),
+(5, 'Globetrotter', 'Complete 50 trips, visit 20 countries and add 10 travel posts'),
+(6, 'Phileas Fogg', 'Complete 80 trips, visit 40 countries and add 20 travel posts');
 
 -- --------------------------------------------------------
 
@@ -397,19 +427,18 @@ CREATE TABLE `user` (
   `gender` enum('male','female','other') NOT NULL,
   `bio` text NOT NULL,
   `profile_picture` varchar(255) NOT NULL,
-  `role` varchar(20) NOT NULL DEFAULT 'user'
+  `role` varchar(20) NOT NULL DEFAULT 'user',
+  `nationality_country_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`, `profile_picture`, `role`) VALUES
-(1, 'fatpeterrealistic', 'fat@gmail.com', 'peter', 'peter', 'grifin', '2009-05-03', 'male', 'helooo madafakers', 'Images\\peter_profilepic.jpg', 'user'),
-(2, 'shaggyboy', 'shaggy@gmail.com', 'fatter', 'shaggy', 'scooby', '2001-05-09', 'male', 'wassup boys a big travel guru here', 'Images/shaggy_pfp.jpg', 'user');
-
-INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`,`profile_picture`,`role`) VALUES
-(3,'admin1', 'admin1@travelt.com', '1234', 'Admin', 'Ondrej', '2000-01-01','male', 'admin wassup',"Images/ProfilePictures/profilepic1.png" ,'admin');
+INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `date_of_birth`, `gender`, `bio`, `profile_picture`, `role`, `nationality_country_id`) VALUES
+(1, 'fatpeterrealistic', 'fat@gmail.com', 'peter', 'peter', 'grifin', '2009-05-03', 'male', 'hello fellers', 'Images\\peter_profilepic.jpg', 'user', NULL),
+(2, 'shaggyboy', 'shaggy@gmail.com', 'fatter', 'shaggy', 'scooby', '2001-05-09', 'male', 'wassup boys a big travel guru here', 'Images/shaggy_pfp.jpg', 'user', NULL),
+(3, 'admin1', 'admin1@travelt.com', '1234', 'Admin', 'Ondrej', '2000-01-01', 'male', 'admin wassup', 'Images/ProfilePictures/profilepic1.png', 'admin', NULL);
 
 -- --------------------------------------------------------
 
@@ -423,6 +452,15 @@ CREATE TABLE `user_achievement` (
   `date_earned` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `user_achievement`
+--
+
+INSERT INTO `user_achievement` (`user_id`, `achievement_id`, `date_earned`) VALUES
+(1, 2, '2026-05-31 23:01:28'),
+(1, 4, '2026-05-31 21:23:51'),
+(2, 4, '2026-05-31 22:42:46');
+
 -- --------------------------------------------------------
 
 --
@@ -434,7 +472,6 @@ CREATE TABLE `user_rank` (
   `rank_id` int(11) NOT NULL,
   `assigned_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 
 -- --------------------------------------------------------
 
@@ -455,6 +492,18 @@ CREATE TABLE `user_trip` (
 INSERT INTO `user_trip` (`trip_id`, `user_id`, `role`) VALUES
 (2, 1, 'admin'),
 (3, 1, 'admin');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_visited_country`
+--
+
+CREATE TABLE `user_visited_country` (
+  `user_id` int(11) NOT NULL,
+  `country_id` int(11) NOT NULL,
+  `visited_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -478,9 +527,6 @@ ALTER TABLE `category`
 --
 ALTER TABLE `country`
   ADD PRIMARY KEY (`country_id`);
-
-
-
 
 --
 -- Indexes for table `posts`
@@ -551,17 +597,8 @@ ALTER TABLE `trip_place`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`);
-
-
-ALTER TABLE `user`
-	ADD COLUMN `nationality_country_id` INT NULL;
-
-
-ALTER TABLE `user`
-	ADD CONSTRAINT `fk_user_nationality_country`
-	FOREIGN KEY (`nationality_country_id`)
-	REFERENCES `country`(`country_id`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `fk_user_nationality_country` (`nationality_country_id`);
 
 --
 -- Indexes for table `user_achievement`
@@ -595,7 +632,7 @@ ALTER TABLE `user_trip`
 -- AUTO_INCREMENT for table `achievement`
 --
 ALTER TABLE `achievement`
-  MODIFY `achievement_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `achievement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -613,19 +650,19 @@ ALTER TABLE `country`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `post_comments`
 --
 ALTER TABLE `post_comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `rank`
 --
 ALTER TABLE `rank`
-  MODIFY `rank_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `rank_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `report`
@@ -643,7 +680,7 @@ ALTER TABLE `trip`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -698,6 +735,12 @@ ALTER TABLE `trip_place`
   ADD CONSTRAINT `fk_trip_place_trip` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `fk_user_nationality_country` FOREIGN KEY (`nationality_country_id`) REFERENCES `country` (`country_id`);
+
+--
 -- Constraints for table `user_achievement`
 --
 ALTER TABLE `user_achievement`
@@ -717,35 +760,6 @@ ALTER TABLE `user_rank`
 ALTER TABLE `user_trip`
   ADD CONSTRAINT `fk_user_trip_trip` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_user_trip_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
-
-INSERT INTO achievement (achievement_id, title, description, icon_url) VALUES
-(1, 'Create a Profile', 'Create your TravelT profile.', 'Images/Achievements/create_a_profile_icon.png'),
-(2, 'Add Bio', 'Add a biography to your profile.', 'Images/Achievements/add_bio_icon.png'),
-(3, 'Add Profile Picture', 'Upload your first profile picture.', 'Images/Achievements/add_profile_pic_icon.png'),
-(4, 'Add First Post', 'Create your first post.', 'Images/Achievements/add_first_post_icon.png'),
-(5, 'Create First Trip', 'Create your first trip.', 'Images/Achievements/create_first_trip_icon.png'),
-(6, 'Create Five Trips', 'Create five trips.', 'Images/Achievements/create_five_trips_icon.png');
-
-
-INSERT INTO rank (rank_id, name, description)
-VALUES
-(1, 'Wanderer', 'Create account, add biography/profile picture and complete first trip'),
-(2, 'Scout', 'Complete 5 trips and visit 2 countries'),
-(3, 'Explorer', 'Complete 10 trips and visit 5 countries'),
-(4, 'Voyager', 'Complete 25 trips, visit 10 countries and add 5 travel posts'),
-(5, 'Globetrotter', 'Complete 50 trips, visit 20 countries and add 10 travel posts'),
-(6, 'Phileas Fogg', 'Complete 80 trips, visit 40 countries and add 20 travel posts');
-
-
-CREATE TABLE IF NOT EXISTS `user_visited_country` (
-    `user_id` int(11) NOT NULL,
-    `country_id` int(11) NOT NULL,
-    `visited_at` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-
-
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
