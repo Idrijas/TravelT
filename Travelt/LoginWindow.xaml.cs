@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,11 +14,9 @@ using System.Windows.Shapes;
 using Travelt.Service;
 using static Travelt.Service.UserService;
 
-
 namespace Travelt
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class LoginWindow : Window
     {
@@ -29,11 +27,12 @@ namespace Travelt
 
         private void LoginButton(object sender, RoutedEventArgs e)
         {
-
             UserService user = new UserService();
 
             string email = EmailTextBox.Text;
-            string password = PasswordTextBox.Password;
+            string password = ShowPasswordCheckBox.IsChecked == true
+                                                ? PasswordTextBox.Text
+                                                : PasswordBox.Password;
 
             User current_logged_user = user.Login(email, password);
 
@@ -51,8 +50,22 @@ namespace Travelt
             {
                 MessageBox.Show("Invalid email or password");
             }
+        }
 
+        private void ShowPasswordCheck(object sender, RoutedEventArgs e)
+        {
+            PasswordTextBox.Text = PasswordBox.Password;
 
+            PasswordHiddenBorder.Visibility = Visibility.Collapsed;
+            PasswordVisibleBorder.Visibility = Visibility.Visible;
+        }
+
+        private void ShowPasswordUnCheck(object sender, RoutedEventArgs e)
+        {
+            PasswordBox.Password = PasswordTextBox.Text;
+
+            PasswordHiddenBorder.Visibility = Visibility.Visible;
+            PasswordVisibleBorder.Visibility = Visibility.Collapsed;
         }
 
         private void ToSignUp(object sender, RoutedEventArgs e)
@@ -62,7 +75,5 @@ namespace Travelt
 
             this.Close();
         }
-
-       
     }
 }

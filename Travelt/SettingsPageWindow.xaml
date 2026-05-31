@@ -1,4 +1,5 @@
 ﻿<Window x:Class="Travelt.SettingsPageWindow"
+        WindowState="Maximized"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -142,7 +143,7 @@
                                Foreground="White"
                                FontFamily="Comic Sans MS"/>
 
-                    <TextBox x:Name="ProfilePicturePathBlock"
+                    <TextBox x:Name="ProfilePicturePath_Expander"
                              Height="35"
                              FontFamily="Comic Sans MS"
                              IsReadOnly="True"/>

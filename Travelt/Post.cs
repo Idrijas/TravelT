@@ -103,6 +103,18 @@ namespace Travelt.Service
             try
             {
                 string fileName = System.IO.Path.GetFileName(imagePath);
+
+                string imagesFolder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Images");
+
+                if (!System.IO.Directory.Exists(imagesFolder))
+                {
+                    System.IO.Directory.CreateDirectory(imagesFolder);
+                }
+
+                string destinationPath = System.IO.Path.Combine(imagesFolder, fileName);
+
+                System.IO.File.Copy(imagePath, destinationPath, true);
+
                 string extractedImagePath = "Images/" + fileName;
 
                 using (var connection = new MySqlConnection(connectstring))

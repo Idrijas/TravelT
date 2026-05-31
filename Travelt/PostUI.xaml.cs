@@ -96,17 +96,15 @@ namespace Travelt
         {
             if (this.DataContext is Post clickedPost)
             {
-                int targetUserId = clickedPost.UserId;
+                ViewUserWindow viewuserwindow = new ViewUserWindow(
+                    clickedPost.UserId,
+                    false,
+                    UserService.CurrentUser.UserId
+                );
 
-                ProfilePageWindow profilePage = new ProfilePageWindow(targetUserId);
-                profilePage.Show();
-
-                Window parentWindow = Window.GetWindow(this);
-                if (parentWindow != null)
-                {
-                    parentWindow.Close();
-                }
+                viewuserwindow.Show();
             }
+        
         }
     }
 }

@@ -22,8 +22,11 @@ namespace Travelt
         public int UserId { get; set; }
 
         public string Bio {  get; set; } 
+        public string ProfilePicture { get; set; }
 
         public string Role { get; set; }
+        public int NationalityCountryId { get; set; }
+
 
 
     }

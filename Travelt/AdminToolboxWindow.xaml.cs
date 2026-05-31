@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using TravelT;
 using Travelt.Service;
 using static Travelt.Service.UserService;
+using static Travelt.Service.ReportService;
 namespace Travelt
 {
     /// <summary>
@@ -28,12 +29,20 @@ namespace Travelt
 
         public void ViewUsersButton(object sender, RoutedEventArgs e)
         {
+            AdminDataGrid.Columns.Clear();
+            AdminDataGrid.AutoGenerateColumns = false;
+
+            AdminDataGrid.Columns.Add(new DataGridTextColumn { Header = "ID", Binding = new Binding("UserId") });
+            AdminDataGrid.Columns.Add(new DataGridTextColumn { Header = "Username", Binding = new Binding("Username") });
+            AdminDataGrid.Columns.Add(new DataGridTextColumn { Header = "Email", Binding = new Binding("Email") });
+            AdminDataGrid.Columns.Add(new DataGridTextColumn { Header = "First Name", Binding = new Binding("FirstName") });
+            AdminDataGrid.Columns.Add(new DataGridTextColumn { Header = "Last Name", Binding = new Binding("LastName") });
+            AdminDataGrid.Columns.Add(new DataGridTextColumn { Header = "Role", Binding = new Binding("Role") });
 
             UserService userservice = new UserService();
             AdminDataGrid.ItemsSource = userservice.GetAllUsers();
-
-
         }
+        
 
 
 
@@ -62,9 +71,53 @@ namespace Travelt
 
 
 
+        public void ShowUserButton(object sender, RoutedEventArgs e)
+        {
+            User selectedUser = AdminDataGrid.SelectedItem as User;
+
+            if (selectedUser == null)
+            {
+                MessageBox.Show("Select user to see his profile");
+                return;
+            }
+
+            ViewUserWindow viewuserwindow = new ViewUserWindow(
+                selectedUser.UserId,
+                true,
+                UserService.CurrentUser.UserId
+            );
+
+            viewuserwindow.ShowDialog();
+
+            AdminDataGrid.ItemsSource = new UserService().GetAllUsers();
+
+        }
+
+
+
         public void ViewUsersReportsButton(object sender, RoutedEventArgs e)
         {
 
+            ReportService reportService = new ReportService();
+            AdminDataGrid.Columns.Clear();
+            AdminDataGrid.AutoGenerateColumns = true;
+            AdminDataGrid.ItemsSource = reportService.GetAllReports();
+
+        }
+
+        public void ShowReportButton(object sender, RoutedEventArgs e)
+        {
+
+            Report selectedReport = AdminDataGrid.SelectedItem as Report;
+
+            if (selectedReport == null)
+            {
+                MessageBox.Show("Select report to see the details");
+                return;
+            }
+
+            ViewReportWindow viewreportwindow = new ViewReportWindow(selectedReport);
+            viewreportwindow.ShowDialog();
         }
 
 

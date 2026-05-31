@@ -1,0 +1,146 @@
+﻿<Window x:Class="Travelt.RankInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Travelt"
+        mc:Ignorable="d"
+        Title="RankInfoWindow" Height="450" Width="800">
+    <Grid Background="#1A001F">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+            <StackPanel Margin="20"
+                        HorizontalAlignment="Center"
+                        Width="500">
+
+                <TextBlock Text="TravelT Rank System"
+                   FontFamily="Comic Sans MS"
+                   FontSize="48"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Margin="0,0,0,20"/>
+
+                <Expander Header="1. Wanderer"
+                  Foreground="White"
+                  FontFamily="Comic Sans MS"        
+                  FontSize="26"
+                  Margin="0,5">
+
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Unlock Requirements:"
+                                   FontWeight="Bold"/>
+
+                        <TextBlock Text="- Create account"/>
+                        <TextBlock Text="- Add biography or Profile picture"/>
+                        <TextBlock Text="- Complete 1 trip"/>
+                        
+
+                        <TextBlock Text="Reward: First traveler rank"
+                                   FontStyle="Italic"
+                                   Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="2. Scout"
+                  Foreground="White"
+                  FontFamily="Comic Sans MS"
+                  FontSize="26"
+                  Margin="0,5">
+
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Unlock Requirements:"
+                           FontWeight="Bold"/>
+
+                        <TextBlock Text="- Complete 5 Trips"/>
+                        <TextBlock Text="- Visit 2 Countries"/>
+
+                        <TextBlock Text="Reward: Scout status"
+                           FontStyle="Italic"
+                           Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="3. Explorer"
+                  Foreground="White"
+                  FontFamily="Comic Sans MS"
+                  FontSize="26"
+                  Margin="0,5">
+
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Unlock Requirements:"
+                           FontWeight="Bold"/>
+
+                        <TextBlock Text="- Complete 10 trips"/>
+                        <TextBlock Text="- Visit 5 countries"/>
+
+                        <TextBlock Text="Reward: Explorer status"
+                           FontStyle="Italic"
+                           Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="4. Voyager"
+                  FontFamily="Comic Sans MS"
+                  Foreground="White"
+                  FontSize="26"
+                  Margin="0,5">
+
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Unlock Requirements:"
+                           FontWeight="Bold"/>
+
+                        <TextBlock Text="- Complete 25 trips"/>
+                        <TextBlock Text="- Visit 10 countries"/>
+                        <TextBlock Text="- 5 Add travel posts"/>
+
+                        <TextBlock Text="Reward: Voyager status and memories"
+                           Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Expander>
+
+                <Expander    Header="5. Globetrotter"
+                             FontFamily="Comic Sans MS"
+                             Foreground="White"
+                             FontSize="26"
+                             Margin="0,5"> 
+
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Unlock Requirements:"
+                                   FontWeight="Bold"/>
+
+                        <TextBlock Text="- Complete 50 trips"/>
+                        <TextBlock Text="- Visit 20 countries"/>
+                        <TextBlock Text="- 10 Add travel posts"/>
+
+                        <TextBlock Text="Reward: Voyager status and memories"
+                                   FontStyle="Italic"
+                                   Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="6. Phileas Fogg"
+                  Foreground="White"
+                  FontSize="26"
+                  Margin="0,5">
+
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Unlock Requirements:"
+                           FontWeight="Bold"/>
+
+                        <TextBlock Text="- Complete 80 trips"/>
+                        <TextBlock Text="- Visit 40 countries"/>
+                        <TextBlock Text="- Add 20 posts"/>
+                        
+
+                        <TextBlock Text="“Around the world in 80 days.”"
+                           FontStyle="Italic"
+                           Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Expander>
+
+            </StackPanel>
+
+        </ScrollViewer>
+
+    </Grid>
+</Window>
