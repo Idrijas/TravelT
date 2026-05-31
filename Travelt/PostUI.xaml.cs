@@ -106,5 +106,48 @@ namespace Travelt
             }
         
         }
+        public event EventHandler<Post> PostDeleted;
+        private void DeletePost_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is Post post)
+            {
+                if (post.UserId != UserService.CurrentUser.UserId)
+                {
+                    MessageBox.Show("You can only delete your own posts.");
+                    return;
+                }
+
+                var result = MessageBox.Show("Are you sure you want to delete this post?", "Confirm Delete", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    PostService service = new PostService();
+                    bool success = service.DeletePost(post.PostId, UserService.CurrentUser.UserId);
+
+                    if (success)
+                    {
+                        MessageBox.Show("Post deleted successfully.");
+                        PostDeleted?.Invoke(this, post);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to delete post.");
+                    }
+                }
+            }
+        }
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is Post post)
+            {
+                if (post.UserId == UserService.CurrentUser.UserId)
+                {
+                    DeleteButton.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    DeleteButton.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
     }
 }
