@@ -99,14 +99,9 @@ namespace Travelt.Service
                     var cCmd = new MySqlCommand("SELECT country_id FROM country WHERE country_name = @n", connection, transaction);
                     cCmd.Parameters.AddWithValue("@n", countryName);
                     var cIdObj = cCmd.ExecuteScalar();
-                    int cId;
-                    if (cIdObj == null)
-                    {
-                        var insCmd = new MySqlCommand("INSERT INTO country (country_name, country_code) VALUES (@n, ''); SELECT LAST_INSERT_ID();", connection, transaction);
-                        insCmd.Parameters.AddWithValue("@n", countryName);
-                        cId = Convert.ToInt32(insCmd.ExecuteScalar());
-                    }
-                    else cId = Convert.ToInt32(cIdObj);
+                    int cId = (cIdObj == null) ?
+                        Convert.ToInt32(new MySqlCommand("INSERT INTO country (country_name, country_code) VALUES (@n, ''); SELECT LAST_INSERT_ID();", connection, transaction) { Parameters = { new MySqlParameter("@n", countryName) } }.ExecuteScalar())
+                        : Convert.ToInt32(cIdObj);
 
                     var linkCmd = new MySqlCommand("INSERT INTO trip_country (trip_id, country_id) VALUES (@tid, @cid)", connection, transaction);
                     linkCmd.Parameters.AddWithValue("@tid", trip.TripId);
@@ -251,7 +246,7 @@ namespace Travelt.Service
                         WHERE ut.user_id = @user_id ORDER BY t.trip_id DESC";
                 using var command = new MySqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@user_id", userId);
-                command.Parameters.AddWithValue("@currentUserId", userId); // Adjusted for current user
+                command.Parameters.AddWithValue("@currentUserId", userId);
                 using var reader = command.ExecuteReader();
                 while (reader.Read()) userTrips.Add(MapTripDisplayModel(reader));
                 reader.Close();
@@ -262,26 +257,6 @@ namespace Travelt.Service
         }
 
         public List<TripDisplayModel> SearchPublicTrips(string query, int currentUserId)
-
-
-
-
-
-        public class AdminTripModel
-        {
-            public int TripId { get; set; }
-            public string TripType { get; set; }
-            public string Description { get; set; }
-            public int MaxPeople  { get; set; }
-            public bool isPublic { get; set; }
-            public string Status { get; set; }
-
-        }
-
-
-
-
-        public List<TripDisplayModel> SearchPublicTrips(string query)
         {
             List<TripDisplayModel> publicTrips = new List<TripDisplayModel>();
             try
@@ -289,18 +264,21 @@ namespace Travelt.Service
                 using var connection = new MySqlConnection(connection_info);
                 connection.Open();
                 string sql = @"SELECT DISTINCT t.trip_id, t.trip_type, t.date_from, t.date_to, t.is_flexible_date, t.flexible_months, t.description, t.max_people,
-                        (SELECT GROUP_CONCAT(c2.country_name SEPARATOR ', ') FROM trip_country tc2 JOIN country c2 ON tc2.country_id = c2.country_id WHERE tc2.trip_id = t.trip_id) AS countries,
-                        (SELECT GROUP_CONCAT(tp2.place_name SEPARATOR ', ') FROM trip_place tp2 WHERE tp2.trip_id = t.trip_id) AS places,
-                        (SELECT COUNT(*) FROM user_trip ut2 WHERE ut2.trip_id = t.trip_id) AS joined_count,
-                        (SELECT COUNT(*) FROM user_trip ut3 WHERE ut3.trip_id = t.trip_id AND ut3.user_id = @currentUserId) AS is_joined,
-                        u.user_id AS admin_id, u.username AS admin_username, u.profile_picture AS admin_profile_picture
-                        FROM trip t LEFT JOIN trip_country tc ON t.trip_id = tc.trip_id LEFT JOIN country c ON tc.country_id = c.country_id LEFT JOIN trip_place tp ON t.trip_id = tp.trip_id JOIN user_trip ut_admin ON t.trip_id = ut_admin.trip_id AND ut_admin.role = 'admin' JOIN user u ON ut_admin.user_id = u.user_id WHERE t.is_public = 1 AND (c.country_name LIKE @q OR tp.place_name LIKE @q OR t.description LIKE @q) ORDER BY t.trip_id DESC LIMIT 50";
+                (SELECT GROUP_CONCAT(c2.country_name SEPARATOR ', ') FROM trip_country tc2 JOIN country c2 ON tc2.country_id = c2.country_id WHERE tc2.trip_id = t.trip_id) AS countries,
+                (SELECT GROUP_CONCAT(tp2.place_name SEPARATOR ', ') FROM trip_place tp2 WHERE tp2.trip_id = t.trip_id) AS places,
+                (SELECT COUNT(*) FROM user_trip ut2 WHERE ut2.trip_id = t.trip_id) AS joined_count,
+                (SELECT COUNT(*) FROM user_trip ut3 WHERE ut3.trip_id = t.trip_id AND ut3.user_id = @currentUserId) AS is_joined,
+                u.user_id AS admin_id, u.username AS admin_username, u.profile_picture AS admin_profile_picture
+                FROM trip t LEFT JOIN trip_country tc ON t.trip_id = tc.trip_id LEFT JOIN country c ON tc.country_id = c.country_id LEFT JOIN trip_place tp ON t.trip_id = tp.trip_id JOIN user_trip ut_admin ON t.trip_id = ut_admin.trip_id AND ut_admin.role = 'admin' JOIN user u ON ut_admin.user_id = u.user_id WHERE t.is_public = 1 AND (c.country_name LIKE @q OR tp.place_name LIKE @q OR t.description LIKE @q) ORDER BY t.trip_id DESC LIMIT 50";
+
                 using var command = new MySqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@q", "%" + query + "%");
                 command.Parameters.AddWithValue("@currentUserId", currentUserId);
+
                 using var reader = command.ExecuteReader();
                 while (reader.Read()) publicTrips.Add(MapTripDisplayModel(reader));
                 reader.Close();
+
                 foreach (var trip in publicTrips) trip.JoinedMembers = GetTripMembers(trip.TripId);
             }
             catch (Exception ex) { MessageBox.Show("Error searching trips: " + ex.Message); }
@@ -408,31 +386,26 @@ namespace Travelt.Service
             public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
             protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             public List<User> JoinedMembers { get; set; } = new List<User>();
+        }
 
-
-
+        public class AdminTripModel
+        {
+            public int TripId { get; set; }
+            public string TripType { get; set; }
+            public string Description { get; set; }
+            public int MaxPeople { get; set; }
+            public bool isPublic { get; set; }
+            public string Status { get; set; }
+        }
 
         public List<AdminTripModel> GetAllTrips()
         {
-            List<AdminTripModel> trips = new ();
-
+            List<AdminTripModel> trips = new();
             using var connection = new MySqlConnection(connection_info);
             connection.Open();
-
-            string select_trips = @"
-                    SELECT
-                            trip_id,
-                            trip_type,
-                            description,
-                            max_people,
-                            is_public,
-                            status
-                    FROM trip
-                    ORDER BY trip_id DESC";
-
-            using var select_from_db_data = new MySqlCommand(select_trips, connection);
-            using var reader = select_from_db_data.ExecuteReader();
-
+            string select_trips = "SELECT trip_id, trip_type, description, max_people, is_public, status FROM trip ORDER BY trip_id DESC";
+            using var cmd = new MySqlCommand(select_trips, connection);
+            using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 trips.Add(new AdminTripModel
@@ -447,36 +420,22 @@ namespace Travelt.Service
             }
             return trips;
         }
-        
-
-
 
         public bool AdminDeleteTrip(int tripId)
         {
             using var connection = new MySqlConnection(connection_info);
             connection.Open();
-
-            string delete_places = "DELETE FROM trip_place WHERE trip_id = @trip_id";
-            using var delete_from_db = new MySqlCommand(delete_places, connection);
-            delete_from_db.Parameters.AddWithValue("@trip_id", tripId);
-            delete_from_db.ExecuteNonQuery();
-
-            string delete_countries = "DELETE FROM trip_country WHERE trip_id = @trip_id";
-            using var delete_countries_db = new MySqlCommand(delete_countries, connection);
-            delete_countries_db.Parameters.AddWithValue("@trip_id", tripId);
-            delete_countries_db.ExecuteNonQuery();
-
-            string delete_user_trip = "DELETE FROM user_trip WHERE trip_id = @trip_id";
-            using var delete_user_trip_db = new MySqlCommand(delete_user_trip, connection);
-            delete_user_trip_db.Parameters.AddWithValue("@trip_id", tripId);
-            delete_user_trip_db.ExecuteNonQuery();
-
-            string delete_trip = "DELETE FROM trip WHERE trip_id = @trip_id";
-            using var delete_trip_db = new MySqlCommand(delete_trip, connection);
-            delete_trip_db.Parameters.AddWithValue("@trip_id", tripId);
-
-            int count_result = delete_trip_db.ExecuteNonQuery();
-            return count_result > 0;
+            using var transaction = connection.BeginTransaction();
+            try
+            {
+                new MySqlCommand("DELETE FROM trip_place WHERE trip_id = @id", connection, transaction) { Parameters = { new MySqlParameter("@id", tripId) } }.ExecuteNonQuery();
+                new MySqlCommand("DELETE FROM trip_country WHERE trip_id = @id", connection, transaction) { Parameters = { new MySqlParameter("@id", tripId) } }.ExecuteNonQuery();
+                new MySqlCommand("DELETE FROM user_trip WHERE trip_id = @id", connection, transaction) { Parameters = { new MySqlParameter("@id", tripId) } }.ExecuteNonQuery();
+                int count = new MySqlCommand("DELETE FROM trip WHERE trip_id = @id", connection, transaction) { Parameters = { new MySqlParameter("@id", tripId) } }.ExecuteNonQuery();
+                transaction.Commit();
+                return count > 0;
+            }
+            catch { transaction.Rollback(); return false; }
         }
     }
 }
