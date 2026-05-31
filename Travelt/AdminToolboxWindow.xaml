@@ -74,8 +74,6 @@
                    Margin="0,0,0,10"/>
 
             <Button Content="View Trips" Style="{StaticResource AdminButtonStyle}" Click="ViewTripsButton"/>
-            <Button Content="Edit Trips" Style="{StaticResource AdminButtonStyle}" Click="EditTripsButton"/>
-            <Button Content="View Trips Reports" Style="{StaticResource AdminButtonStyle}" Click="ViewTripsReportsButton"/>
             <Button Content="Delete Trip" Style="{StaticResource AdminButtonStyle}" Click="DeleteTripButton"/>
         </StackPanel>
 

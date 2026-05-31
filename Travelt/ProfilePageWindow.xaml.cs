@@ -208,5 +208,13 @@ namespace TravelT
         {
             Process.Start(new ProcessStartInfo { FileName = "https://www.openstreetmap.org", UseShellExecute = true });
         }
+
+        private void ToPlans_Button(object sender, RoutedEventArgs e)
+        {
+            PlanningPageWindow planningpagewindow = new PlanningPageWindow();
+            planningpagewindow.Show();
+
+            this.Close();
+        }
     }
 }

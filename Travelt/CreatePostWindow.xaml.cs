@@ -55,6 +55,8 @@ namespace Travelt
                 MessageBox.Show("Post created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 try
                 {
+                    UserService userservice = new UserService();
+                    userservice.GiveAchievementToUser(currentUserId, 4);
                     DiscoveryPageWindow discoveryPage = new DiscoveryPageWindow();
                     discoveryPage.Show();
                     this.Close();

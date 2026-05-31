@@ -11,10 +11,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TravelT;
 using Travelt.Service;
-using static Travelt.Service.UserService;
+using TravelT;
 using static Travelt.Service.ReportService;
+using static Travelt.Service.TripService;
+using static Travelt.Service.UserService;
 namespace Travelt
 {
     /// <summary>
@@ -174,24 +175,70 @@ namespace Travelt
 
         public void ViewTripsButton(object sender, RoutedEventArgs e)
         {
-
+            AdminDataGrid.Columns.Clear();
+            AdminDataGrid.AutoGenerateColumns = false;
+            AdminDataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Id",
+                Binding = new Binding("TripId")
+            });
+            AdminDataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Type",
+                Binding = new Binding("TripType")
+            });
+            AdminDataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Description",
+                Binding = new Binding("Description")
+            });
+            AdminDataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "People",
+                Binding = new Binding("MaxPeople")
+            });
+            AdminDataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Status",
+                Binding = new Binding("Status")
+            });
+            TripService tripsservice = new TripService();
+            AdminDataGrid.ItemsSource = tripsservice.GetAllTrips();
         }
 
-
-        public void EditTripsButton(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-
-        public void ViewTripsReportsButton(object sender, RoutedEventArgs e)
-        {
-
-        }
 
 
         public void DeleteTripButton(object sender, RoutedEventArgs e)
         {
+            AdminTripModel selectedtrip = AdminDataGrid.SelectedItem as AdminTripModel;
+
+            if (selectedtrip == null)
+            {
+                MessageBox.Show("Select trip you wish to delete:");
+                return;
+            }
+            MessageBoxResult choice_confirm = MessageBox.Show(
+                $"Are you REALLY 100% sure you want to delete trip {selectedtrip.TripId}?",
+                  "Confirm this action",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+            if (choice_confirm == MessageBoxResult.Yes)
+            {
+                TripService tripservice = new TripService();
+                bool deleted_trip = tripservice.AdminDeleteTrip(selectedtrip.TripId);
+
+                if (deleted_trip)
+                {
+                    MessageBox.Show("Trip deleted successfully");
+                    AdminDataGrid.ItemsSource = tripservice.GetAllTrips();
+                }
+                else
+                {
+                    MessageBox.Show("Ooops, trip cannot be deleted");
+                }
+
+            }
+
 
         }
 
