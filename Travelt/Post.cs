@@ -63,12 +63,31 @@ namespace Travelt.Service
         {
             using (var connection = new MySqlConnection(connectstring))
             {
-                string sql = @"
-            INSERT IGNORE INTO post_likes (post_id, user_id) VALUES (@pId, @uId);
-            IF ROW_COUNT() = 0 THEN
-                DELETE FROM post_likes WHERE post_id = @pId AND user_id = @uId;
-            END IF;";
-                connection.Execute(sql, new { pId = postId, uId = userId });
+                connection.Open();
+
+                string checkSql = "SELECT COUNT(1) FROM post_likes WHERE post_id = @pId AND user_id = @uId";
+                using var checkCmd = new MySqlCommand(checkSql, connection);
+                checkCmd.Parameters.AddWithValue("@pId", postId);
+                checkCmd.Parameters.AddWithValue("@uId", userId);
+
+                int exists = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                if (exists > 0)
+                {
+                    string deleteSql = "DELETE FROM post_likes WHERE post_id = @pId AND user_id = @uId";
+                    using var deleteCmd = new MySqlCommand(deleteSql, connection);
+                    deleteCmd.Parameters.AddWithValue("@pId", postId);
+                    deleteCmd.Parameters.AddWithValue("@uId", userId);
+                    deleteCmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    string insertSql = "INSERT INTO post_likes (post_id, user_id) VALUES (@pId, @uId)";
+                    using var insertCmd = new MySqlCommand(insertSql, connection);
+                    insertCmd.Parameters.AddWithValue("@pId", postId);
+                    insertCmd.Parameters.AddWithValue("@uId", userId);
+                    insertCmd.ExecuteNonQuery();
+                }
             }
         }
         public void AddComment(int postId, int userId, string text)

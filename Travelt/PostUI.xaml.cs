@@ -39,7 +39,7 @@ namespace Travelt
         {
             if (this.DataContext is Post post)
             {
-                int userId = 1;
+                int userId = UserService.CurrentUser.UserId;
 
                 _postService.ToggleLike(post.PostId, userId);
 
@@ -65,14 +65,21 @@ namespace Travelt
 
                 try
                 {
-                    _postService.AddComment(post.PostId, 1, text);
+                    int activeUserId = UserService.CurrentUser.UserId;
+                    string activeUsername = UserService.CurrentUser.Username;
+                    string activePfp = UserService.CurrentUser.ProfilePicture;
+
+                    _postService.AddComment(post.PostId, activeUserId, text);
+
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         post.Comments.Add(new Comment
                         {
-                            Username = "fatpeterrealistic",
+                            Username = activeUsername,
                             Comment_Text = text,
-                            Profile_Picture = post.pathconverter("Images/peter_profilepic.jpg")
+                            Profile_Picture = string.IsNullOrEmpty(activePfp)
+                                ? post.pathconverter("Images/default_profilepic.jpg")
+                                : post.pathconverter(activePfp)
                         });
 
                         post.CommentCount++;
