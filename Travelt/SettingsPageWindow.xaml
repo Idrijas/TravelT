@@ -9,7 +9,7 @@
         Title="SettingsPageWindow" Height="450" Width="800">
     <Grid Background="#1A001F">
 
-        <Button Content="Back To Home Page"
+        <Button Content="Back To Profile"
                 Width="125"
                 Height="35"
                 Background="#FF2D8C"
