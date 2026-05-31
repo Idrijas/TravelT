@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2026 at 03:04 PM
+-- Generation Time: May 31, 2026 at 04:26 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,6 +59,9 @@ CREATE TABLE `country` (
   `country_code` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `country`
+--
 
 INSERT INTO `country` (country_name, country_code) VALUES
 ('Afghanistan', 'AF'),
@@ -319,15 +322,24 @@ CREATE TABLE `report_participant` (
 
 CREATE TABLE `trip` (
   `trip_id` int(11) NOT NULL,
-  `date_from` date NOT NULL,
-  `date_to` date NOT NULL,
+  `date_from` date DEFAULT NULL,
+  `date_to` date DEFAULT NULL,
+  `is_flexible_date` tinyint(1) NOT NULL DEFAULT 0,
+  `flexible_months` varchar(255) DEFAULT NULL,
   `max_people` int(11) NOT NULL,
-  `trip_type` enum('roadtrip','hikes','vacation') NOT NULL,
+  `trip_type` enum('roadtrip','hikes','vacation','city_trip','backpacking','camping','business','other') NOT NULL,
   `description` text NOT NULL,
-  `split_costs` tinyint(1) NOT NULL,
   `is_public` tinyint(1) NOT NULL,
   `status` enum('completed','started') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `trip`
+--
+
+INSERT INTO `trip` (`trip_id`, `date_from`, `date_to`, `is_flexible_date`, `flexible_months`, `max_people`, `trip_type`, `description`, `is_public`, `status`) VALUES
+(2, NULL, NULL, 1, 'November 2026', 4, 'city_trip', 'We\'re gonna visit this stupid city', 1, 'started'),
+(3, '2026-06-17', '2026-06-26', 0, NULL, 4, 'vacation', 'We just wanna hang out and adventure', 1, 'started');
 
 -- --------------------------------------------------------
 
@@ -339,6 +351,34 @@ CREATE TABLE `trip_country` (
   `trip_id` int(11) NOT NULL,
   `country_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `trip_country`
+--
+
+INSERT INTO `trip_country` (`trip_id`, `country_id`) VALUES
+(2, 2),
+(3, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trip_place`
+--
+
+CREATE TABLE `trip_place` (
+  `trip_id` int(11) NOT NULL,
+  `place_name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `trip_place`
+--
+
+INSERT INTO `trip_place` (`trip_id`, `place_name`) VALUES
+(2, 'Copenhagen'),
+(3, 'Himare'),
+(3, 'Vlore');
 
 -- --------------------------------------------------------
 
@@ -426,6 +466,14 @@ CREATE TABLE `user_trip` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `user_trip`
+--
+
+INSERT INTO `user_trip` (`trip_id`, `user_id`, `role`) VALUES
+(2, 1, 'admin'),
+(3, 1, 'admin');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -509,6 +557,12 @@ ALTER TABLE `trip_country`
   ADD KEY `fk_trip_country_country` (`country_id`);
 
 --
+-- Indexes for table `trip_place`
+--
+ALTER TABLE `trip_place`
+  ADD PRIMARY KEY (`trip_id`,`place_name`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -570,7 +624,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `country`
 --
 ALTER TABLE `country`
-  MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -600,7 +654,7 @@ ALTER TABLE `report`
 -- AUTO_INCREMENT for table `trip`
 --
 ALTER TABLE `trip`
-  MODIFY `trip_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `trip_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -653,6 +707,12 @@ ALTER TABLE `report_participant`
 ALTER TABLE `trip_country`
   ADD CONSTRAINT `fk_trip_country_country` FOREIGN KEY (`country_id`) REFERENCES `country` (`country_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_trip_country_trip` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `trip_place`
+--
+ALTER TABLE `trip_place`
+  ADD CONSTRAINT `fk_trip_place_trip` FOREIGN KEY (`trip_id`) REFERENCES `trip` (`trip_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `user_achievement`

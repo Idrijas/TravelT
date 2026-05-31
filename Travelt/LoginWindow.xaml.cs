@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,11 +14,9 @@ using System.Windows.Shapes;
 using Travelt.Service;
 using static Travelt.Service.UserService;
 
-
 namespace Travelt
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class LoginWindow : Window
     {
@@ -29,7 +27,6 @@ namespace Travelt
 
         private void LoginButton(object sender, RoutedEventArgs e)
         {
-
             UserService user = new UserService();
 
             string email = EmailTextBox.Text;
@@ -44,9 +41,6 @@ namespace Travelt
                 UserService.CurrentUser = current_logged_user;
                 MessageBox.Show("Successful Login");
 
-
-                // transfering to HomePage
-
                 HomePageWindow homepagewindow = new HomePageWindow();
                 homepagewindow.Show();
 
@@ -56,12 +50,7 @@ namespace Travelt
             {
                 MessageBox.Show("Invalid email or password");
             }
-
-
         }
-
-
-
 
         private void ShowPasswordCheck(object sender, RoutedEventArgs e)
         {
@@ -79,7 +68,6 @@ namespace Travelt
             PasswordVisibleBorder.Visibility = Visibility.Collapsed;
         }
 
-        // transfering to Sign Up page
         private void ToSignUp(object sender, RoutedEventArgs e)
         {
             SignUpPageWindow signUp = new SignUpPageWindow();
@@ -87,7 +75,5 @@ namespace Travelt
 
             this.Close();
         }
-
-       
     }
 }
